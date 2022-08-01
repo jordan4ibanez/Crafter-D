@@ -8,6 +8,7 @@ public class Zombie : Mob {
     this() {
         super();
         writeln("I am creating a zombie object");
+        writeln("My UUID is: ", this.getUUID());
     }
 
     void scream() {
