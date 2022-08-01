@@ -10,15 +10,6 @@ void main()
 }
 
 
-abstract class Mob {
-    float health;
-    abstract void onSpawn();
-    abstract void onTick(double delta);
-    abstract void onHurt();
-    abstract void onDeath();
-    abstract void onDeathPoof();
-}
-
 class Zombie : Mob {
 
     this() {
