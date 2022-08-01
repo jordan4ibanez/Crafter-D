@@ -1,5 +1,7 @@
 import std.stdio;
 
+import raylib;
+
 void main()
 {
 	Mob[] debugBoi;
@@ -40,6 +42,6 @@ class Zombie : Mob {
     }
 
     override void onDeathPoof() {
-        
+
     }
 }
