@@ -7,4 +7,6 @@ import entity.mob.mob_factory;
 
 void main() {
 	MobFactory.spawnMob(new Zombie());
+
+    MobFactory.debugFactory();
 }
