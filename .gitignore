@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/voxel_thing
+voxel_thing.so
+voxel_thing.dylib
+voxel_thing.dll
+voxel_thing.a
+voxel_thing.lib
+voxel_thing-test-*
+*.exe
+*.o
+*.obj
+*.lst

@@ -1,0 +1,9 @@
+{
+	"authors": [
+		"jordan4ibanez"
+	],
+	"copyright": "Copyright © 2022, jordan4ibanez",
+	"description": "A voxel thing written in D",
+	"license": "MIT",
+	"name": "voxel_thing"
+}
