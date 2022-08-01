@@ -5,14 +5,18 @@ import std.stdio;
 
 public class Zombie : Mob {
 
+    this() {
+        super();
+        writeln("I am creating a zombie object");
+    }
+
     void scream() {
-        writeln("I am at health: ", this.health);
+        writeln("I am at health: ", this.getHealth());
     }
 
 
     override void onSpawn() {
-        this.health = 10;
-
+        this.setHealth(10);
         this.scream();
     }
 
