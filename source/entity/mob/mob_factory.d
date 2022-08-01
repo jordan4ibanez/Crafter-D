@@ -5,7 +5,7 @@ import std.uuid;
 import entity.mob.mob;
 import entity.mob.zombie;
 
-public static class MobFactory {
+public static final class MobFactory {
     private static Mob[UUID] container;
 
     public static void spawnMob(Mob newMob) {
