@@ -12,4 +12,8 @@ public static class MobFactory {
         container[newMob.getUUID()] = newMob;
         writeln("MOB HAS BEEN ADDED TO FACTORY: ", newMob.getUUID());
     }
+
+    public static void debugFactory() {
+        writeln("this is the factory:\n", this.container);
+    }
 }
