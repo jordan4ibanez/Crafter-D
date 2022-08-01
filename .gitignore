@@ -13,3 +13,4 @@ voxel_thing-test-*
 *.o
 *.obj
 *.lst
+*.pdb
