@@ -19,7 +19,7 @@ abstract class Mob : Entity {
 
     this() {
         super();
-        writeln("I am constructing a mob object");
+        // writeln("I am constructing a mob object");
     }
 
     // Boilerplate
