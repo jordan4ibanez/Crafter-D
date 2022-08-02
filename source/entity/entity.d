@@ -15,7 +15,14 @@ abstract class Entity {
     // Entities have a width/depth (x) and a height (y)
     private Vector2 dimensions = Vector2(0,0);
 
-    // Entities must have a physical state, collision detection with environment
+    /*
+    Entities must have a physical state, collision detection with environment
+
+    Up the inheritance chain:
+        1. This affects players and mobs with magnetic collision detection.
+           If an "alive" entity is physical, it will collide.
+        2. This affects items to be able to phase through blocks when collecting.
+    */
     private bool physical = true;
 
     // Entities must be unique
