@@ -76,7 +76,7 @@ public class Chunk {
         this.setBiome(biomeName);
     }
 
-
+    // Complex boilerplate with boundary checks
     int getBlock(int x, int y, int z) {
         if (collide(x,y,z)) {
             return(this.block[positionToIndex(x,y,z)]);
