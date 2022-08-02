@@ -23,13 +23,6 @@ const int zSize = 16;
 const int chunkArrayLength = xSize * ySize * zSize;
 const int yStride = xSize * ySize;
 
-// Micro struct for exact chunk math
-struct Vector3I {
-    int x = 0;
-    int y = 0;
-    int z = 0;
-}
-
 // 1D index to Vector3 position
 Vector3I indexToPosition(int index) {
     return Vector3I(
@@ -71,8 +64,10 @@ public class Chunk {
     // Height map needs to be added in
 
     private string biome;
+    private Position2I position = Position2I(0,0);
+    private bool positionLock = false;
 
-    this(string biomeName) {
+    this(string biomeName, Position2I position) {
         this.setBiome(biomeName);
     }
 
@@ -116,5 +111,16 @@ public class Chunk {
     }
     void setBiome(string newBiome) {
         this.biome = newBiome;
+    }
+
+    Position2I getPosition() {
+        return this.position;
+    }
+    // One way switch for setting position
+    void setPosition(int x, int z) {
+        if (!this.positionLock) {
+            this.positionLock = true;
+            this.position = Position2I(x,z);
+        }
     }
 }
