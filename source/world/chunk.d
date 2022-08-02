@@ -33,15 +33,15 @@ struct Vector3I {
 // 1D index to Vector3 position
 Vector3I indexToPosition(int index) {
     return Vector3I(
-         index / yStride,
-        (index % yStride) % ySize,
-        (index % yStride) / ySize
+        index % 16,
+        (index % yStride) / xSize,
+        index / yStride        
     );
 }
 
 // Vector3 position to 1D index
 int positionToIndex(Vector3I position) {
-    return (position.x * yStride) + (position.z * ySize) + position.y;
+    return (position.z * yStride) + (position.y * xSize) + position.x;
 }
 
 // Overload
@@ -74,6 +74,18 @@ public class Chunk {
 
     this(string biomeName) {
         this.setBiome(biomeName);
+    }
+
+    void runADebug(int index) {
+
+
+        Vector3I test = indexToPosition(index);
+
+        int test2 = positionToIndex(test);
+
+        assert(index == test2, "ERROR! INDEX MISMATCH!!");
+
+        writeln("---------\n","Start: ", index ,"\n", test, "\n", test2, "\n-----------");
     }
 
     // Complex boilerplate with boundary checks
