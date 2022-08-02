@@ -10,8 +10,8 @@ public class Player : Mob {
     // Players have a UUID (uninitialized), but their name is how they're identified
     private string name;
 
-    this() {
-        // Player's do not call down the super chain
+    this(string newName) {
+        this.setName(newName);
         this.setHealth(20);
     }
     
@@ -33,5 +33,16 @@ public class Player : Mob {
 
     override void onDeathPoof() {
         
+    }
+
+    // Boilerplate
+    string getName() {
+        return this.name;
+    }
+    void setName(string newName) {
+        // One way switch
+        if (this.name.length == 0) {
+            this.name = newName;
+        }
     }
 }
