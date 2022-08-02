@@ -10,7 +10,7 @@ Chunks are technically 1D in memory.
 
 They utilize 1D to 3D spatial striping to be fast.
 
-0,0,0 starts at index 0. 15,127,15 is at index 32768.
+0,0,0 starts at index 0. 15,127,15 is at index 32767.
 
  */
 
