@@ -18,7 +18,6 @@ abstract class Mob : Entity {
     abstract void onDeathPoof();
 
     this() {
-        super();
         // writeln("I am constructing a mob object");
     }
 

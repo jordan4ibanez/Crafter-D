@@ -29,7 +29,6 @@ abstract class Entity {
     private UUID uuid;
 
     this() {
-        // writeln("I am creating an entity object");
         this.setUUID();
     }
 
