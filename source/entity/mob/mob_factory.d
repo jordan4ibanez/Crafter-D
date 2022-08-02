@@ -7,6 +7,7 @@ import entity.mob.mob;
 
 // A static factory/container class, allowing functional programming inside of OOP
 public static final class MobFactory {
+    
     private static Mob[UUID] container;
 
     public static void spawnMob(Mob newMob) {
