@@ -98,13 +98,14 @@ public class Chunk {
             return -1;
         }
     }
-    int getBlock(int index) {
-        return this.block[index];
-    }
     void setBlock(int x, int y, int z, int newBlock) {
         if (collide(x,y,z)) {
             this.block[positionToIndex(x,y,z)] = newBlock;
         }
+    }
+    // Overloads
+    int getBlock(int index) {
+        return this.block[index];
     }
     void setBlock(int index, int newBlock) {
         this.block[index] = newBlock;
