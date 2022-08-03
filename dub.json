@@ -4,10 +4,13 @@
 	],
 	"copyright": "Copyright © 2022, jordan4ibanez",
 	"dependencies": {
+		"fast_noise": "~>1.0.0",
 		"raylib-d": "~>4.0.0"
 	},
-    "libs": [ "raylibdll" ],
 	"description": "A voxel thing written in D",
+	"libs": [
+		"raylibdll"
+	],
 	"license": "MIT",
 	"name": "voxel_thing"
 }
