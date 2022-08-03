@@ -1,4 +1,4 @@
-module world.chunk_structs;
+module world.chunk_stuff;
 
 // Micro struct for exact chunk math
 struct Vector3I {
