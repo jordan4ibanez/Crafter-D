@@ -3,8 +3,6 @@ module world.chunk_factory;
 
 import std.stdio;
 import world.chunk;
-import std.container.dlist;
-import world.chunk_structs;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
 
