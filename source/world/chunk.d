@@ -2,6 +2,7 @@ module world.chunk;
 
 import raylib;
 import std.stdio;
+import world.chunk_structs;
 
 /*
 Notes:
