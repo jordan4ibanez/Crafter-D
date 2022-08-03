@@ -8,10 +8,13 @@ import entity.player.player;
 import entity.player.player_factory;
 import world.chunk;
 import world.chunk_factory;
-
 import world.chunk;
+import world.world_generation;
 
 void main() {
+    WorldGenerator.generate();
+
+    /*
     // Debug mobs
 	MobFactory.spawnMob(new Zombie());
     MobFactory.debugFactory();
@@ -26,8 +29,6 @@ void main() {
     ChunkFactory.debugFactoryContainer();
 
     //Chunk chunky = new Chunk("default", Position2I(0,0));
-
-    /*
     for ( int i = 0; i < 32_768; i++ ) {
         chunky.runADebug(i);
     }
