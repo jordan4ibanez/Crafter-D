@@ -34,15 +34,31 @@ void main() {
     }
     */
 
-    SetTargetFPS(60);
+
 
     InitWindow(1280,720, "Voxel Thing");
+    SetTargetFPS(60);
+
+    // Debug camera
+    Camera camera = Camera(Vector3(10,0,0), Vector3(0,0,0),Vector3(0,1,0),45, CameraProjection.CAMERA_PERSPECTIVE);
+
+    SetCameraMode(camera, CameraMode.CAMERA_FIRST_PERSON);
+
 
     while(!WindowShouldClose()) {
         BeginDrawing();
 
 
         ClearBackground(Colors.RAYWHITE);
+
+
+        UpdateCamera(&camera);
+
+        BeginMode3D(camera);
+
+        DrawSphere(Vector3(0,0,0),2, Colors.BLACK);
+
+        EndMode3D();
 
         EndDrawing();
     }
