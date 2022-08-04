@@ -12,7 +12,7 @@ import world.chunk;
 import world.world_generation;
 
 void main() {
-    WorldGenerator.generate(0,0);
+    //WorldGenerator.generate(128,0);
 
     /*
     // Debug mobs
@@ -33,6 +33,19 @@ void main() {
         chunky.runADebug(i);
     }
     */
+
+    SetTargetFPS(60);
+
+    InitWindow(1280,720, "Voxel Thing");
+
+    while(!WindowShouldClose()) {
+        BeginDrawing();
+
+
+        ClearBackground(Colors.RAYWHITE);
+
+        EndDrawing();
+    }
 
 
 
