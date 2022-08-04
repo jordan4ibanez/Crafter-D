@@ -16,30 +16,30 @@ They utilize 1D to 3D spatial striping to be fast.
 
 
 // Pre-calculation
-const int xSize = 16;
-const int ySize = 128;
-const int zSize = 16;
+const int chunkSizeX = 16;
+const int chunkSizeY = 128;
+const int chunkSizeZ = 16;
 
-const int chunkArrayLength = xSize * ySize * zSize;
-const int yStride = xSize * ySize;
+const int chunkArrayLength = chunkSizeX * chunkSizeY * chunkSizeZ;
+const int yStride = chunkSizeX * chunkSizeY;
 
 // 1D index to Vector3 position
 Vector3I indexToPosition(int index) {
     return Vector3I(
         index % 16,
-        (index % yStride) / xSize,
+        (index % yStride) / chunkSizeX,
         index / yStride        
     );
 }
 
 // Vector3 position to 1D index
 int positionToIndex(Vector3I position) {
-    return (position.z * yStride) + (position.y * xSize) + position.x;
+    return (position.z * yStride) + (position.y * chunkSizeX) + position.x;
 }
 
 // Overload
 int positionToIndex(int x, int y, int z) {
-    return (x * yStride) + (z * ySize) + y;
+    return (x * yStride) + (z * chunkSizeY) + y;
 }
 
 
@@ -58,13 +58,13 @@ struct Position2I {
 
 // Basic inline collision detection
 bool collideX(int value) {
-    return (value >= 0 && value < xSize);
+    return (value >= 0 && value < chunkSizeX);
 }
 bool collideY(int value) {
-    return (value >= 0 && value < ySize);
+    return (value >= 0 && value < chunkSizeY);
 }
 bool collideZ(int value) {
-    return (value >= 0 && value < zSize);
+    return (value >= 0 && value < chunkSizeZ);
 }
 // All at once
 bool collide(int x, int y, int z) {
