@@ -12,7 +12,7 @@ import world.chunk;
 import world.world_generation;
 
 void main() {
-    WorldGenerator.generate();
+    WorldGenerator.generate(0,0);
 
     /*
     // Debug mobs
