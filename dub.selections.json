@@ -2,6 +2,7 @@
 	"fileVersion": 1,
 	"versions": {
 		"ddmp": "0.0.1-0.dev.3",
+		"delta_time": "1.0.0",
 		"fast_noise": "1.0.1",
 		"fluent-asserts": "0.13.3",
 		"libdparse": "0.14.0",

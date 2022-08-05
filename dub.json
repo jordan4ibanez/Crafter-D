@@ -4,7 +4,8 @@
 	],
 	"copyright": "Copyright © 2022, jordan4ibanez",
 	"dependencies": {
-		"fast_noise": "~>1.0.0",
+		"fast_noise": "~>1.0.3",
+        "delta_time": "~>1.0.0",
 		"raylib-d": "~>4.0.0"
 	},
 	"description": "A voxel thing written in D",
