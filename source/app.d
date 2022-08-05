@@ -12,7 +12,7 @@ import world.chunk;
 import world.world_generation;
 import raymath;
 import delta_time;
-
+import graphics.block_graphics;
 
 
 void main(string[] args) {
@@ -51,33 +51,44 @@ void main(string[] args) {
 
 
         InitWindow(1280,720, "Voxel Thing");
-        //SetTargetFPS(60);
+        SetTargetFPS(60);
 
         // Debug camera
-        Camera camera = Camera(Vector3(10,0,0), Vector3(0,0,0),Vector3(0,1,0),45, CameraProjection.CAMERA_PERSPECTIVE);
+        Camera camera = Camera(
+            Vector3(5,0,0),
+            Vector3(0.0,0.0,0.0),
+            Vector3(0,1,0),
+            73,
+            CameraProjection.CAMERA_PERSPECTIVE
+        );
 
         SetCameraMode(camera, CameraMode.CAMERA_FIRST_PERSON);
+
+        Model testingModel = LoadModelFromMesh(test());
+        Material testingMaterial = LoadMaterialDefault();
 
 
 
         // Client loop
         while(!WindowShouldClose()) {
 
+
+            UpdateCamera(&camera);
             // Delta calculation must come first
             calculateDelta();
-
-
 
             BeginDrawing();
 
             ClearBackground(Colors.RAYWHITE);
 
-
-            UpdateCamera(&camera);
-
             BeginMode3D(camera);
 
-            DrawSphere(Vector3(0,0,0),2, Colors.BLACK);
+            
+
+            DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
+
+            DrawModel(testingModel,Vector3(0,0,1),1,Colors.RED);
+
 
             EndMode3D();
 
