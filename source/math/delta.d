@@ -18,6 +18,7 @@ public static class Delta {
         this.before = MonoTime.currTime;
     }
 
+    // Allows any function or object to get the delta anywhere in the program
     public static double getDelta() {
         return this.delta;
     }
