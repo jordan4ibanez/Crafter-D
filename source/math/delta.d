@@ -24,5 +24,6 @@ public static class Delta {
     }
 }
 
+// Users do not have to explicitly call Delta class
 alias getDelta = Delta.getDelta;
 alias calculateDelta = Delta.calculateDelta;
