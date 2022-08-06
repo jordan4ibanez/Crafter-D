@@ -29,6 +29,15 @@ In full version, the static class will simply get this info from --
 --> the BlockGraphicsDefinition based on ID of the block
 */
  
+private enum FacePosition {
+    TOP,
+    BOTTOM,
+    LEFT,
+    RIGHT,
+    FRONT,
+    BACK
+}
+
 // This starts at 0,0
 Vector2 getTopLeft(Vector2I indexPosition) {
     return Vector2(
@@ -71,6 +80,8 @@ public static class BlockGraphics {
         float[] vertices;
         float[] normals;
         float[] textureCoordinates;
+
+        // For dispatching colors ubyte[]
 
         // Wound counter clockwise
 
