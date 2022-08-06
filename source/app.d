@@ -65,7 +65,8 @@ void main(string[] args) {
         SetCameraMode(camera, CameraMode.CAMERA_FIRST_PERSON);
 
         Model testingModel = LoadModelFromMesh(test());
-        Material testingMaterial = LoadMaterialDefault();
+        Texture testingTexture = LoadTexture("textures/world_texture_map.png");
+        testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
 
 
 
@@ -87,7 +88,7 @@ void main(string[] args) {
 
             DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
-            DrawModel(testingModel,Vector3(0,0,1),1,Colors.RED);
+            DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
 
 
             EndMode3D();
