@@ -38,30 +38,22 @@ private enum FacePosition {
     BACK
 }
 
+private enum TexturePosition {
+    TOP_LEFT     = Vector2I(0,0),
+    TOP_RIGHT    = Vector2I(1,0),
+    BOTTOM_LEFT  = Vector2I(0,1),
+    BOTTOM_RIGHT = Vector2I(1,1)
+}
+alias TOP_LEFT     = TexturePosition.TOP_LEFT;
+alias TOP_RIGHT    = TexturePosition.TOP_RIGHT;
+alias BOTTOM_LEFT  = TexturePosition.BOTTOM_LEFT;
+alias BOTTOM_RIGHT = TexturePosition.BOTTOM_RIGHT;
+
 // This starts at 0,0
-Vector2 getTopLeft(Vector2I indexPosition) {
+Vector2 getTexturePosition(Vector2I indexPosition, TexturePosition texturePosition) {
     return Vector2(
-        (indexPosition.x * textureTileSize) / textureMapSize,
-        (indexPosition.y * textureTileSize) / textureMapSize
-    );
-}
-Vector2 getTopRight(Vector2I indexPosition) {
-    return Vector2(
-        ((indexPosition.x + 1) * textureTileSize) / textureMapSize,
-        (indexPosition.y * textureTileSize) / textureMapSize
-    );
-}
-// Y starts at 0 (top of texture) and goes down to 1 (bottom of texture)
-Vector2 getBottomLeft(Vector2I indexPosition) {
-    return Vector2(
-        (indexPosition.x * textureTileSize) / textureMapSize,
-        ((indexPosition.y + 1) * textureTileSize) / textureMapSize
-    );
-}
-Vector2 getBottomRight(Vector2I indexPosition) {
-    return Vector2(
-        ((indexPosition.x + 1) * textureTileSize) / textureMapSize,
-        ((indexPosition.y + 1) * textureTileSize) / textureMapSize
+        ((indexPosition.x + texturePosition.x) * textureTileSize) / textureMapSize,
+        ((indexPosition.y + texturePosition.y) * textureTileSize) / textureMapSize
     );
 }
 
@@ -83,6 +75,13 @@ public static class BlockGraphics {
 
         // For dispatching colors ubyte[]
 
+        // Texture coordinates
+        Vector2 textureTopLeft     = getTexturePosition(grassPosition, TOP_LEFT);
+        Vector2 textureTopRight    = getTexturePosition(grassPosition, TOP_RIGHT);
+        Vector2 textureBottomLeft  = getTexturePosition(grassPosition, BOTTOM_LEFT);
+        Vector2 textureBottomRight = getTexturePosition(grassPosition, BOTTOM_RIGHT);
+
+
         // Wound counter clockwise
 
         // TRI 1: Lower left
@@ -97,7 +96,6 @@ public static class BlockGraphics {
         normals ~= 0;
         normals ~= 0;
         // x, y
-        Vector2 textureTopLeft = getTopLeft(grassPosition);
         textureCoordinates ~= textureTopLeft.x;
         textureCoordinates ~= textureTopLeft.y;
 
@@ -111,7 +109,6 @@ public static class BlockGraphics {
         normals ~= 0;
         normals ~= 0;
         // x, y
-        Vector2 textureBottomLeft = getBottomLeft(grassPosition);
         textureCoordinates ~= textureBottomLeft.x;
         textureCoordinates ~= textureBottomLeft.y;
 
@@ -125,7 +122,6 @@ public static class BlockGraphics {
         normals ~= 0;
         normals ~= 0;
         // x, y
-        Vector2 textureBottomRight = getBottomRight(grassPosition);
         textureCoordinates ~= textureBottomRight.x;
         textureCoordinates ~= textureBottomRight.y;
 
@@ -167,7 +163,6 @@ public static class BlockGraphics {
         normals ~= 0;
         normals ~= 0;
         // x, y
-        Vector2 textureTopRight = getTopRight(grassPosition);
         textureCoordinates ~= textureTopRight.x;
         textureCoordinates ~= textureTopRight.y;
 
@@ -178,8 +173,6 @@ public static class BlockGraphics {
         myMesh.texcoords = textureCoordinates.ptr;
 
         UploadMesh(&myMesh, false);
-
-        getTopLeft(Vector2I(1,0));
 
         return myMesh;
     }
