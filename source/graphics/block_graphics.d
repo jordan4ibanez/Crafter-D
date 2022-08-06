@@ -29,6 +29,21 @@ In full version, the static class will simply get this info from --
 --> the BlockGraphicsDefinition based on ID of the block
 */
  
+private enum Quad {
+    FRONT = [
+        // Lower left tri
+        Vector3(0,1,0), // Top left
+        Vector3(0,0,0), // Bottom left
+        Vector3(0,0,1), // Bottom right
+        // Upper right tri
+        Vector3(0,1,0), // Top left
+        Vector3(0,0,1), // Bottom right
+        Vector3(0,1,1)  // Top right
+    ]
+}
+alias FRONT = Quad.FRONT;
+
+/*
 private enum FacePosition {
     TOP,
     BOTTOM,
@@ -37,7 +52,9 @@ private enum FacePosition {
     FRONT,
     BACK
 }
+*/
 
+// The texture coordinates of the tris
 private enum TexturePosition {
     TOP_LEFT     = Vector2I(0,0),
     TOP_RIGHT    = Vector2I(1,0),
@@ -50,11 +67,22 @@ alias BOTTOM_LEFT  = TexturePosition.BOTTOM_LEFT;
 alias BOTTOM_RIGHT = TexturePosition.BOTTOM_RIGHT;
 
 // This starts at 0,0
+// Automatically dispatches texture coordinates
+// Needs to be precalculated for adjustment on custom blocks like stairs
 Vector2 getTexturePosition(Vector2I indexPosition, TexturePosition texturePosition) {
     return Vector2(
         ((indexPosition.x + texturePosition.x) * textureTileSize) / textureMapSize,
         ((indexPosition.y + texturePosition.y) * textureTileSize) / textureMapSize
     );
+}
+
+// Automatically dispatches face positions for the quad position
+void insertVertexPositions(ref float[] vertices, Quad quad) {
+    foreach (Vector3 position; quad) {
+        vertices ~= position.x;
+        vertices ~= position.y;
+        vertices ~= position.z;
+    }
 }
 
 public static class BlockGraphics {
@@ -85,12 +113,15 @@ public static class BlockGraphics {
         // Wound counter clockwise
 
         // TRI 1: Lower left
+
+
+        insertVertexPositions(vertices, FRONT);
+
+        writeln(vertices);
         
         // Top left
         // x, y, z
-        vertices ~= 0;
-        vertices ~= 1;
-        vertices ~= 0;
+
         // x, y, z
         normals ~= 1;
         normals ~= 0;
@@ -101,9 +132,7 @@ public static class BlockGraphics {
 
         // Bottom left
         // x, y, z
-        vertices ~= 0;        
-        vertices ~= 0;
-        vertices ~= 0;
+
         // x, y, z
         normals ~= 1;
         normals ~= 0;
@@ -129,9 +158,7 @@ public static class BlockGraphics {
 
         // Top left
         // x, y, z
-        vertices ~= 0;
-        vertices ~= 1;
-        vertices ~= 0;
+
         // x, y, z
         normals ~= 1;
         normals ~= 0;
@@ -142,9 +169,7 @@ public static class BlockGraphics {
 
         // Bottom Right
         // x, y, z
-        vertices ~= 0;
-        vertices ~= 0;
-        vertices ~= -1;
+
         // x, y, z
         normals ~= 1;
         normals ~= 0;
@@ -155,9 +180,7 @@ public static class BlockGraphics {
 
         // Top Right
         // x, y, z
-        vertices ~= 0;
-        vertices ~= 1;
-        vertices ~= -1;
+
         // x, y, z
         normals ~= 1;
         normals ~= 0;
