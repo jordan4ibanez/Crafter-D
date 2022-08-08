@@ -157,11 +157,40 @@ private enum Quad {
         // Normal
         Vector3(0,0,1)
     ),
+    BOTTOM = Face(
+        // Vertex
+        [
+            // Lower left tri
+            Vector3(0,0,1), // Top left
+            Vector3(0,0,0), // Bottom left
+            Vector3(1,0,0), // Bottom right
+            
+            // Upper right tri
+            Vector3(1,0,1),  // Top right
+            Vector3(0,0,1), // Top left
+            Vector3(1,0,0), // Bottom right
+            
+        ],
+        // Texture positions
+        [
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_BOTTOM_RIGHT,
+            TEXTURE_TOP_RIGHT,
+
+            TEXTURE_TOP_LEFT,
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_TOP_RIGHT,
+        ],
+        // Normal
+        Vector3(0,-1,0)
+    ),
 }
-alias QUAD_FRONT = Quad.FRONT;
-alias QUAD_BACK  = Quad.BACK;
-alias QUAD_LEFT  = Quad.LEFT;
-alias QUAD_RIGHT = Quad.RIGHT;
+alias QUAD_FRONT  = Quad.FRONT;
+alias QUAD_BACK   = Quad.BACK;
+alias QUAD_LEFT   = Quad.LEFT;
+alias QUAD_RIGHT  = Quad.RIGHT;
+alias QUAD_BOTTOM = Quad.BOTTOM;
+// alias QUAD_TOP    = Quad.TOP;
 
 /*
 private enum FacePosition {
@@ -250,7 +279,9 @@ public static class BlockGraphics {
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
         // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BACK);
         // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_RIGHT);
+        // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_RIGHT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BOTTOM);
+
 
         writeln(vertices);
         
