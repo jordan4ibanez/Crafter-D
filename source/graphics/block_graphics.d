@@ -294,9 +294,6 @@ public static class BlockGraphics {
 
         // For dispatching colors ubyte[]
 
-
-        // Wound counter clockwise
-
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BACK);
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
