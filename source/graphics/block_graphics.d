@@ -218,8 +218,8 @@ private enum Quad {
         Vector3(0,1,0)
     ),
 }
-alias QUAD_FRONT  = Quad.FRONT;
 alias QUAD_BACK   = Quad.BACK;
+alias QUAD_FRONT  = Quad.FRONT;
 alias QUAD_LEFT   = Quad.LEFT;
 alias QUAD_RIGHT  = Quad.RIGHT;
 alias QUAD_BOTTOM = Quad.BOTTOM;
@@ -295,35 +295,81 @@ struct BlockBox {
 
 }
 
+struct BlockTextures {
+    Vector2I back;
+    Vector2I front;
+    Vector2I left;
+    Vector2I right;
+    Vector2I bottom;
+    Vector2I top;
+
+    this( Vector2I back, Vector2I front, Vector2I left, Vector2I right, Vector2I bottom, Vector2I top ) {
+        this.back = back;
+        this.front = front;
+        this.left = left;
+        this.right = right;
+        this.bottom = bottom;
+        this.top = top;
+    }
+}
+
+/*
+This holds precalculated texture positions for blocks
+Saves a whole 3 cpu cycles, but it also cleans up the code a bit
+Basically allows definitive definitions from intger to float
+*/
+
 // Holds the block definition
 struct BlockGraphicDefinition {
-
+    uint ID;
     DrawType drawType;
-    Vector2I[] texturePositions;
+    BlockTextures blockTextures;
 
-    this(DrawType drawType, Vector2I[] texturePositions) {
+    // Later on needs to intake block boxes and translate them into quads
+    this(uint ID, DrawType drawType, BlockTextures blockTextures) {
+        this.ID = ID;
         this.drawType = drawType;
-
-        // Air just ignores everything, don't waste time calculating it
-        if (drawType == AIR_DRAWTYPE) {
-            this.texturePositions = null;
-        } else {
-            this.texturePositions = texturePositions;
-        }
+        this.blockTextures = blockTextures;
     }
 }
 
 
 public static class BlockGraphics {
 
-    private static BlockGraphicDefinition[] definitions;
+    // Simple associative array with type uint
+    private static BlockGraphicDefinition[uint] definitions;
 
-    public static void registerBlockGraphic(DrawType drawType, Vector2I[] texturePosition){
-        this.definitions ~= BlockGraphicDefinition(
+    public static void registerBlockGraphic(uint ID, DrawType drawType, BlockTextures blockTextures){
+        this.definitions[ID] = BlockGraphicDefinition(
+            ID,
             drawType,
-            texturePosition
+            blockTextures
         );
     }
+
+    /*
+    registerBlockGraphic(
+        // ID
+        1,
+        // DrawType
+        NORMAL_DRAWTYPE,
+        // Block Textures Definition
+        BlockTextures(
+            // Back
+            Vector2I(0,0),
+            // Front
+            Vector2I(0,0),
+            // Left
+            Vector2I(0,0),
+            // Right
+            Vector2I(0,0),
+            // Bottom
+            Vector2I(2,0),
+            // Top
+            Vector2I(1,0)
+        )
+    );
+    */
 
 
     public static Mesh test() {
