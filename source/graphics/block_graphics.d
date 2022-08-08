@@ -229,16 +229,6 @@ alias QUAD_RIGHT  = Quad.RIGHT;
 alias QUAD_BOTTOM = Quad.BOTTOM;
 alias QUAD_TOP    = Quad.TOP;
 
-/*
-private enum FacePosition {
-    TOP,
-    BOTTOM,
-    LEFT,
-    RIGHT,
-    FRONT,
-    BACK
-}
-*/
 
 // The texture coordinates of the tris
 private enum TexturePosition {
