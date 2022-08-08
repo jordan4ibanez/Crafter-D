@@ -267,12 +267,6 @@ public static class BlockGraphics {
 
         // For dispatching colors ubyte[]
 
-        // Texture coordinates
-        Vector2 textureTopLeft     = getTexturePosition(grassPosition, TEXTURE_TOP_LEFT);
-        Vector2 textureTopRight    = getTexturePosition(grassPosition, TEXTURE_TOP_RIGHT);
-        Vector2 textureBottomLeft  = getTexturePosition(grassPosition, TEXTURE_BOTTOM_LEFT);
-        Vector2 textureBottomRight = getTexturePosition(grassPosition, TEXTURE_BOTTOM_RIGHT);
-
 
         // Wound counter clockwise
 
