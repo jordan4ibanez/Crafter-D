@@ -31,15 +31,33 @@ In full version, the static class will simply get this info from --
 struct Face {
     Vector3[6] vertex;
     TexturePosition[6] textureCoordinate;
+    // Blocks are square in face, rigid, axis aligned. Only need one direction per face
+    Vector3 normal;
 
-    this(Vector3[6] vertexData, TexturePosition[6] textureCoordinateData) {
+
+    this(Vector3[6] vertexData, TexturePosition[6] textureCoordinateData, Vector3 normals) {
         this.vertex = vertexData;
-        this.textureCoordinate = textureCoordinateData;                
+        this.textureCoordinate = textureCoordinateData;
+        this.normal = normal;
     }
 }
 
+/*
+Quick notes on face directions
+
+All normals are rooted in point 0 to 1 for ease of use
+when translating literal data into visual data. Allows
+maximum ease of use when designing collision detection.
+Also allows flooring a position and casting it to int to
+get the position a lot easier.
+
+-X is the back
++X is the front
+
+*/
 private enum Quad {
-    RIGHT = Face(
+    BACK = Face(
+        // Vertex
         [
             // Lower left tri
             Vector3(0,1,0), // Top left
@@ -50,6 +68,7 @@ private enum Quad {
             Vector3(0,0,1), // Bottom right
             Vector3(0,1,1)  // Top right
         ],
+        // Texture positions
         [
             TEXTURE_TOP_LEFT,
             TEXTURE_BOTTOM_LEFT,
@@ -58,9 +77,13 @@ private enum Quad {
             TEXTURE_TOP_LEFT,
             TEXTURE_BOTTOM_RIGHT,
             TEXTURE_TOP_RIGHT
-        ]
+        ],
+        // Normal
+        Vector3(-1,0,0)
+
     ),
-    LEFT = Face(
+    FRONT = Face(
+        // Vertex
         [
             // Lower left tri
             Vector3(1,0,1), // Bottom right
@@ -71,6 +94,7 @@ private enum Quad {
             Vector3(1,0,1), // Bottom right
             Vector3(1,1,0)  // Top left
         ],
+        // Texture positions
         [
             TEXTURE_BOTTOM_RIGHT,
             TEXTURE_BOTTOM_LEFT,
@@ -79,11 +103,13 @@ private enum Quad {
             TEXTURE_TOP_RIGHT,
             TEXTURE_BOTTOM_RIGHT,
             TEXTURE_TOP_LEFT
-        ]
+        ],
+        // Normal
+        Vector3(1,0,0)
     )
 }
-alias QUAD_RIGHT = Quad.RIGHT;
-alias QUAD_LEFT  = Quad.LEFT;
+alias QUAD_FRONT = Quad.FRONT;
+alias QUAD_BACK  = Quad.BACK;
 
 /*
 private enum FacePosition {
@@ -120,8 +146,8 @@ Vector2 getTexturePosition(Vector2I indexPosition, TexturePosition texturePositi
 }
 
 // Automatically dispatches and constructs precalculated data
-void insertVertexPositions(ref float[] vertices, ref float[] textureCoordinates, ref int triangleCount,
-    Vector2I blockTexturePosition, Quad thisQuad) {
+void insertVertexPositions(ref float[] vertices, ref float[] textureCoordinates, ref float[] normals, 
+                                ref int triangleCount, Vector2I blockTexturePosition, Quad thisQuad) {
 
     foreach (Vector3 position; thisQuad.vertex) {
         vertices ~= position.x;
@@ -131,10 +157,16 @@ void insertVertexPositions(ref float[] vertices, ref float[] textureCoordinates,
     triangleCount += 2;
 
     foreach (TexturePosition position; thisQuad.textureCoordinate) {
-
         Vector2 floatPosition = getTexturePosition(blockTexturePosition, position);
         textureCoordinates ~= floatPosition.x;
         textureCoordinates ~= floatPosition.y;        
+    }
+
+    // Matches the vertex positions amount
+    for (int i = 0; i < 6; i++) {
+        normals ~= thisQuad.normal.x;
+        normals ~= thisQuad.normal.y;
+        normals ~= thisQuad.normal.z;
     }
 }
 
@@ -165,16 +197,16 @@ public static class BlockGraphics {
 
         // TRI 1: Lower left
 
-        insertVertexPositions(vertices, textureCoordinates, triangleCount, grassPosition, QUAD_LEFT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
         writeln(vertices);
         
         // Top left
         // x, y, z
 
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureTopLeft.x;
         // textureCoordinates ~= textureTopLeft.y;
@@ -183,22 +215,22 @@ public static class BlockGraphics {
         // x, y, z
 
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureBottomLeft.x;
         // textureCoordinates ~= textureBottomLeft.y;
 
         // Bottom right
         // x, y, z
-        vertices ~= 0;
-        vertices ~= 0;
-        vertices ~= -1;
+        // vertices ~= 0;
+        // vertices ~= 0;
+        // vertices ~= -1;
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureBottomRight.x;
         // textureCoordinates ~= textureBottomRight.y;
@@ -209,9 +241,9 @@ public static class BlockGraphics {
         // x, y, z
 
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureTopLeft.x;
         // textureCoordinates ~= textureTopLeft.y;
@@ -220,9 +252,9 @@ public static class BlockGraphics {
         // x, y, z
 
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureBottomRight.x;
         // textureCoordinates ~= textureBottomRight.y;
@@ -231,9 +263,9 @@ public static class BlockGraphics {
         // x, y, z
 
         // x, y, z
-        normals ~= 1;
-        normals ~= 0;
-        normals ~= 0;
+        // normals ~= 1;
+        // normals ~= 0;
+        // normals ~= 0;
         // x, y
         // textureCoordinates ~= textureTopRight.x;
         // textureCoordinates ~= textureTopRight.y;
