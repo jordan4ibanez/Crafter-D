@@ -120,13 +120,13 @@ private enum Quad {
         ],
         // Texture positions
         [
-            TEXTURE_BOTTOM_RIGHT,
             TEXTURE_BOTTOM_LEFT,
-            TEXTURE_TOP_LEFT,
-
-            TEXTURE_TOP_RIGHT,
             TEXTURE_BOTTOM_RIGHT,
-            TEXTURE_TOP_LEFT
+            TEXTURE_TOP_RIGHT,
+
+            TEXTURE_TOP_LEFT,
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_TOP_RIGHT
         ],
         // Normal
         Vector3(0,0,-1)
@@ -270,9 +270,9 @@ public static class BlockGraphics {
 
         // Wound counter clockwise
 
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
+        // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
         // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BACK);
-        // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
         // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_RIGHT);
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BOTTOM);
 
