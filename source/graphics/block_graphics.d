@@ -95,13 +95,13 @@ private enum Quad {
         ],
         // Texture positions
         [
-            TEXTURE_BOTTOM_RIGHT,
             TEXTURE_BOTTOM_LEFT,
-            TEXTURE_TOP_LEFT,
-
-            TEXTURE_TOP_RIGHT,
             TEXTURE_BOTTOM_RIGHT,
-            TEXTURE_TOP_LEFT
+            TEXTURE_TOP_RIGHT,
+
+            TEXTURE_TOP_LEFT,
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_TOP_RIGHT
         ],
         // Normal
         Vector3(1,0,0)
