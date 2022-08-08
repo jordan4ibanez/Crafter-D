@@ -55,7 +55,7 @@ void main(string[] args) {
 
         // Debug camera
         Camera camera = Camera(
-            Vector3(5,0,0),
+            Vector3(5,2,0),
             Vector3(0.0,0.0,0.0),
             Vector3(0,1,0),
             73,
