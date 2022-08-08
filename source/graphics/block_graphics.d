@@ -80,7 +80,6 @@ private enum Quad {
         ],
         // Normal
         Vector3(-1,0,0)
-
     ),
     FRONT = Face(
         // Vertex
@@ -106,10 +105,63 @@ private enum Quad {
         ],
         // Normal
         Vector3(1,0,0)
-    )
+    ),
+    LEFT = Face(
+        // Vertex
+        [
+            // Lower left tri
+            Vector3(1,0,0), // Bottom right
+            Vector3(0,0,0), // Bottom left
+            Vector3(0,1,0), // Top left
+            // Upper right tri
+            Vector3(1,1,0), // Top right
+            Vector3(1,0,0), // Bottom right
+            Vector3(0,1,0)  // Top left
+        ],
+        // Texture positions
+        [
+            TEXTURE_BOTTOM_RIGHT,
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_TOP_LEFT,
+
+            TEXTURE_TOP_RIGHT,
+            TEXTURE_BOTTOM_RIGHT,
+            TEXTURE_TOP_LEFT
+        ],
+        // Normal
+        Vector3(0,0,-1)
+    ),
+    RIGHT = Face(
+        // Vertex
+        [
+            // Lower left tri
+            Vector3(0,1,1), // Top left
+            Vector3(0,0,1), // Bottom left
+            Vector3(1,0,1), // Bottom right
+            // Upper right tri
+            Vector3(0,1,1), // Top left
+            Vector3(1,0,1), // Bottom right
+            Vector3(1,1,1)  // Top right
+        ],
+        // Texture positions
+        [
+            TEXTURE_TOP_LEFT,
+            TEXTURE_BOTTOM_LEFT,
+            TEXTURE_BOTTOM_RIGHT,
+
+            TEXTURE_TOP_LEFT,
+            TEXTURE_BOTTOM_RIGHT,
+            TEXTURE_TOP_RIGHT
+            
+        ],
+        // Normal
+        Vector3(0,0,1)
+    ),
 }
 alias QUAD_FRONT = Quad.FRONT;
 alias QUAD_BACK  = Quad.BACK;
+alias QUAD_LEFT  = Quad.LEFT;
+alias QUAD_RIGHT = Quad.RIGHT;
 
 /*
 private enum FacePosition {
@@ -195,80 +247,13 @@ public static class BlockGraphics {
 
         // Wound counter clockwise
 
-        // TRI 1: Lower left
-
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
+        // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BACK);
+        // insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_RIGHT);
+
         writeln(vertices);
         
-        // Top left
-        // x, y, z
-
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureTopLeft.x;
-        // textureCoordinates ~= textureTopLeft.y;
-
-        // Bottom left
-        // x, y, z
-
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureBottomLeft.x;
-        // textureCoordinates ~= textureBottomLeft.y;
-
-        // Bottom right
-        // x, y, z
-        // vertices ~= 0;
-        // vertices ~= 0;
-        // vertices ~= -1;
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureBottomRight.x;
-        // textureCoordinates ~= textureBottomRight.y;
-
-        // TRI 2: Upper right
-
-        // Top left
-        // x, y, z
-
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureTopLeft.x;
-        // textureCoordinates ~= textureTopLeft.y;
-
-        // Bottom Right
-        // x, y, z
-
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureBottomRight.x;
-        // textureCoordinates ~= textureBottomRight.y;
-
-        // Top Right
-        // x, y, z
-
-        // x, y, z
-        // normals ~= 1;
-        // normals ~= 0;
-        // normals ~= 0;
-        // x, y
-        // textureCoordinates ~= textureTopRight.x;
-        // textureCoordinates ~= textureTopRight.y;
 
         myMesh.triangleCount = triangleCount;
         // 3 is the number of vertex points per triangle
