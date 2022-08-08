@@ -311,7 +311,7 @@ public static class BlockGraphics {
 
 
         myMesh.vertices = vertices.ptr;
-        //myMesh.normals = normals.ptr;
+        myMesh.normals = normals.ptr;
         myMesh.texcoords = textureCoordinates.ptr;
 
         UploadMesh(&myMesh, false);
