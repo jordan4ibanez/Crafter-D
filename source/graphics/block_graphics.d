@@ -3,6 +3,16 @@ module graphics.block_graphics;
 import std.stdio;
 import raylib;
 
+/*
+
+IMPORTANT NOTE:
+
+When registering a block with a custom block box, you must multiply the texture coordinates to align
+with the defined pixel count size of the box. You must also do the same thing to the faces.
+
+*/
+
+
 // Makes writing a block definition easier
 struct Vector2I {
     int x = 0;
