@@ -19,11 +19,6 @@ struct Vector2I {
     int y = 0;
 }
 
-
-private struct BlockGraphicsDefinition {
-    Vector3[][2] position;
-}
-
 // Defines how many textures are in the texture map
 const double textureMapTiles = 32;
 // Defines the width/height of each texture
@@ -38,6 +33,7 @@ Function name suggestion: translateTopLeft()
 In full version, the static class will simply get this info from --
 --> the BlockGraphicsDefinition based on ID of the block
 */
+
 struct Face {
     Vector3[6] vertex;
     TexturePosition[6] textureCoordinate;
@@ -243,6 +239,7 @@ alias TEXTURE_TOP_RIGHT    = TexturePosition.TOP_RIGHT;
 alias TEXTURE_BOTTOM_LEFT  = TexturePosition.BOTTOM_LEFT;
 alias TEXTURE_BOTTOM_RIGHT = TexturePosition.BOTTOM_RIGHT;
 
+
 // This starts at 0,0
 // Automatically dispatches texture coordinates
 // Needs to be precalculated for adjustment on custom blocks like stairs
@@ -278,7 +275,57 @@ void insertVertexPositions(ref float[] vertices, ref float[] textureCoordinates,
     }
 }
 
+// Quick way to access draw types
+enum DrawType {
+    AIR, // Nothing
+    NORMAL, // Full block
+    TORCH, // Torches
+    LIQUID, // Water, lava, etc
+    BLOCK_BOX // Custom block
+}
+alias AIR_DRAWTYPE       = DrawType.AIR;
+alias NORMAL_DRAWTYPE    = DrawType.NORMAL;
+// These other aliases are placeholders, still figuring out how to structure this
+alias TORCH_DRAWTYPE     = DrawType.TORCH;
+alias LIQUID_DRAWTYPE    = DrawType.LIQUID;
+alias BLOCK_BOX_DRAWTYPE =  DrawType.BLOCK_BOX;
+
+// Placeholder for future implementation
+struct BlockBox {
+
+}
+
+// Holds the block definition
+struct BlockGraphicDefinition {
+
+    DrawType drawType;
+    Vector2I[] texturePositions;
+
+    this(DrawType drawType, Vector2I[] texturePositions) {
+        this.drawType = drawType;
+
+        // Air just ignores everything, don't waste time calculating it
+        if (drawType == AIR_DRAWTYPE) {
+            this.texturePositions = null;
+        } else {
+            this.texturePositions = texturePositions;
+        }
+    }
+}
+
+
 public static class BlockGraphics {
+
+    private static BlockGraphicDefinition[] definitions;
+
+    public static void registerBlockGraphic(DrawType drawType, Vector2I[] texturePosition){
+        this.definitions ~= BlockGraphicDefinition(
+            drawType,
+            texturePosition
+        );
+    }
+
+
     public static Mesh test() {
 
         // Texture will be taken from the grass side texture
