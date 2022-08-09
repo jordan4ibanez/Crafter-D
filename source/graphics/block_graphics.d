@@ -290,9 +290,10 @@ alias TORCH_DRAWTYPE     = DrawType.TORCH;
 alias LIQUID_DRAWTYPE    = DrawType.LIQUID;
 alias BLOCK_BOX_DRAWTYPE =  DrawType.BLOCK_BOX;
 
-// Placeholder for future implementation
+// the min and max positions of the block box
 struct BlockBox {
-
+    Vector3 min = Vector3( 0.0, 0.0, 0.0 );
+    Vector3 max = Vector3( 1.0, 1.0, 1.0 );
 }
 
 struct BlockTextures {
@@ -313,69 +314,75 @@ struct BlockTextures {
     }
 }
 
-/*
-This holds precalculated texture positions for blocks
-Saves a whole 3 cpu cycles, but it also cleans up the code a bit
-Basically allows definitive definitions from intger to float
-*/
-
 // Holds the block definition
 struct BlockGraphicDefinition {
     uint ID;
     DrawType drawType;
     BlockTextures blockTextures;
+    BlockBox blockBox;
 
     // Later on needs to intake block boxes and translate them into quads
-    this(uint ID, DrawType drawType, BlockTextures blockTextures) {
+    this(uint ID, DrawType drawType, BlockTextures blockTextures, BlockBox blockBox) {
         this.ID = ID;
         this.drawType = drawType;
         this.blockTextures = blockTextures;
+        this.blockBox = blockBox;
     }
 }
 
-
+// Internal graphics API and container for block graphics
 public static class BlockGraphics {
 
     // Simple associative array with type uint
     private static BlockGraphicDefinition[uint] definitions;
 
-    public static void registerBlockGraphic(uint ID, DrawType drawType, BlockTextures blockTextures){
+    public static void registerBlockGraphic(uint ID, DrawType drawType, BlockTextures blockTextures, BlockBox blockBox){
         this.definitions[ID] = BlockGraphicDefinition(
             ID,
             drawType,
-            blockTextures
+            blockTextures,
+            blockBox
         );
     }
 
-    /*
-    registerBlockGraphic(
-        // ID
-        1,
-        // DrawType
-        NORMAL_DRAWTYPE,
-        // Block Textures Definition
-        BlockTextures(
-            // Back
-            Vector2I(0,0),
-            // Front
-            Vector2I(0,0),
-            // Left
-            Vector2I(0,0),
-            // Right
-            Vector2I(0,0),
-            // Bottom
-            Vector2I(2,0),
-            // Top
-            Vector2I(1,0)
-        )
-    );
-    */
+    public static void registerDefaultBlocksTest() {
+        // Air
+        registerBlockGraphic(
+            0,
+            AIR_DRAWTYPE,
+            BlockTextures(),
+            BlockBox()
+        );
+        // Grass block
+        registerBlockGraphic(
+            // ID
+            1,
+            // DrawType
+            NORMAL_DRAWTYPE,
+            // Block Textures Definition
+            BlockTextures(
+                // Back
+                Vector2I(0,0),
+                // Front
+                Vector2I(0,0),
+                // Left
+                Vector2I(0,0),
+                // Right
+                Vector2I(0,0),
+                // Bottom
+                Vector2I(2,0),
+                // Top
+                Vector2I(1,0)
+            ),
+            BlockBox()
+        );
+    }
 
 
-    public static Mesh test() {
+    public static Mesh testAPI(uint ID) {
 
-        // Texture will be taken from the grass side texture
-        Vector2I grassPosition = Vector2I(0,0);
+        BlockGraphicDefinition currentDefinition = this.definitions[ID];
+        BlockTextures currentBlockTextures = currentDefinition.blockTextures;
 
         Mesh myMesh = Mesh();
 
@@ -387,15 +394,21 @@ public static class BlockGraphics {
 
         // For dispatching colors ubyte[]
 
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_FRONT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BACK);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_LEFT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_RIGHT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_BOTTOM);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, grassPosition, QUAD_TOP);
-
-
-        writeln(vertices);
+        insertVertexPositions(
+            vertices,
+            textureCoordinates,
+            normals,
+            triangleCount,
+            currentBlockTextures.back,
+            QUAD_BACK
+        );
+        /*
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.front, QUAD_FRONT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.left, QUAD_LEFT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.right, QUAD_RIGHT);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.bottom, QUAD_BOTTOM);
+        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.top, QUAD_TOP);
+        */
         
 
         myMesh.triangleCount = triangleCount;
@@ -413,4 +426,5 @@ public static class BlockGraphics {
     }
 }
 
-alias test = BlockGraphics.test;
+alias testRegister = BlockGraphics.registerDefaultBlocksTest;
+alias testAPI = BlockGraphics.testAPI;
