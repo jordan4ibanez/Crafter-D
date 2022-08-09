@@ -383,30 +383,30 @@ void insertVertexPositions(
                         case 0: {
                             // Tri 1
                             vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= max.y;
+                            vertices ~= min.z;
                             vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= min.y;
+                            vertices ~= min.z;
                             vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= min.y;
+                            vertices ~= max.z;
                             // Tri 2
                             vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= max.y;
+                            vertices ~= min.z;
                             vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= min.y;
+                            vertices ~= max.z;
                             vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
+                            vertices ~= min.x;
+                            vertices ~= max.y;
+                            vertices ~= max.z;
                             triangleCount += 2;
                             break;
                         }
@@ -742,7 +742,7 @@ public static class BlockGraphics {
                 Vector2I(1,0)
             ),
             BlockBox([
-                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,1,1))
+                BlockBoxDefinition(Vector3(0.2,0.2,0.2), Vector3(0.8,0.8,0.8))
             ])
         );
     }
