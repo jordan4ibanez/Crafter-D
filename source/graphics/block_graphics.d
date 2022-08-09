@@ -281,7 +281,7 @@ Vector2 getTexturePositionBlockBox(
         if (invertY) {
             posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -298,7 +298,7 @@ Vector2 getTexturePositionBlockBox(
         if (invertY) {
             posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -315,7 +315,7 @@ Vector2 getTexturePositionBlockBox(
         if (invertY) {
             posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
 
@@ -333,7 +333,7 @@ Vector2 getTexturePositionBlockBox(
         if (invertY) {
             posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
