@@ -554,7 +554,8 @@ public static class BlockGraphics {
                 Vector2I(1,0)
             ),
             BlockBox([
-                BlockBoxDefinition(Vector3(0.2,0.2,0.2), Vector3(0.8,0.8,0.8))
+                BlockBoxDefinition(Vector3(0.2,0.2,0.2), Vector3(0.8,0.8,0.8)),
+                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
             ])
         );
     }
