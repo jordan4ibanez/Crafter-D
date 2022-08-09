@@ -266,6 +266,20 @@ struct PositionsBool {
     bool[6] getIterator() {
         return [this.back,this.front,this.left,this.right,this.bottom, this.top];
     }
+
+    bool get(int i) {
+        switch(i){
+            case 0: return this.back;
+            case 1: return this.front;
+            case 2: return this.left;
+            case 3: return this.right;
+            case 4: return this.bottom;
+            case 5: return this.top;
+            default:{
+                return false;
+            }
+        }
+    }
 }
 
 // Automatically dispatches and constructs precalculated data
@@ -281,7 +295,7 @@ void insertVertexPositions(
     
 
     // DEBUG!!!! IF THERE ARE ISSUES THIS IS WHY!!!!!!!
-    Vector2I blockTexturePosition = blockGraphicDefinition.blockTextures.top;
+    // Vector2I blockTexturePosition = blockGraphicDefinition.blockTextures.top;
 
     /*
     back   0
@@ -292,27 +306,47 @@ void insertVertexPositions(
     top    5
     */
 
-    Face thisQuad = faceArray[0];
+    DrawType drawType = blockGraphicDefinition.drawType;
+    BlockTextures textureCoordinate = blockGraphicDefinition.blockTextures;
 
-    
-    foreach (Vector3 vertexPosition; thisQuad.vertex) {
-        vertices ~= vertexPosition.x;
-        vertices ~= vertexPosition.y;
-        vertices ~= vertexPosition.z;
-    }
-    triangleCount += 2;
+    switch (drawType) {
 
-    foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
-        Vector2 floatPosition = getTexturePosition(blockTexturePosition, texturePosition);
-        textureCoordinates ~= floatPosition.x;
-        textureCoordinates ~= floatPosition.y;
-    }
+        case AIR_DRAWTYPE: {/*does nothing*/}
 
-    // Matches the vertex positions amount
-    for (int i = 0; i < 6; i++) {
-        normals ~= thisQuad.normal.x;
-        normals ~= thisQuad.normal.y;
-        normals ~= thisQuad.normal.z;
+        case NORMAL_DRAWTYPE: {
+
+            for (int i = 0; i < 6; i++) {
+
+                if (!positionsBool.get(i)) {
+                    continue;
+                }
+
+                Face thisQuad = faceArray[i];
+
+                foreach (Vector3 vertexPosition; thisQuad.vertex) {
+                    vertices ~= vertexPosition.x;
+                    vertices ~= vertexPosition.y;
+                    vertices ~= vertexPosition.z;
+                }
+
+                triangleCount += 2;
+
+                foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                    Vector2 floatPosition = getTexturePosition(textureCoordinate.get(i), texturePosition);
+                    textureCoordinates ~= floatPosition.x;
+                    textureCoordinates ~= floatPosition.y;
+                }
+
+                // Matches the vertex positions amount
+                for (int w = 0; w < 6; w++) {
+                    normals ~= thisQuad.normal.x;
+                    normals ~= thisQuad.normal.y;
+                    normals ~= thisQuad.normal.z;
+                }
+            }
+            break;
+        }
+        default: {/*does nothing*/}
     }
 }
 
@@ -357,6 +391,20 @@ struct BlockTextures {
         this.right = right;
         this.bottom = bottom;
         this.top = top;
+    }
+
+    Vector2I get(int i) {
+        switch(i){
+            case 0: return this.back;
+            case 1: return this.front;
+            case 2: return this.left;
+            case 3: return this.right;
+            case 4: return this.bottom;
+            case 5: return this.top;
+            default:{
+                return Vector2I();
+            }
+        }
     }
 }
 
