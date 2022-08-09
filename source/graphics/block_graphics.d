@@ -359,8 +359,8 @@ void insertVertexPositions(
         // Block box, now here is where the fun begins
         case BLOCK_BOX_DRAWTYPE: {
 
-            foreach (Vector3 boxPosition; blockBox.boxes) {
-                writeln("position: ", boxPosition);
+            foreach (BlockBoxDefinition thisBlockBox; blockBox.boxes) {
+                writeln("position: ", thisBlockBox);
             }
 
             // Iterate all 6 faces
@@ -416,11 +416,19 @@ alias LIQUID_DRAWTYPE    = DrawType.LIQUID;
 alias BLOCK_BOX_DRAWTYPE =  DrawType.BLOCK_BOX;
 
 // the min and max positions of the block box
+struct BlockBoxDefinition {
+    Vector3 min = Vector3(0,0,0);
+    Vector3 max = Vector3(0,0,0);
+    this( Vector3 min, Vector3 max){
+        this.min = min;
+        this.max = max;
+    }
+}
+// The structure which holds the boxes in array
 struct BlockBox {
-    Vector3[] boxes;
+    BlockBoxDefinition[] boxes;
 
-    this(Vector3[] boxes){
-        assert(boxes.length % 2 == 0, "BLOCK BOXES MUST HAVE MIN AND MAX");
+    this(BlockBoxDefinition[] boxes){
         this.boxes = boxes;
     }
 }
@@ -543,8 +551,7 @@ public static class BlockGraphics {
                 Vector2I(1,0)
             ),
             BlockBox([
-                Vector3(0,0,0),
-                Vector3(1,1,1)
+                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,1,1))
             ])
         );
     }
