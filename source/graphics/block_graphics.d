@@ -220,6 +220,8 @@ alias QUAD_RIGHT  = Quad.RIGHT;
 alias QUAD_BOTTOM = Quad.BOTTOM;
 alias QUAD_TOP    = Quad.TOP;
 
+Face[] faceArray = [QUAD_BACK, QUAD_FRONT, QUAD_LEFT, QUAD_RIGHT, QUAD_BOTTOM, QUAD_TOP];
+
 
 // The texture coordinates of the tris
 private enum TexturePosition {
@@ -260,6 +262,10 @@ struct PositionsBool {
         this.bottom = bottom;
         this.top    = top;
     }
+    // Simple bolt on iterator
+    bool[6] getIterator() {
+        return [this.back,this.front,this.left,this.right,this.bottom, this.top];
+    }
 }
 
 // Automatically dispatches and constructs precalculated data
@@ -270,21 +276,36 @@ void insertVertexPositions(
     ref int triangleCount,
     BlockGraphicDefinition blockGraphicDefinition,
     PositionsBool positionsBool,
-    Vector3I position,
+    Vector3I position
+    ) {
     
-    Quad thisQuad ) {
 
+    // DEBUG!!!! IF THERE ARE ISSUES THIS IS WHY!!!!!!!
+    Vector2I blockTexturePosition = blockGraphicDefinition.blockTextures.top;
+
+    /*
+    back   0
+    front  1
+    left   2
+    right  3
+    bottom 4
+    top    5
+    */
+
+    Face thisQuad = faceArray[0];
+
+    
     foreach (Vector3 vertexPosition; thisQuad.vertex) {
-        vertices ~= position.x;
-        vertices ~= position.y;
-        vertices ~= position.z;
+        vertices ~= vertexPosition.x;
+        vertices ~= vertexPosition.y;
+        vertices ~= vertexPosition.z;
     }
     triangleCount += 2;
 
-    foreach (TexturePosition position; thisQuad.textureCoordinate) {
-        Vector2 floatPosition = getTexturePosition(blockTexturePosition, position);
+    foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+        Vector2 floatPosition = getTexturePosition(blockTexturePosition, texturePosition);
         textureCoordinates ~= floatPosition.x;
-        textureCoordinates ~= floatPosition.y;        
+        textureCoordinates ~= floatPosition.y;
     }
 
     // Matches the vertex positions amount
@@ -454,8 +475,7 @@ public static class BlockGraphics {
             triangleCount,
             currentDefinition,
             PositionsBool(true, true, true, true, true,true),
-            Vector3I(0,0,0),
-            QUAD_BACK
+            Vector3I(0,0,0)
         );
         /*
         insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.front, QUAD_FRONT);
