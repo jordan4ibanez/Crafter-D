@@ -477,22 +477,13 @@ public static class BlockGraphics {
             PositionsBool(true, true, true, true, true,true),
             Vector3I(0,0,0)
         );
-        /*
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.front, QUAD_FRONT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.left, QUAD_LEFT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.right, QUAD_RIGHT);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.bottom, QUAD_BOTTOM);
-        insertVertexPositions(vertices, textureCoordinates, normals, triangleCount, currentBlockTextures.top, QUAD_TOP);
-        */
-        
 
         myMesh.triangleCount = triangleCount;
         // 3 is the number of vertex points per triangle
         myMesh.vertexCount = triangleCount * 3;
 
-
-        myMesh.vertices = vertices.ptr;
-        myMesh.normals = normals.ptr;
+        myMesh.vertices  = vertices.ptr;
+        myMesh.normals   = normals.ptr;
         myMesh.texcoords = textureCoordinates.ptr;
 
         UploadMesh(&myMesh, false);
