@@ -245,6 +245,93 @@ Vector2 getTexturePosition(Vector2I indexPosition, TexturePosition texturePositi
         ((indexPosition.y + texturePosition.y) * textureTileSize) / textureMapSize
     );
 }
+// An additional dispatcher for texture coordinates
+// This one does much more math to get precise values
+Vector2 getTexturePositionBlockBox(
+    Vector2I indexPosition,
+    TexturePosition texturePosition,
+    float minX,
+    float maxX,
+    float minY,
+    float maxY,
+    bool invertX,
+    bool invertY) {
+    
+    // Can't use a switch here sadly
+    if (texturePosition == TEXTURE_TOP_LEFT) {
+        
+        float posX;
+        float posY;
+
+        if (invertX) {
+            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
+        } else {
+            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
+        }
+
+        if (invertY) {
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+        } else {
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+        }
+        return Vector2(posX, posY);
+    }
+    else if (texturePosition == TEXTURE_TOP_RIGHT) {
+
+        float posX;
+        float posY;
+        if (invertX) {
+            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
+        } else {
+            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
+        }
+
+        if (invertY) {
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+        } else {
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+        }
+        return Vector2(posX, posY);
+    }
+    else if (texturePosition == TEXTURE_BOTTOM_LEFT) {
+        float posX;
+        float posY;
+
+        if (invertX) {
+            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
+        } else {
+            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
+        }
+
+        if (invertY) {
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+        } else {
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+        }
+        return Vector2(posX, posY);
+
+    }
+    else if (texturePosition == TEXTURE_BOTTOM_RIGHT) {
+        float posX;
+        float posY;
+
+        if (invertX) {
+            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
+        } else {
+            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
+        }
+
+        if (invertY) {
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+        } else {
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+        }
+        return Vector2(posX, posY);
+    }
+
+    // Failed
+    return Vector2();
+}
 
 // Tells what faces to generate
 struct PositionsBool {
@@ -292,10 +379,6 @@ void insertVertexPositions(
     PositionsBool positionsBool,
     Vector3I position
     ) {
-    
-
-    // DEBUG!!!! IF THERE ARE ISSUES THIS IS WHY!!!!!!!
-    // Vector2I blockTexturePosition = blockGraphicDefinition.blockTextures.top;
 
     /*
     back   0
@@ -386,11 +469,58 @@ void insertVertexPositions(
                     triangleCount += 2;
                     
 
-                    foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
-                        Vector2 floatPosition = getTexturePosition(textureCoordinate.get(i), texturePosition);
-                        textureCoordinates ~= floatPosition.x;
-                        textureCoordinates ~= floatPosition.y;
+                    
+                    // Cannot derive any pattern from 3D to 2D so this will unfortunately
+                    // be a manual interop
+                    switch (i){
+                        // Back
+                        case 0:{
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.z, max.z, min.y, max.y, false, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
+                            break;
+                        }
+                        // Front
+                        case 1:{
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.z, max.z, min.y, max.y, true, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
+                            
+                            break;
+                        }
+                        // Left
+                        case 2:{
+                            
+                            break;
+                        }
+                        // Right
+                        case 3:{
+                            
+                            break;
+                        }
+                        // Bottom
+                        case 4:{
+                            
+                            break;
+                        }
+                        // Top
+                        case 5:{
+                            
+                            break;
+                        }
+                        default: {}
                     }
+                    
 
                     // Matches the vertex positions amount
                     for (int w = 0; w < 6; w++) {
@@ -557,8 +687,8 @@ public static class BlockGraphics {
                 Vector2I(1,0)
             ),
             BlockBox([
-                BlockBoxDefinition(Vector3(0.2,0.2,0.2), Vector3(0.8,0.8,0.8)),
-                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
+                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,1,0.8)),
+                //BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
             ])
         );
     }
