@@ -64,7 +64,12 @@ void main(string[] args) {
 
         SetCameraMode(camera, CameraMode.CAMERA_FIRST_PERSON);
 
-        Model testingModel = LoadModelFromMesh(test());
+        // Testing the block graphics registration
+        // This will get called automatically when blocks are registered
+        testRegister();
+
+        // Generating a grass block debug
+        Model testingModel = LoadModelFromMesh(testAPI(1));
         Texture testingTexture = LoadTexture("textures/world_texture_map.png");
         testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
 
