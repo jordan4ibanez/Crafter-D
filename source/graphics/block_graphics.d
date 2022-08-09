@@ -357,7 +357,44 @@ void insertVertexPositions(
 
         // Block box, now here is where the fun begins
         case BLOCK_BOX_DRAWTYPE: {
-            
+
+            foreach (BlockBox blockBox; faceArray)
+            {
+                
+            }
+
+            // Iterate all 6 faces
+            for (int i = 0; i < 6; i++) {
+
+                // If it's culled out, move onto the next face
+                if (!positionsBool.get(i)) {
+                    continue;
+                }
+
+                Face thisQuad = faceArray[i];
+
+                foreach (Vector3 vertexPosition; thisQuad.vertex) {
+                    vertices ~= vertexPosition.x;
+                    vertices ~= vertexPosition.y;
+                    vertices ~= vertexPosition.z;
+                }
+
+                triangleCount += 2;
+
+                foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                    Vector2 floatPosition = getTexturePosition(textureCoordinate.get(i), texturePosition);
+                    textureCoordinates ~= floatPosition.x;
+                    textureCoordinates ~= floatPosition.y;
+                }
+
+                // Matches the vertex positions amount
+                for (int w = 0; w < 6; w++) {
+                    normals ~= thisQuad.normal.x;
+                    normals ~= thisQuad.normal.y;
+                    normals ~= thisQuad.normal.z;
+                }
+            }
+            break;
         }
         default: {/*does nothing*/}
     }
