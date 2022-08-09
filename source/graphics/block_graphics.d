@@ -275,13 +275,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
-            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -292,13 +292,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
-            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -309,13 +309,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
-            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
 
@@ -327,13 +327,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
-            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
