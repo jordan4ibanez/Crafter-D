@@ -356,7 +356,7 @@ void insertVertexPositions(
             break;
         }
 
-        // Block box, now here is where the fun begins
+        // Block box
         case BLOCK_BOX_DRAWTYPE: {
 
             foreach (BlockBoxDefinition thisBlockBox; blockBox.boxes) {
@@ -374,201 +374,13 @@ void insertVertexPositions(
 
                     Face thisQuad = faceArray[i];
 
-                    Vector3 vertexPosition;
-
-                    // Face direction switch
-                    // This is manually done because I cannot find any pattern in it
-                    switch (i) {
-                        // Back
-                        case 0: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= min.x;
-                            vertices ~= max.y;
-                            vertices ~= min.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= min.x;
-                            vertices ~= min.y;
-                            vertices ~= min.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= min.x;
-                            vertices ~= min.y;
-                            vertices ~= max.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= min.x;
-                            vertices ~= max.y;
-                            vertices ~= min.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= min.x;
-                            vertices ~= min.y;
-                            vertices ~= max.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= min.x;
-                            vertices ~= max.y;
-                            vertices ~= max.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        // Front
-                        case 1: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        // Left
-                        case 2: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        //Right
-                        case 3: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        // Bottom
-                        case 4: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        // Top
-                        case 5: {
-                            // Tri 1
-                            vertexPosition = thisQuad.vertex[0];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[1];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[2];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            // Tri 2
-                            vertexPosition = thisQuad.vertex[3];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[4];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            vertexPosition = thisQuad.vertex[5];
-                            vertices ~= vertexPosition.x;
-                            vertices ~= vertexPosition.y;
-                            vertices ~= vertexPosition.z;
-                            triangleCount += 2;
-                            break;
-                        }
-                        // Something went horribly wrong
-                        default:{}
+                    foreach (Vector3 vertexPosition; thisQuad.vertex) {
+                        vertices ~= (vertexPosition.x == 0 ? min.x : max.x);
+                        vertices ~= (vertexPosition.y == 0 ? min.y : max.y);
+                        vertices ~= (vertexPosition.z == 0 ? min.z : max.z);
                     }
 
+                    triangleCount += 2;
                     
 
                     foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
