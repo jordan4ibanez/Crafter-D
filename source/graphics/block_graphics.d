@@ -292,9 +292,14 @@ alias BLOCK_BOX_DRAWTYPE =  DrawType.BLOCK_BOX;
 
 // the min and max positions of the block box
 struct BlockBox {
-    Vector3 min = Vector3( 0.0, 0.0, 0.0 );
-    Vector3 max = Vector3( 1.0, 1.0, 1.0 );
+    Vector3[] boxes;
+
+    this(Vector3[] boxes){
+        assert(boxes.length % 2 == 0, "BLOCK BOXES MUST HAVE MIN AND MAX");
+        this.boxes = boxes;
+    }
 }
+
 
 struct BlockTextures {
     Vector2I back;
@@ -375,6 +380,33 @@ public static class BlockGraphics {
                 Vector2I(1,0)
             ),
             BlockBox()
+        );
+
+        // Grass block with block box
+        registerBlockGraphic(
+            // ID
+            1,
+            // DrawType
+            NORMAL_DRAWTYPE,
+            // Block Textures Definition
+            BlockTextures(
+                // Back
+                Vector2I(0,0),
+                // Front
+                Vector2I(0,0),
+                // Left
+                Vector2I(0,0),
+                // Right
+                Vector2I(0,0),
+                // Bottom
+                Vector2I(2,0),
+                // Top
+                Vector2I(1,0)
+            ),
+            BlockBox([
+                Vector3(0,0,0),
+                Vector3(1,1,1)
+            ])
         );
     }
 
