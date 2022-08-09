@@ -2,6 +2,7 @@ module world.chunk;
 
 import raylib;
 import std.stdio;
+import helpers.structs;
 
 /*
 Notes:
@@ -43,19 +44,6 @@ int positionToIndex(int x, int y, int z) {
 }
 
 
-// Micro struct for exact chunk math
-struct Vector3I {
-    int x = 0;
-    int y = 0;
-    int z = 0;
-}
-
-// Micro struct for chunk ID
-struct Position2I {
-    int x = 0;
-    int z = 0;
-}
-
 // Basic inline collision detection
 bool collideX(int value) {
     return (value >= 0 && value < chunkSizeX);
@@ -78,10 +66,10 @@ public class Chunk {
     // Height map needs to be added in
 
     private string biome;
-    private Position2I position = Position2I(0,0);
+    private Vector2I position = Vector2I(0,0);
     private bool positionLock = false;
 
-    this(string biomeName, Position2I position) {
+    this(string biomeName, Vector2I position) {
         this.setBiome(biomeName);
     }
 
@@ -127,14 +115,14 @@ public class Chunk {
         this.biome = newBiome;
     }
 
-    Position2I getPosition() {
+    Vector2I getPosition() {
         return this.position;
     }
     // One way switch for setting position
     void setPosition(int x, int z) {
         if (!this.positionLock) {
             this.positionLock = true;
-            this.position = Position2I(x,z);
+            this.position = Vector2I(x,z);
         }
     }
 }
