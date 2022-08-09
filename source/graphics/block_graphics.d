@@ -368,6 +368,9 @@ void insertVertexPositions(
                 for (int i = 0; i < 6; i++) {
 
                     // If it's culled out, move onto the next face
+                    
+                    // Important note, make a block box with a face size equal to normal cull out like normal with adjacent block
+
                     if (!positionsBool.get(i)) {
                         continue;
                     }
