@@ -710,17 +710,17 @@ public static class BlockGraphics {
             // Block Textures Definition
             BlockTextures(
                 // Back
-                Vector2I(0,0),
+                Vector2I(3,0),
                 // Front
-                Vector2I(0,0),
+                Vector2I(3,0),
                 // Left
-                Vector2I(0,0),
+                Vector2I(3,0),
                 // Right
-                Vector2I(0,0),
+                Vector2I(3,0),
                 // Bottom
-                Vector2I(0,0),
+                Vector2I(3,0),
                 // Top
-                Vector2I(0,0)
+                Vector2I(3,0)
             ),
             BlockBox([
                 BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
