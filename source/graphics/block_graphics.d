@@ -495,27 +495,54 @@ void insertVertexPositions(
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
-                            
                             break;
                         }
                         // Left
                         case 2:{
-                            
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.x, max.x, min.y, max.y, false, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
                             break;
                         }
                         // Right
                         case 3:{
-                            
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.x, max.x, min.y, max.y, true, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
                             break;
                         }
                         // Bottom
                         case 4:{
-                            
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.z, max.z, min.x, max.x, false, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
                             break;
                         }
                         // Top
                         case 5:{
-                            
+                            foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
+                                Vector2 floatPosition = getTexturePositionBlockBox(
+                                    textureCoordinate.get(i),
+                                    texturePosition,
+                                    min.z, max.z, min.x, max.x, true, false);
+                                textureCoordinates ~= floatPosition.x;
+                                textureCoordinates ~= floatPosition.y;
+                            }
                             break;
                         }
                         default: {}
@@ -665,7 +692,7 @@ public static class BlockGraphics {
             BlockBox()
         );
 
-        // Grass block with block box
+        // Debug cobble stairs
         registerBlockGraphic(
             // ID
             2,
@@ -682,12 +709,12 @@ public static class BlockGraphics {
                 // Right
                 Vector2I(0,0),
                 // Bottom
-                Vector2I(2,0),
+                Vector2I(0,0),
                 // Top
-                Vector2I(1,0)
+                Vector2I(0,0)
             ),
             BlockBox([
-                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,1,0.8)),
+                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,1,1)),
                 //BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
             ])
         );
