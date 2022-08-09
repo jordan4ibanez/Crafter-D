@@ -2,6 +2,7 @@ module graphics.block_graphics;
 
 import std.stdio;
 import raylib;
+import helpers.structs;
 
 /*
 
@@ -12,12 +13,6 @@ with the defined pixel count size of the box. You must also do the same thing to
 
 */
 
-
-// Makes writing a block definition easier
-struct Vector2I {
-    int x = 0;
-    int y = 0;
-}
 
 // Defines how many textures are in the texture map
 const double textureMapTiles = 32;
@@ -239,7 +234,6 @@ alias TEXTURE_TOP_RIGHT    = TexturePosition.TOP_RIGHT;
 alias TEXTURE_BOTTOM_LEFT  = TexturePosition.BOTTOM_LEFT;
 alias TEXTURE_BOTTOM_RIGHT = TexturePosition.BOTTOM_RIGHT;
 
-
 // This starts at 0,0
 // Automatically dispatches texture coordinates
 // Needs to be precalculated for adjustment on custom blocks like stairs
@@ -250,11 +244,37 @@ Vector2 getTexturePosition(Vector2I indexPosition, TexturePosition texturePositi
     );
 }
 
-// Automatically dispatches and constructs precalculated data
-void insertVertexPositions(ref float[] vertices, ref float[] textureCoordinates, ref float[] normals, 
-                                ref int triangleCount, Vector2I blockTexturePosition, Quad thisQuad) {
+// Tells what faces to generate
+struct PositionsBool {
+    bool back;
+    bool front;
+    bool left;
+    bool right;
+    bool bottom;
+    bool top;
+    this(bool back, bool front, bool left, bool right, bool bottom, bool top) {
+        this.back   = back;
+        this.front  = front;
+        this.left   = left;
+        this.right  = right;
+        this.bottom = bottom;
+        this.top    = top;
+    }
+}
 
-    foreach (Vector3 position; thisQuad.vertex) {
+// Automatically dispatches and constructs precalculated data
+void insertVertexPositions(
+    ref float[] vertices,
+    ref float[] textureCoordinates,
+    ref float[] normals,
+    ref int triangleCount,
+    BlockGraphicDefinition blockGraphicDefinition,
+    PositionsBool positionsBool,
+    Vector3I position,
+    
+    Quad thisQuad ) {
+
+    foreach (Vector3 vertexPosition; thisQuad.vertex) {
         vertices ~= position.x;
         vertices ~= position.y;
         vertices ~= position.z;
@@ -414,7 +434,8 @@ public static class BlockGraphics {
     public static Mesh testAPI(uint ID) {
 
         BlockGraphicDefinition currentDefinition = this.definitions[ID];
-        BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+        // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+        // BlockBox currentBlockBox = currentDefinition.blockBox;
 
         Mesh myMesh = Mesh();
 
@@ -431,7 +452,9 @@ public static class BlockGraphics {
             textureCoordinates,
             normals,
             triangleCount,
-            currentBlockTextures.back,
+            currentDefinition,
+            PositionsBool(true, true, true, true, true,true),
+            Vector3I(0,0,0),
             QUAD_BACK
         );
         /*
