@@ -69,7 +69,7 @@ void main(string[] args) {
         testRegister();
 
         // Generating a grass block debug
-        Model testingModel = LoadModelFromMesh(testAPI(1));
+        Model testingModel = LoadModelFromMesh(testAPI(2));
         Texture testingTexture = LoadTexture("textures/world_texture_map.png");
         testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
 

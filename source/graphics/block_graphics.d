@@ -308,6 +308,7 @@ void insertVertexPositions(
 
     DrawType drawType = blockGraphicDefinition.drawType;
     BlockTextures textureCoordinate = blockGraphicDefinition.blockTextures;
+    BlockBox blockBox = blockGraphicDefinition.blockBox;
 
     // This is very complex, I wish you the best understanding it
 
@@ -358,9 +359,8 @@ void insertVertexPositions(
         // Block box, now here is where the fun begins
         case BLOCK_BOX_DRAWTYPE: {
 
-            foreach (BlockBox blockBox; faceArray)
-            {
-                
+            foreach (Vector3 boxPosition; blockBox.boxes) {
+                writeln("position: ", boxPosition);
             }
 
             // Iterate all 6 faces
@@ -524,9 +524,9 @@ public static class BlockGraphics {
         // Grass block with block box
         registerBlockGraphic(
             // ID
-            1,
+            2,
             // DrawType
-            NORMAL_DRAWTYPE,
+            BLOCK_BOX_DRAWTYPE,
             // Block Textures Definition
             BlockTextures(
                 // Back
