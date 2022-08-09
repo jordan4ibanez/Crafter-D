@@ -266,13 +266,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
             posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -283,13 +283,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
             posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + minY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -300,13 +300,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + minX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
             posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
 
@@ -318,13 +318,13 @@ Vector2 getTexturePositionBlockBox(
         if (invertX) {
             posX = ((indexPosition.x + 1 - minX) * textureTileSize) / textureMapSize;
         } else {
-            posX = ((indexPosition.x + maxX) * textureTileSize) / textureMapSize;
+            posX = ((indexPosition.x + 1 - maxX) * textureTileSize) / textureMapSize;
         }
 
         if (invertY) {
             posY = ((indexPosition.y + 1 - minY) * textureTileSize) / textureMapSize;
         } else {
-            posY = ((indexPosition.y + maxY) * textureTileSize) / textureMapSize;
+            posY = ((indexPosition.y + 1 - maxY) * textureTileSize) / textureMapSize;
         }
         return Vector2(posX, posY);
     }
@@ -475,6 +475,7 @@ void insertVertexPositions(
                     switch (i){
                         // Back
                         case 0:{
+                            /*
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
@@ -483,22 +484,26 @@ void insertVertexPositions(
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
+                            */
                             break;
                         }
                         // Front
                         case 1:{
+                            /*
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
                                     texturePosition,
-                                    min.z, max.z, min.y, max.y, true, false);
+                                    min.z, max.z, min.y, max.y, false, false);
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
+                            */
                             break;
                         }
                         // Left
                         case 2:{
+                            
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
@@ -511,18 +516,21 @@ void insertVertexPositions(
                         }
                         // Right
                         case 3:{
+                            /*
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
                                     texturePosition,
-                                    min.x, max.x, min.y, max.y, true, false);
+                                    min.x, max.x, min.y, max.y, false, false);
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
+                            */
                             break;
                         }
                         // Bottom
                         case 4:{
+                            /*
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
@@ -531,18 +539,21 @@ void insertVertexPositions(
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
+                            */
                             break;
                         }
                         // Top
                         case 5:{
+                            /*
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
                                     texturePosition,
-                                    min.z, max.z, min.x, max.x, true, false);
+                                    min.z, max.z, min.x, max.x, false, false);
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
+                            */
                             break;
                         }
                         default: {}
@@ -701,17 +712,17 @@ public static class BlockGraphics {
             // Block Textures Definition
             BlockTextures(
                 // Back
-                Vector2I(3,0),
+                Vector2I(0,0),
                 // Front
-                Vector2I(3,0),
+                Vector2I(0,0),
                 // Left
-                Vector2I(3,0),
+                Vector2I(0,0),
                 // Right
-                Vector2I(3,0),
+                Vector2I(0,0),
                 // Bottom
-                Vector2I(3,0),
+                Vector2I(0,0),
                 // Top
-                Vector2I(3,0)
+                Vector2I(0,0)
             ),
             BlockBox([
                 BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
