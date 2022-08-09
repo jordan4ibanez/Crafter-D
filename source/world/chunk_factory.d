@@ -5,20 +5,21 @@ import std.stdio;
 import world.chunk;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
+import helpers.structs;
 
 // This handles the chunks in the world. A static factory/container for Chunks
 // This is meant to be handled functionally
 public static class ChunkFactory {
 
     // Hashmap container for generated chunks
-    private static Chunk[Position2I] container;
+    private static Chunk[Vector2I] container;
 
     // Generation stack
-    private static Position2I[] stack;
+    private static Vector2I[] stack;
 
     // Entry point into adding new chunks to the map
     public static void newChunkGeneration(int x, int z) {
-        Position2I newGenerationPosition = Position2I(x,z);
+        Vector2I newGenerationPosition = Vector2I(x,z);
 
         // Do not dispatch a new chunk generation into stack if it's already there
         if (!this.stack.canFind(newGenerationPosition)) {
@@ -32,7 +33,7 @@ public static class ChunkFactory {
         // See if there are any new chunk generations
         if (this.stack.length > 0) {
 
-            Position2I poppedValue = this.stack[0];
+            Vector2I poppedValue = this.stack[0];
             this.stack.popFront();
             writeln("popped: ", poppedValue);
 
@@ -41,7 +42,7 @@ public static class ChunkFactory {
         }
     }
 
-    private static void generateChunk(Position2I newPosition) {
+    private static void generateChunk(Vector2I newPosition) {
         writeln("I'm generating a new chunk at: ", newPosition);
 
         // random debug for prototyping processes
