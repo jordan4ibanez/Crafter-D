@@ -355,6 +355,7 @@ void insertVertexPositions(
             break;
         }
 
+        // Block box, now here is where the fun begins
         case BLOCK_BOX_DRAWTYPE: {
             
         }
