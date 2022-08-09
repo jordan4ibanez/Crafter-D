@@ -309,14 +309,22 @@ void insertVertexPositions(
     DrawType drawType = blockGraphicDefinition.drawType;
     BlockTextures textureCoordinate = blockGraphicDefinition.blockTextures;
 
+    // This is very complex, I wish you the best understanding it
+
+    // Check drawtype
     switch (drawType) {
 
-        case AIR_DRAWTYPE: {/*does nothing*/}
+        // It's air, pass
+        case AIR_DRAWTYPE: {/*does nothing*/ break;}
 
+        // It's a normal block
+        // Needs to get block rotation in the future
         case NORMAL_DRAWTYPE: {
 
+            // Iterate all 6 faces
             for (int i = 0; i < 6; i++) {
 
+                // If it's culled out, move onto the next face
                 if (!positionsBool.get(i)) {
                     continue;
                 }
@@ -345,6 +353,10 @@ void insertVertexPositions(
                 }
             }
             break;
+        }
+
+        case BLOCK_BOX_DRAWTYPE: {
+            
         }
         default: {/*does nothing*/}
     }
