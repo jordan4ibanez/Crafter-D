@@ -820,7 +820,7 @@ public static class BlockGraphics {
         // For dispatching colors ubyte[]
 
         // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        byte rotation = 3;
+        byte rotation = 0;
 
         insertVertexPositions(
             vertices,
