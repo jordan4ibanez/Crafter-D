@@ -378,6 +378,73 @@ struct PositionsBool {
         }
     }
 }
+BlockBoxDefinition translateBlockBoxRotation(BlockBoxDefinition thisBlockBox, byte rotation) {
+    final switch (rotation) {
+
+        // Rotation 0 degrees clockwise facing down
+        case 0: {
+            // Doesn't have to do anything
+            return thisBlockBox;
+        }
+        // Rotation 90 degrees clockwise facing down
+        case 1: {
+            Vector3 oldMin = thisBlockBox.min;
+            Vector3 oldMax = thisBlockBox.max;
+            Vector3 newMin = Vector3(
+                abs(oldMax.z - 1),
+                oldMin.y,
+                oldMin.x
+            );
+
+            Vector3 newMax = Vector3(
+                abs(oldMin.z - 1),
+                oldMax.y,
+                oldMax.x
+            );
+
+            return BlockBoxDefinition(newMin, newMax);  
+        }
+        // Rotation 180 degrees clockwise facing down
+        case 2: {
+            Vector3 oldMin = thisBlockBox.min;
+            Vector3 oldMax = thisBlockBox.max;
+
+            Vector3 newMin = Vector3(
+                abs(oldMax.x - 1),
+                oldMin.y,
+                abs(oldMax.z - 1)
+            );
+
+            Vector3 newMax = Vector3(
+                abs(oldMin.x - 1),
+                oldMax.y,
+                abs(oldMin.z - 1)
+            );
+            
+            return BlockBoxDefinition(newMin, newMax);
+        }
+        // Rotation 270 degrees clockwise facing down
+        case 3: {
+            Vector3 oldMin = thisBlockBox.min;
+            Vector3 oldMax = thisBlockBox.max;
+
+            Vector3 newMin = Vector3(
+                oldMin.z,
+                oldMin.y,
+                abs(oldMax.x - 1)
+            );
+
+            Vector3 newMax = Vector3(
+                oldMax.z,
+                oldMax.y,
+                abs(oldMin.x - 1)
+            );
+            
+            return BlockBoxDefinition(newMin, newMax);                 
+        }
+        // Loops back to 0
+    }
+}
 
 // Automatically dispatches and constructs precalculated data
 void insertVertexPositions(
@@ -403,74 +470,6 @@ void insertVertexPositions(
     DrawType drawType = blockGraphicDefinition.drawType;
     BlockTextures textureCoordinate = blockGraphicDefinition.blockTextures;
     BlockBox blockBox = blockGraphicDefinition.blockBox;
-
-    BlockBoxDefinition translateBlockBoxRotation(BlockBoxDefinition thisBlockBox, byte rotation) {
-            final switch (rotation) {
-
-                // Rotation 0 degrees clockwise facing down
-                case 0: {
-                    // Doesn't have to do anything
-                    return thisBlockBox;
-                }
-                // Rotation 90 degrees clockwise facing down
-                case 1: {
-                    Vector3 oldMin = thisBlockBox.min;
-                    Vector3 oldMax = thisBlockBox.max;
-                    Vector3 newMin = Vector3(
-                        abs(oldMax.z - 1),
-                        oldMin.y,
-                        oldMin.x
-                    );
-
-                    Vector3 newMax = Vector3(
-                        abs(oldMin.z - 1),
-                        oldMax.y,
-                        oldMax.x
-                    );
-
-                    return BlockBoxDefinition(newMin, newMax);  
-                }
-                // Rotation 180 degrees clockwise facing down
-                case 2: {
-                    Vector3 oldMin = thisBlockBox.min;
-                    Vector3 oldMax = thisBlockBox.max;
-
-                    Vector3 newMin = Vector3(
-                        abs(oldMax.x - 1),
-                        oldMin.y,
-                        abs(oldMax.z - 1)
-                    );
-
-                    Vector3 newMax = Vector3(
-                        abs(oldMin.x - 1),
-                        oldMax.y,
-                        abs(oldMin.z - 1)
-                    );
-                    
-                    return BlockBoxDefinition(newMin, newMax);
-                }
-                // Rotation 270 degrees clockwise facing down
-                case 3: {
-                    Vector3 oldMin = thisBlockBox.min;
-                    Vector3 oldMax = thisBlockBox.max;
-
-                    Vector3 newMin = Vector3(
-                        oldMin.z,
-                        oldMin.y,
-                        abs(oldMax.x - 1)
-                    );
-
-                    Vector3 newMax = Vector3(
-                        oldMax.z,
-                        oldMax.y,
-                        abs(oldMin.x - 1)
-                    );
-                    
-                    return BlockBoxDefinition(newMin, newMax);                 
-                }
-                // Loops back to 0
-            }
-        }
 
     // This is very complex, I wish you the best understanding it
 
