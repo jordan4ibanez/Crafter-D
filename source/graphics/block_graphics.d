@@ -416,20 +416,19 @@ void insertVertexPositions(
                 case 1: {
                     Vector3 oldMin = thisBlockBox.min;
                     Vector3 oldMax = thisBlockBox.max;
-
                     Vector3 newMin = Vector3(
-                        oldMin.x,
+                        abs(oldMax.z - 1),
                         oldMin.y,
-                        oldMin.z
+                        oldMin.x
                     );
 
                     Vector3 newMax = Vector3(
-                        oldMax.z,
+                        abs(oldMin.z - 1),
                         oldMax.y,
                         oldMax.x
                     );
-                    
-                    return BlockBoxDefinition(newMin, newMax);
+
+                    return BlockBoxDefinition(newMin, newMax);  
                 }
                 // Rotation 180 degrees clockwise facing down
                 case 2: {
@@ -443,9 +442,9 @@ void insertVertexPositions(
                     );
 
                     Vector3 newMax = Vector3(
-                        abs(oldMin.z - 1),
+                        abs(oldMin.x - 1),
                         oldMax.y,
-                        abs(oldMin.x - 1)
+                        abs(oldMin.z - 1)
                     );
                     
                     return BlockBoxDefinition(newMin, newMax);
@@ -454,19 +453,20 @@ void insertVertexPositions(
                 case 3: {
                     Vector3 oldMin = thisBlockBox.min;
                     Vector3 oldMax = thisBlockBox.max;
-                    Vector3 newMin = Vector3(
-                        abs(oldMin.x - 1),
-                        oldMin.y,
-                        abs(oldMin.z - 1)
-                    );
 
-                    Vector3 newMax = Vector3(
-                        abs(oldMax.z - 1),
-                        oldMax.y,
+                    Vector3 newMin = Vector3(
+                        oldMin.z,
+                        oldMin.y,
                         abs(oldMax.x - 1)
                     );
 
-                    return BlockBoxDefinition(newMin, newMax);                    
+                    Vector3 newMax = Vector3(
+                        oldMax.z,
+                        oldMax.y,
+                        abs(oldMin.x - 1)
+                    );
+                    
+                    return BlockBoxDefinition(newMin, newMax);                 
                 }
                 // Loops back to 0
             }
