@@ -1,17 +1,30 @@
 {
-	"authors": [
-		"jordan4ibanez"
-	],
-	"copyright": "Copyright © 2022, jordan4ibanez",
-	"dependencies": {
-		"fast_noise": "~>1.0.3",
+    "authors": [
+        "jordan4ibanez"
+    ],
+    "copyright": "Copyright © 2022, jordan4ibanez",
+    "dependencies": {
+        "fast_noise": "~>1.0.3",
         "delta_time": "~>1.0.2",
-		"raylib-d": "~>4.0.0"
-	},
-	"description": "A voxel thing written in D",
-	"libs": [
-		"raylibdll"
-	],
-	"license": "MIT",
-	"name": "voxel_thing"
+        "raylib-d": "~>4.0.0"
+    }, 
+    "description": "A voxel thing written in D",
+    "configurations": [
+        {
+            "name": "windows",
+            "libs": [
+                "raylibdll"
+            ]
+        },
+        {
+            "name": "linux",
+            "libs": [
+                "raylib"
+            ]
+        }
+    ],
+    "license": "MIT",
+    "name": "voxel_thing",
+    "targetType": "executable"
+
 }
