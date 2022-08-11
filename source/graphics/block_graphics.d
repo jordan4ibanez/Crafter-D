@@ -386,7 +386,8 @@ void insertVertexPositions(
     ref int triangleCount,
     BlockGraphicDefinition blockGraphicDefinition,
     PositionsBool positionsBool,
-    Vector3I position
+    Vector3I position,
+    byte rotation
     ) {
 
     /*
@@ -401,6 +402,47 @@ void insertVertexPositions(
     DrawType drawType = blockGraphicDefinition.drawType;
     BlockTextures textureCoordinate = blockGraphicDefinition.blockTextures;
     BlockBox blockBox = blockGraphicDefinition.blockBox;
+
+    BlockBoxDefinition translateBlockBoxRotation(BlockBoxDefinition thisBlockBox, byte rotation) {
+            final switch (rotation) {
+                case 0: {
+                    // Doesn't have to do anything
+                    return thisBlockBox;
+                }
+                case 1: {
+                    Vector3 oldMin = thisBlockBox.min;
+                    Vector3 oldMax = thisBlockBox.max;
+
+                    Vector3 newMin = Vector3(
+                        oldMin.x,
+                        oldMin.y,
+                        oldMin.z
+                    );
+
+                    Vector3 newMax = Vector3(
+                        oldMax.z,
+                        oldMax.y,
+                        oldMax.x
+                    );
+                    
+                    return BlockBoxDefinition(newMin, newMax);
+                }
+                case 2: {
+                    Vector3 oldMin = thisBlockBox.min;
+                    Vector3 oldMax = thisBlockBox.max;
+
+                    break;
+                }
+                case 3: {
+                    Vector3 oldMin = thisBlockBox.min;
+                    Vector3 oldMax = thisBlockBox.max;
+
+                    break;
+                }
+            }
+
+            return BlockBoxDefinition();
+        }
 
     // This is very complex, I wish you the best understanding it
 
@@ -448,13 +490,16 @@ void insertVertexPositions(
             break;
         }
 
+
         // Block box
         case BLOCK_BOX_DRAWTYPE: {
 
             foreach (BlockBoxDefinition thisBlockBox; blockBox.boxes) {
 
-                Vector3 min = thisBlockBox.min;
-                Vector3 max = thisBlockBox.max;
+                BlockBoxDefinition rotatedBlockBox = translateBlockBoxRotation(thisBlockBox, rotation);
+
+                Vector3 min = rotatedBlockBox.min;
+                Vector3 max = rotatedBlockBox.max;
 
                 // Iterate all 6 faces
                 for (int i = 0; i < 6; i++) {
@@ -500,7 +545,7 @@ void insertVertexPositions(
                                 Vector2 floatPosition = getTexturePositionBlockBox(
                                     textureCoordinate.get(i),
                                     texturePosition,
-                                    min.z, max.z, min.y, max.y, false, false);
+                                    min.z, max.z, min.y, max.y, true, false);
                                 textureCoordinates ~= floatPosition.x;
                                 textureCoordinates ~= floatPosition.y;
                             }
@@ -591,7 +636,7 @@ alias LIQUID_DRAWTYPE    = DrawType.LIQUID;
 struct BlockBoxDefinition {
     Vector3 min = Vector3(0,0,0);
     Vector3 max = Vector3(0,0,0);
-    this( Vector3 min, Vector3 max){
+    this( Vector3 min, Vector3 max ){
         this.min = min;
         this.max = max;
     }
@@ -746,6 +791,9 @@ public static class BlockGraphics {
 
         // For dispatching colors ubyte[]
 
+        // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
+        byte rotation = 1;
+
         insertVertexPositions(
             vertices,
             textureCoordinates,
@@ -753,7 +801,8 @@ public static class BlockGraphics {
             triangleCount,
             currentDefinition,
             PositionsBool(true, true, true, true, true,true),
-            Vector3I(0,0,0)
+            Vector3I(0,0,0),
+            rotation
         );
 
         myMesh.triangleCount = triangleCount;
