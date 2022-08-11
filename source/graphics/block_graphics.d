@@ -473,6 +473,34 @@ void insertVertexPositions(
 
     // This is very complex, I wish you the best understanding it
 
+    /*
+    texture
+    0 back
+    1 front
+    2 left
+    3 right
+
+    face
+    0 back
+    1 front
+    2 left
+    3 right
+    */
+
+    int[][] faceRotationSelections = [
+      // 0,1,2,3
+        [0,1,2,3], //  Case 0 is always ignored
+        [3,2,0,1],
+        [1,0,3,2],
+        [2,3,1,0]
+    ];
+
+    int textureRotation(int currentFace, byte currentRotation) {
+        if (currentFace > 3 || currentRotation == 0) {
+            return currentFace;
+        }
+        return faceRotationSelections[rotation][currentFace];
+    }
 
 
     // Check drawtype
@@ -552,16 +580,21 @@ void insertVertexPositions(
                     triangleCount += 2;
                     
 
+                    int textureRotationSwitch = textureRotation(i, rotation);
+
                     
                     // Cannot derive any pattern from 3D to 2D so this will unfortunately
                     // be a manual interop
                     // These are the texture points of the two tris, that's why there are 6 cases
-                    switch (i){
+
+                    // Sides match against the texture rotation switch
+
+                    switch(textureRotationSwitch){
                         // Back
                         case 0:{
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
-                                    textureCoordinate.get(i),
+                                    textureCoordinate.get(textureRotationSwitch),
                                     texturePosition,
                                     min.z, max.z, min.y, max.y, false, false);
                                 textureCoordinates ~= floatPosition.x;
@@ -573,7 +606,7 @@ void insertVertexPositions(
                         case 1:{
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
-                                    textureCoordinate.get(i),
+                                    textureCoordinate.get(textureRotationSwitch),
                                     texturePosition,
                                     min.z, max.z, min.y, max.y, true, false);
                                 textureCoordinates ~= floatPosition.x;
@@ -585,7 +618,7 @@ void insertVertexPositions(
                         case 2:{
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
-                                    textureCoordinate.get(i),
+                                    textureCoordinate.get(textureRotationSwitch),
                                     texturePosition,
                                     min.x, max.x, min.y, max.y, true, false);
                                 textureCoordinates ~= floatPosition.x;
@@ -597,7 +630,7 @@ void insertVertexPositions(
                         case 3:{
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
                                 Vector2 floatPosition = getTexturePositionBlockBox(
-                                    textureCoordinate.get(i),
+                                    textureCoordinate.get(textureRotationSwitch),
                                     texturePosition,
                                     min.x, max.x, min.y, max.y, false, false);
                                 textureCoordinates ~= floatPosition.x;
@@ -605,6 +638,11 @@ void insertVertexPositions(
                             }
                             break;
                         }
+                        default:{}
+                    }
+
+                    // Bottom and top are standard for now
+                    switch (i){
                         // Bottom
                         case 4:{
                             foreach (TexturePosition texturePosition; thisQuad.textureCoordinate) {
@@ -629,7 +667,7 @@ void insertVertexPositions(
                             }
                             break;
                         }
-                        default: {}
+                        default:{}
                     }
                     
 
@@ -822,7 +860,7 @@ public static class BlockGraphics {
         // For dispatching colors ubyte[]
 
         // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        byte rotation = 0;
+        byte rotation = 3;
 
         insertVertexPositions(
             vertices,
