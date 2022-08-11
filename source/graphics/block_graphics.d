@@ -3,6 +3,7 @@ module graphics.block_graphics;
 import std.stdio;
 import raylib;
 import helpers.structs;
+import std.math: abs;
 
 /*
 
@@ -405,10 +406,13 @@ void insertVertexPositions(
 
     BlockBoxDefinition translateBlockBoxRotation(BlockBoxDefinition thisBlockBox, byte rotation) {
             final switch (rotation) {
+
+                // Rotation 0 degrees clockwise facing down
                 case 0: {
                     // Doesn't have to do anything
                     return thisBlockBox;
                 }
+                // Rotation 90 degrees clockwise facing down
                 case 1: {
                     Vector3 oldMin = thisBlockBox.min;
                     Vector3 oldMax = thisBlockBox.max;
@@ -427,21 +431,45 @@ void insertVertexPositions(
                     
                     return BlockBoxDefinition(newMin, newMax);
                 }
+                // Rotation 180 degrees clockwise facing down
                 case 2: {
                     Vector3 oldMin = thisBlockBox.min;
                     Vector3 oldMax = thisBlockBox.max;
 
-                    break;
+                    Vector3 newMin = Vector3(
+                        abs(oldMax.x - 1),
+                        oldMin.y,
+                        abs(oldMax.z - 1)
+                    );
+
+                    Vector3 newMax = Vector3(
+                        abs(oldMin.z - 1),
+                        oldMax.y,
+                        abs(oldMin.x - 1)
+                    );
+                    
+                    return BlockBoxDefinition(newMin, newMax);
                 }
+                // Rotation 270 degrees clockwise facing down
                 case 3: {
                     Vector3 oldMin = thisBlockBox.min;
                     Vector3 oldMax = thisBlockBox.max;
+                    Vector3 newMin = Vector3(
+                        abs(oldMin.x - 1),
+                        oldMin.y,
+                        abs(oldMin.z - 1)
+                    );
 
-                    break;
+                    Vector3 newMax = Vector3(
+                        abs(oldMax.z - 1),
+                        oldMax.y,
+                        abs(oldMax.x - 1)
+                    );
+
+                    return BlockBoxDefinition(newMin, newMax);                    
                 }
+                // Loops back to 0
             }
-
-            return BlockBoxDefinition();
         }
 
     // This is very complex, I wish you the best understanding it
@@ -792,7 +820,7 @@ public static class BlockGraphics {
         // For dispatching colors ubyte[]
 
         // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        byte rotation = 1;
+        byte rotation = 3;
 
         insertVertexPositions(
             vertices,
