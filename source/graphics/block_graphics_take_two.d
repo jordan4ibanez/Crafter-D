@@ -32,4 +32,40 @@ GOAL OF SECOND ITERATION:
 5. Code reduction
 - The code needs to have less repetition
 
+
+
+VISUAL DOCUMENTATION:
+
+A face, made of two tris:
+
+0 -x -y                      3 +x -y
+  |----------------------------|
+  |                          / |
+  |                       /    |
+  |                    /       |
+  |                 /          |
+  |              /             |
+  |           /                |
+  |        /                   |
+  |     /                      |
+  |  /                         |
+  |----------------------------|
+1 -x +y                     2 +x +y
+
+Using the 4 vertex positions, we can iterate a face by recycling 2 of the points
+into 2 tris. The indices array will make this possible.
+
+The array will look like so: [ 3, 0, 1, 1, 2, 3 ]
+
+So [ 3, 0, 1 ] is the top left tri, and [ 1, 2, 3 ] is the bottom right tri.
+
+OpenGL will complete the triangle. So in tri 1, it automatically connects 1 to 3.
+
+We are using this counter clockwise wound tri in this form so the gpu can leverage
+pointer index reuse for the majority of the quad, and keep a mostly linear iteration.
+This may seem like a micro optimization, but for millions of faces, this will make
+quite a noticeable difference. The only outlier in this is the initial position.
+
+
+
 */
