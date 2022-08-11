@@ -474,6 +474,8 @@ void insertVertexPositions(
 
     // This is very complex, I wish you the best understanding it
 
+
+
     // Check drawtype
     switch (drawType) {
 
@@ -554,6 +556,7 @@ void insertVertexPositions(
                     
                     // Cannot derive any pattern from 3D to 2D so this will unfortunately
                     // be a manual interop
+                    // These are the texture points of the two tris, that's why there are 6 cases
                     switch (i){
                         // Back
                         case 0:{
