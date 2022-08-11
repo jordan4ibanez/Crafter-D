@@ -2,13 +2,21 @@
     "authors": [
         "jordan4ibanez"
     ],
+
+    "license": "MIT",
+
+    "name": "voxel_thing",
+
+    "description": "A voxel thing written in D",
+
     "copyright": "Copyright © 2022, jordan4ibanez",
+
     "dependencies": {
         "fast_noise": "~>1.0.3",
         "delta_time": "~>1.0.2",
         "raylib-d": "~>4.0.0"
-    }, 
-    "description": "A voxel thing written in D",
+    },
+
     "configurations": [
         {
             "name": "windows",
@@ -23,8 +31,7 @@
             ]
         }
     ],
-    "license": "MIT",
-    "name": "voxel_thing",
+    
     "targetType": "executable"
 
 }
