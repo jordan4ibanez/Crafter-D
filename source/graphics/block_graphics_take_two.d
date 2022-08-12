@@ -257,10 +257,10 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
     // Top face
     // X and Z affect this
     [
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0)
+        Vector2I(2,9),
+        Vector2I(2,6),
+        Vector2I(5,6),
+        Vector2I(5,9)
     ]
 ];
 
@@ -284,12 +284,12 @@ void buildBlock(
 ){
 
     Vector3 max = Vector3( 1,  1,  1 );
-    Vector3 min = Vector3( 0,  0,  0.5 );
+    Vector3 min = Vector3( 0,  0,  0 );
 
     // Very important this is held on the stack
     immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-    int q = 4;
+    int q = 5;
 
     // Allows normal blocks to be indexed with blank blockbox
     for (int w = 0; w <= 3/*blockBox.length*/; w++) {
@@ -313,7 +313,7 @@ void buildBlock(
 
 
                 // This needs to be an enum for drawtype
-                bool isBlockBox = true;
+                bool isBlockBox = 1;
 
                 final switch (isBlockBox) {
                     case false: {
