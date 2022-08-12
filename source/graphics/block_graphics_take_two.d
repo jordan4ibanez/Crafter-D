@@ -241,18 +241,18 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
     // Right face
     // X and Y affect this
     [
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0)
+        Vector2I(0,10),
+        Vector2I(0,7),
+        Vector2I(3,7),
+        Vector2I(3,10)
     ],
     // Bottom face
     // X and Z affect this
     [
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0)
+        Vector2I(11,9),
+        Vector2I(11,6),
+        Vector2I(8,6),
+        Vector2I(8,9)
     ],
     // Top face
     // X and Z affect this
@@ -284,19 +284,20 @@ void buildBlock(
 ){
 
     Vector3 max = Vector3( 1,  1,  1 );
-    Vector3 min = Vector3( 0.5,  0,  0 );
+    Vector3 min = Vector3( 0,  0,  0.5 );
 
     // Very important this is held on the stack
     immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-    int i = 2;
+    int q = 4;
 
     // Allows normal blocks to be indexed with blank blockbox
-    // for (int w = 0; w <= 3/*blockBox.length*/; w++) {
+    for (int w = 0; w <= 3/*blockBox.length*/; w++) {
 
         // Override min and max here if applicable
 
-        // for (int i = 0; i < 6; i++) {
+        // NOTE: CHANGE THE <= TO <  WHEN FINISHED!!!!!!!!!!!!!!!!!!!!
+        for (int i = q; i <= q; i++) {
 
             // Assign the indices
             buildIndices(indices, vertexCount);
@@ -310,47 +311,54 @@ void buildBlock(
 
                 // Assign texture coordinates// Assign texture coordinates
 
-                // Normal drawtype
-                // textureCoordinates ~= TEXTURE_POSITION[f].x;
-                // textureCoordinates ~= TEXTURE_POSITION[f].y;
-                
 
-                
-                // Blockbox drawtype
-                Vector2I textureCull = TEXTURE_CULL[i][f];
+                // This needs to be an enum for drawtype
+                bool isBlockBox = true;
 
-                // This can be written as a ternary, but easier to understand like this
-                final switch (textureCull.x > 5) {
-                    case true: {
-                        textureCoordinates ~= abs(textureCullArray[textureCull.x - 6] - 1);
+                final switch (isBlockBox) {
+                    case false: {
+                        // Normal drawtype
+                        textureCoordinates ~= TEXTURE_POSITION[f].x;
+                        textureCoordinates ~= TEXTURE_POSITION[f].y;
                         break;
                     }
-                    case false: {
-                        textureCoordinates ~= textureCullArray[textureCull.x];
+                    case true: {
+                        // Blockbox drawtype
+                        Vector2I textureCull = TEXTURE_CULL[i][f];
+
+                        // This can be written as a ternary, but easier to understand like this
+                        final switch (textureCull.x > 5) {
+                            case true: {
+                                textureCoordinates ~= abs(textureCullArray[textureCull.x - 6] - 1);
+                                break;
+                            }
+                            case false: {
+                                textureCoordinates ~= textureCullArray[textureCull.x];
+                                break;
+                            }
+                        }
+                        final switch (textureCull.y > 5) {
+                            case true: {
+                                textureCoordinates ~= abs(textureCullArray[textureCull.y - 6] - 1);
+                                break;
+                            }
+                            case false: {
+                                textureCoordinates ~= textureCullArray[textureCull.y];
+                                break;
+                            }
+                        }
                         break;
                     }
                 }
-                final switch (textureCull.y > 5) {
-                    case true: {
-                        textureCoordinates ~= abs(textureCullArray[textureCull.y - 6] - 1);
-                        break;
-                    }
-                    case false: {
-                        textureCoordinates ~= textureCullArray[textureCull.y];
-                        break;
-                    }
-                }
-                
-
             }
             // Tick up tri count
             triangleCount += 2;
-        // }
+        }
         // Automatic breakout
-        // if (w >= blockBox.length) {
-           //  break;
-        // }
-    // }
+        if (w >= blockBox.length) {
+            break;
+        }
+    }
 }
 
 
