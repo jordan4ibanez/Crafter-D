@@ -172,12 +172,12 @@ immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
 
 // Normals allow modders to bolt on lighting
 immutable Vector3[6] NORMAL = [
-    Vector3(0,0,0), // Back   | 0
-    Vector3(0,0,0), // Front  | 1
-    Vector3(0,0,0), // Left   | 2
-    Vector3(0,0,0), // Right  | 3
-    Vector3(0,0,0), // Bottom | 4
-    Vector3(0,0,0)  // Top    | 5
+    Vector3(-1, 0, 0), // Back   | 0
+    Vector3( 1, 0, 0), // Front  | 1
+    Vector3( 0, 0,-1), // Left   | 2
+    Vector3( 0, 0, 1), // Right  | 3
+    Vector3( 0,-1, 0), // Bottom | 4
+    Vector3( 0, 1, 0)  // Top    | 5
 ];
 
 // Immutable texture position
@@ -246,24 +246,9 @@ public static Mesh testAPI(uint ID) {
         // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
         // byte rotation = 3;
 
-        /*
-        insertVertexPositions(
-            vertices,
-            textureCoordinates,
-            normals,
-            triangleCount,
-            currentDefinition,
-            PositionsBool(true, true, true, true, true,true),
-            Vector3I(0,0,0),
-            rotation
-        );
-        */
-
-        writeln(FACE[0]);
-
         myMesh.triangleCount = triangleCount;
         // 3 is the number of vertex points per triangle
-        myMesh.vertexCount = 4;
+        myMesh.vertexCount = vertexCount;
 
         myMesh.vertices  = vertices.ptr;
         myMesh.indices   = indices.ptr;
