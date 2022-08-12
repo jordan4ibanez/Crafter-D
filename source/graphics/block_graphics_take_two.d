@@ -289,7 +289,7 @@ void buildBlock(
     // Very important this is held on the stack
     immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-    int i = 1;
+    int i = 2;
 
     // Allows normal blocks to be indexed with blank blockbox
     //for (int w = 0; w <= blockBox.length; w++) {
