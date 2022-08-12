@@ -121,74 +121,133 @@ struct Quad {
     }
 }
 
+
+// Immutable face vertex positions
 // This is documented as if you were facing the quad with it's texture position aligned to you
-enum Face {
+// Idices order = [ 3, 0, 1, 1, 2, 3 ]
+const Vector3[4][6] FACE = [
     // Axis base:        X 0
     // Normal direction: X -1
-    BACK = Quad(
-        [
-            Vector3(0,1,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
+    [
+        Vector3(0,1,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,1), // Bottom Right | 2
+        Vector3(0,1,1), // Top Right    | 3   
+    ],
     // Axis base:        X 1
     // Normal direction: X 1
-    FRONT = Quad(
-        [
-            Vector3(0,0,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
+    [
+        Vector3(0,0,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,0), // Bottom Right | 2
+        Vector3(0,0,0), // Top Right    | 3
+    ],
+    
 
     // Axis base:        Z 0
     // Normal direction: Z -1
-    LEFT = Quad(
-        [
-            Vector3(0,0,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
+    [
+        Vector3(0,0,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,0), // Bottom Right | 2
+        Vector3(0,0,0), // Top Right    | 3
+    ],
     // Axis base:        Z 1
     // Normal direction: Z 1
-    RIGHT = Quad(
-        [
-            Vector3(0,0,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
+    [
+        Vector3(0,0,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,0), // Bottom Right | 2
+        Vector3(0,0,0), // Top Right    | 3
+    ],
 
     // Axis base:        Y 0
     // Normal direction: Y -1
-    BOTTOM = Quad(
-        [
-            Vector3(0,0,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
+    [
+        Vector3(0,0,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,0), // Bottom Right | 2
+        Vector3(0,0,0), // Top Right    | 3
+    ],
     // Axis base:        Y 1
     // Normal direction: Y 1
-    TOP = Quad(
-        [
-            Vector3(0,0,0), // Top Left     | 0
-            Vector3(0,0,0), // Bottom Left  | 1
-            Vector3(0,0,0), // Bottom Right | 2
-            Vector3(0,0,0), // Top Right    | 3
-        ],
-        [ 3, 0, 1, 1, 2, 3 ]
-    ),
-}
+    [
+        Vector3(0,0,0), // Top Left     | 0
+        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(0,0,0), // Bottom Right | 2
+        Vector3(0,0,0), // Top Right    | 3
+    ]
+];
+
+// Immutable texture position
+const Vector2[4] TEXTURE_POSITION = [
+    Vector2(0,0), // Top left     | 0
+    Vector2(0,1), // Bottom Left  | 1
+    Vector2(1,1), // Bottom right | 2
+    Vector2(1,0)  // Top right    | 3
+];
+
+public static Mesh testAPI(uint ID) {
+
+        //BlockGraphicDefinition currentDefinition = this.definitions[ID];
+        // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+        // BlockBox currentBlockBox = currentDefinition.blockBox;
+
+        Mesh myMesh = Mesh();
+
+        float[] vertices;
+        // float[] normals;
+        float[] textureCoordinates;
+
+        // Remember to remove this hardcode
+        for (int i = 0; i < 4; i++) {
+            textureCoordinates ~= TEXTURE_POSITION[i].x;
+            textureCoordinates ~= TEXTURE_POSITION[i].y;
+        }
+        // Remember to remove this hardcode
+        ushort[] indices = [
+            3, 0, 1, 1, 2, 3
+        ];
+
+        //Remember to remove this hardcode
+        for (int i = 0; i < 4; i++) {
+            vertices ~= FACE[0][i].x;
+            vertices ~= FACE[0][i].y;
+            vertices ~= FACE[0][i].z;
+        }
+
+        int triangleCount = 2;
+
+        // For dispatching colors ubyte[]
+
+        // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
+        // byte rotation = 3;
+
+        /*
+        insertVertexPositions(
+            vertices,
+            textureCoordinates,
+            normals,
+            triangleCount,
+            currentDefinition,
+            PositionsBool(true, true, true, true, true,true),
+            Vector3I(0,0,0),
+            rotation
+        );
+        */
+
+        writeln(FACE[0]);
+
+        myMesh.triangleCount = triangleCount;
+        // 3 is the number of vertex points per triangle
+        myMesh.vertexCount = 4;
+
+        myMesh.vertices  = vertices.ptr;
+        myMesh.indices   = indices.ptr;
+        // myMesh.normals   = normals.ptr;
+        myMesh.texcoords = textureCoordinates.ptr;
+
+        UploadMesh(&myMesh, false);
+
+        return myMesh;
+    }

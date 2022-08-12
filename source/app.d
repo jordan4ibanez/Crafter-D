@@ -66,7 +66,7 @@ void main(string[] args) {
 
         // Testing the block graphics registration
         // This will get called automatically when blocks are registered
-        testRegister();
+        // testRegister();
 
         // Generating a grass block debug
         Model testingModel = LoadModelFromMesh(testAPI(2));
