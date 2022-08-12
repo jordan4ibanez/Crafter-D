@@ -191,60 +191,59 @@ immutable Vector2[4] TEXTURE_POSITION = [
 // Texture culling for blockboxes
 /*
 A switcher for blockbox texture culling
+This assigns the texture position to use whatever is defined
 Settings:
 
-0 - Nothing
+0 - Min.x
+1 - Min.y
+2 - Min.z
 
-1 - Min.x
-2 - Min.y
-3 - Min.z
-
-4 - Max.x
-5 - Max.y
-6 - Max.z
+3 - Max.x
+4 - Max.y
+5 - Max.z
 */
-immutable Vector3I[4][6] TEXTURE_CULL = [
+immutable Vector2I[4][6] TEXTURE_CULL = [
     // Back face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(2,3),
+        Vector2I(3,4),
+        Vector2I(5,6),
+        Vector2I(8,7)
     ],
     // Front face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0)
     ],
     // Left face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0)
     ],
     // Right face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0)
     ],
     // Bottom face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0)
     ],
     // Top face
     [
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0),
-        Vector3I(0,0,0)
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0),
+        Vector2I(0,0)
     ]
 ];
 
@@ -270,9 +269,14 @@ void buildBlock(
     Vector3 min = Vector3(0,0,0);
     Vector3 max = Vector3(1,0.5,1);
 
+    // Very important this is held on the stack
+    immutable float[6] textureCullArray = [min.x, min.y, min.z, max.z, max.y, max.z];
+
+    int i = 0;
+
     // Allows normal blocks to be indexed with blank blockbox
-    for (int w = 0; w <= blockBox.length; w++) {
-        for (int i = 0; i < 6; i++) {
+    //for (int w = 0; w <= blockBox.length; w++) {
+        //for (int i = 0; i < 6; i++) {
 
             // Assign the indices
             buildIndices(indices, vertexCount);
@@ -296,12 +300,12 @@ void buildBlock(
             }
             // Tick up tri count
             triangleCount += 2;
-        }
+        //}
         // Automatic breakout
-        if (w >= blockBox.length) {
-            break;
-        }
-    }
+        //if (w >= blockBox.length) {
+            //break;
+        //}
+    //}
 }
 
 
