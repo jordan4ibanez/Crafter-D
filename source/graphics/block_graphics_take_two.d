@@ -225,10 +225,10 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
     // Front face
     // Z and Y affect this
     [
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0),
-        Vector2I(0,0)
+        Vector2I(11,10),
+        Vector2I(11,7),
+        Vector2I(8,7),
+        Vector2I(8,10)
     ],
     // Left face
     // X and Y affect this
@@ -283,13 +283,13 @@ void buildBlock(
     immutable float[][] blockBox
 ){
 
-    Vector3 max = Vector3( 1,  1,  0.5 );
-    Vector3 min = Vector3( 0,  0.5,  0 );
+    Vector3 max = Vector3( 1,  1,  1 );
+    Vector3 min = Vector3( 0,  0,  0 );
 
     // Very important this is held on the stack
     immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-    int i = 0;
+    int i = 1;
 
     // Allows normal blocks to be indexed with blank blockbox
     //for (int w = 0; w <= blockBox.length; w++) {
@@ -305,14 +305,8 @@ void buildBlock(
                 vertices ~= (FACE[i][f].y == 0 ? min.y : max.y);
                 vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
 
-                // Assign texture coordinates
-                /*
-                final switch (TEXTURE_CULL[i][f].x) {
-                    case 0: {
-                        // Do nothing
-                    }
-                }
-                */
+                // Assign texture coordinates// Assign texture coordinates
+
                 // Normal drawtype
                 /*
                 textureCoordinates ~= TEXTURE_POSITION[f].x;
