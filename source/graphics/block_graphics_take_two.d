@@ -192,6 +192,7 @@ immutable Vector2[4] TEXTURE_POSITION = [
 /*
 A switcher for blockbox texture culling
 This assigns the texture position to use whatever is defined
+
 Settings:
 
 0 - Min.x
@@ -201,16 +202,28 @@ Settings:
 3 - Max.x
 4 - Max.y
 5 - Max.z
+
+// These are the same values, but inverted via: abs(value - 1)
+6 - Min.x - 0 Translation from normal
+7 - Min.y - 1
+8 - Min.z - 2
+
+9 - Max.x - 3
+10 - Max.y- 4
+11 - Max.z- 5
+
 */
 immutable Vector2I[4][6] TEXTURE_CULL = [
     // Back face
+    // Z and Y affect this
     [
-        Vector2I(2,3),
-        Vector2I(3,4),
-        Vector2I(5,6),
-        Vector2I(8,7)
+        Vector2I(2,10),
+        Vector2I(2,7),
+        Vector2I(5,7),
+        Vector2I(5,10)
     ],
     // Front face
+    // Z and Y affect this
     [
         Vector2I(0,0),
         Vector2I(0,0),
@@ -218,6 +231,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(0,0)
     ],
     // Left face
+    // X and Y affect this
     [
         Vector2I(0,0),
         Vector2I(0,0),
@@ -225,6 +239,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(0,0)
     ],
     // Right face
+    // X and Y affect this
     [
         Vector2I(0,0),
         Vector2I(0,0),
@@ -232,6 +247,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(0,0)
     ],
     // Bottom face
+    // X and Z affect this
     [
         Vector2I(0,0),
         Vector2I(0,0),
@@ -239,6 +255,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(0,0)
     ],
     // Top face
+    // X and Z affect this
     [
         Vector2I(0,0),
         Vector2I(0,0),
@@ -266,11 +283,11 @@ void buildBlock(
     immutable float[][] blockBox
 ){
 
-    Vector3 min = Vector3(0,0,0);
-    Vector3 max = Vector3(1,0.5,1);
+    Vector3 max = Vector3( 1,  1,  0.5 );
+    Vector3 min = Vector3( 0,  0.5,  0 );
 
     // Very important this is held on the stack
-    immutable float[6] textureCullArray = [min.x, min.y, min.z, max.z, max.y, max.z];
+    immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
     int i = 0;
 
@@ -289,13 +306,43 @@ void buildBlock(
                 vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
 
                 // Assign texture coordinates
+                /*
                 final switch (TEXTURE_CULL[i][f].x) {
                     case 0: {
                         // Do nothing
                     }
                 }
-                textureCoordinates ~= TEXTURE_POSITION[f].x == 0 ? min.x : max.x;
-                textureCoordinates ~= TEXTURE_POSITION[f].y == 0 ? min.y : max.y;
+                */
+                // Normal drawtype
+                /*
+                textureCoordinates ~= TEXTURE_POSITION[f].x;
+                textureCoordinates ~= TEXTURE_POSITION[f].y;
+                */
+
+                // Blockbox drawtype
+                Vector2I textureCull = TEXTURE_CULL[i][f];
+
+                // This can be written as a ternary, but easier to understand like this
+                final switch (textureCull.x > 5) {
+                    case true: {
+                        textureCoordinates ~= abs(textureCullArray[textureCull.x - 6] - 1);
+                        break;
+                    }
+                    case false: {
+                        textureCoordinates ~= textureCullArray[textureCull.x];
+                        break;
+                    }
+                }
+                final switch (textureCull.y > 5) {
+                    case true: {
+                        textureCoordinates ~= abs(textureCullArray[textureCull.y - 6] - 1);
+                        break;
+                    }
+                    case false: {
+                        textureCoordinates ~= textureCullArray[textureCull.y];
+                        break;
+                    }
+                }
 
             }
             // Tick up tri count

@@ -55,7 +55,7 @@ void main(string[] args) {
 
         // Debug camera
         Camera camera = Camera(
-            Vector3(0,2,0),
+            Vector3(0,0,0),
             Vector3(1.0,0.0,0.0),
             Vector3(0,1,0),
             73,
@@ -95,7 +95,7 @@ void main(string[] args) {
             DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
             DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
-            DrawCube(Vector3(-0.5,0.5,1.5),1,1,1,Colors.RED);
+            DrawCube(Vector3(-0.5,0.5,0.5),1,1,1,Colors.RED);
 
 
             EndMode3D();
