@@ -55,7 +55,8 @@ A face, made of two tris:
 Using the 4 vertex positions, we can iterate a face by recycling 2 of the points
 into 2 tris. The indices array will make this possible.
 
-The array will look like so: [ 3, 0, 1, 1, 2, 3 ]
+The array will look like so: [ 3, 0, 1, 1, 2, 3 ]. This is the indices array.
+The indices array tell OpenGL which order to create triangles when rendering.
 
 So [ 3, 0, 1 ] is the top left tri, and [ 1, 2, 3 ] is the bottom right tri.
 
@@ -65,6 +66,11 @@ This is using this counter clockwise wound tri in this form so the gpu can lever
 pointer index reuse for the majority of the quad, and keep a mostly linear iteration.
 This may seem like a micro optimization, but for millions of faces, this will make
 quite a noticeable difference. The only outlier in this is the initial position.
+
+|-----------------------------------------------------------------------|
+| Very important note: All faces will follow this pattern to save data! |
+|                                                                       |
+|-----------------------------------------------------------------------|
 
 
 
@@ -105,3 +111,84 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 */
 
 
+// All blocks are made of quads, it's 2 tris per quad
+struct Quad {
+    Vector3[] vertexPositions;
+    int[]     indices;
+    this(Vector3[] vertexPosition, int[] indices) {
+        this.vertexPositions = vertexPosition;
+        this.indices = indices;
+    }
+}
+
+// This is documented as if you were facing the quad with it's texture position aligned to you
+enum Face {
+    // Axis base:        X 0
+    // Normal direction: X -1
+    BACK = Quad(
+        [
+            Vector3(0,1,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+    // Axis base:        X 1
+    // Normal direction: X 1
+    FRONT = Quad(
+        [
+            Vector3(0,0,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+
+    // Axis base:        Z 0
+    // Normal direction: Z -1
+    LEFT = Quad(
+        [
+            Vector3(0,0,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+    // Axis base:        Z 1
+    // Normal direction: Z 1
+    RIGHT = Quad(
+        [
+            Vector3(0,0,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+
+    // Axis base:        Y 0
+    // Normal direction: Y -1
+    BOTTOM = Quad(
+        [
+            Vector3(0,0,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+    // Axis base:        Y 1
+    // Normal direction: Y 1
+    TOP = Quad(
+        [
+            Vector3(0,0,0), // Top Left     | 0
+            Vector3(0,0,0), // Bottom Left  | 1
+            Vector3(0,0,0), // Bottom Right | 2
+            Vector3(0,0,0), // Top Right    | 3
+        ],
+        [ 3, 0, 1, 1, 2, 3 ]
+    ),
+}
