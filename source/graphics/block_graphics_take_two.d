@@ -286,18 +286,32 @@ void buildBlock(
     Vector3 max = Vector3( 1,  1,  1 );
     Vector3 min = Vector3( 0,  0,  0 );
 
-    // Very important this is held on the stack
-    immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
-
-    int q = 5;
+    // This needs to check for custom meshes and drawtypes
+    bool isBlockBox = (blockBox.length > 0);
 
     // Allows normal blocks to be indexed with blank blockbox
-    for (int w = 0; w <= 3/*blockBox.length*/; w++) {
+    for (int w = 0; w <= blockBox.length; w++) {
+
+        writeln("GENERATING BOX: ", w);
+
+        // Automatic breakout
+        if (w >= blockBox.length && isBlockBox) {
+            writeln("BOX ", w, " WAS CANCELLED!");
+            break;
+        }
+
+        // If it is a blockbox, override defaults
+        if (isBlockBox) {
+            min = Vector3(blockBox[w][0], blockBox[w][1], blockBox[w][2]);
+            max = Vector3(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
+        }
+
+        // Very important this is held on the stack
+        immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
         // Override min and max here if applicable
 
-        // NOTE: CHANGE THE <= TO <  WHEN FINISHED!!!!!!!!!!!!!!!!!!!!
-        for (int i = q; i <= q; i++) {
+        for (int i = 0; i < 6; i++) {
 
             // Assign the indices
             buildIndices(indices, vertexCount);
@@ -310,10 +324,6 @@ void buildBlock(
                 vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
 
                 // Assign texture coordinates// Assign texture coordinates
-
-
-                // This needs to be an enum for drawtype
-                bool isBlockBox = 1;
 
                 final switch (isBlockBox) {
                     case false: {
@@ -354,10 +364,6 @@ void buildBlock(
             // Tick up tri count
             triangleCount += 2;
         }
-        // Automatic breakout
-        if (w >= blockBox.length) {
-            break;
-        }
     }
 }
 
@@ -378,7 +384,13 @@ public static Mesh testAPI(uint ID) {
         int triangleCount = 0;
         int vertexCount   = 0;
 
-        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,[]);
+        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,
+        // Test stair
+        [
+            [0,0,0, 1,0.5,1],
+            [0,0,0, 0.5,1,1]
+        ]
+        );
 
         writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
