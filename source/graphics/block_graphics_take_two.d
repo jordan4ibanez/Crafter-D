@@ -137,10 +137,10 @@ const Vector3[4][6] FACE = [
     // Axis base:        X 1
     // Normal direction: X 1
     [
-        Vector3(0,0,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
-        Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,0,0), // Top Right    | 3
+        Vector3(1,1,1), // Top Left     | 0
+        Vector3(1,0,1), // Bottom Left  | 1
+        Vector3(1,0,0), // Bottom Right | 2
+        Vector3(1,1,0), // Top Right    | 3
     ],
     
 
@@ -179,6 +179,16 @@ const Vector3[4][6] FACE = [
     ]
 ];
 
+// Normals allow modders to bolt on lighting
+const Vector3[6] NORMAL = [
+    Vector3(0,0,0), // Back   | 0
+    Vector3(0,0,0), // Front  | 1
+    Vector3(0,0,0), // Left   | 2
+    Vector3(0,0,0), // Right  | 3
+    Vector3(0,0,0), // Bottom | 4
+    Vector3(0,0,0)  // Top    | 5
+];
+
 // Immutable texture position
 const Vector2[4] TEXTURE_POSITION = [
     Vector2(0,0), // Top left     | 0
@@ -186,6 +196,18 @@ const Vector2[4] TEXTURE_POSITION = [
     Vector2(1,1), // Bottom right | 2
     Vector2(1,0)  // Top right    | 3
 ];
+
+void buildBlock(
+    ref float[] vertices,
+    ref float[] textureCoordinates,
+    ref ushort[] indice,
+    ref uint triangleCount,
+    ref uint vertexCount
+){
+
+
+}
+
 
 public static Mesh testAPI(uint ID) {
 
@@ -211,9 +233,9 @@ public static Mesh testAPI(uint ID) {
 
         //Remember to remove this hardcode
         for (int i = 0; i < 4; i++) {
-            vertices ~= FACE[0][i].x;
-            vertices ~= FACE[0][i].y;
-            vertices ~= FACE[0][i].z;
+            vertices ~= FACE[1][i].x;
+            vertices ~= FACE[1][i].y;
+            vertices ~= FACE[1][i].z;
         }
 
         int triangleCount = 2;
