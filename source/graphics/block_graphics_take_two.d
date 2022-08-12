@@ -111,21 +111,10 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 */
 
 
-// All blocks are made of quads, it's 2 tris per quad
-struct Quad {
-    Vector3[] vertexPositions;
-    int[]     indices;
-    this(Vector3[] vertexPosition, int[] indices) {
-        this.vertexPositions = vertexPosition;
-        this.indices = indices;
-    }
-}
-
-
 // Immutable face vertex positions
 // This is documented as if you were facing the quad with it's texture position aligned to you
 // Idices order = [ 3, 0, 1, 1, 2, 3 ]
-const Vector3[4][6] FACE = [
+immutable Vector3[4][6] FACE = [
     // Axis base:        X 0
     // Normal direction: X -1
     [
@@ -142,45 +131,47 @@ const Vector3[4][6] FACE = [
         Vector3(1,0,0), // Bottom Right | 2
         Vector3(1,1,0), // Top Right    | 3
     ],
-    
 
     // Axis base:        Z 0
     // Normal direction: Z -1
     [
-        Vector3(0,0,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(1,1,0), // Top Left     | 0
+        Vector3(1,0,0), // Bottom Left  | 1
         Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,0,0), // Top Right    | 3
+        Vector3(0,1,0), // Top Right    | 3
     ],
     // Axis base:        Z 1
     // Normal direction: Z 1
     [
-        Vector3(0,0,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
-        Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,0,0), // Top Right    | 3
+        Vector3(0,1,1), // Top Left     | 0
+        Vector3(0,0,1), // Bottom Left  | 1
+        Vector3(1,0,1), // Bottom Right | 2
+        Vector3(1,1,1), // Top Right    | 3
     ],
 
     // Axis base:        Y 0
     // Normal direction: Y -1
     [
-        Vector3(0,0,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
+        Vector3(1,0,1), // Top Left     | 0
+        Vector3(0,0,1), // Bottom Left  | 1
         Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,0,0), // Top Right    | 3
+        Vector3(1,0,0), // Top Right    | 3
     ],
     // Axis base:        Y 1
     // Normal direction: Y 1
     [
-        Vector3(0,0,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
-        Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,0,0), // Top Right    | 3
+        Vector3(1,1,0), // Top Left     | 0
+        Vector3(0,1,0), // Bottom Left  | 1
+        Vector3(0,1,1), // Bottom Right | 2
+        Vector3(1,1,1), // Top Right    | 3
     ]
 ];
 
+// Immutable index order
+immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
+
 // Normals allow modders to bolt on lighting
-const Vector3[6] NORMAL = [
+immutable Vector3[6] NORMAL = [
     Vector3(0,0,0), // Back   | 0
     Vector3(0,0,0), // Front  | 1
     Vector3(0,0,0), // Left   | 2
@@ -190,22 +181,40 @@ const Vector3[6] NORMAL = [
 ];
 
 // Immutable texture position
-const Vector2[4] TEXTURE_POSITION = [
+immutable Vector2[4] TEXTURE_POSITION = [
     Vector2(0,0), // Top left     | 0
     Vector2(0,1), // Bottom Left  | 1
     Vector2(1,1), // Bottom right | 2
     Vector2(1,0)  // Top right    | 3
 ];
 
+
+void buildIndices(ref ushort[] indices, ref uint vertexCount) {
+
+}
+
+
+
 void buildBlock(
     ref float[] vertices,
     ref float[] textureCoordinates,
-    ref ushort[] indice,
+    ref ushort[] indices,
     ref uint triangleCount,
     ref uint vertexCount
 ){
+    for (int i = 0; i < 6; i++) {
+
+        // Assign texture coordinates
+        for (int t = 0; i < 4; i++) {
+            textureCoordinates ~= TEXTURE_POSITION[t].x;
+            textureCoordinates ~= TEXTURE_POSITION[t].y;
+        }
 
 
+        // Tick up counts
+        triangleCount += 2;
+        vertexCount += 4;
+    }
 }
 
 
@@ -221,24 +230,16 @@ public static Mesh testAPI(uint ID) {
         // float[] normals;
         float[] textureCoordinates;
 
-        // Remember to remove this hardcode
-        for (int i = 0; i < 4; i++) {
-            textureCoordinates ~= TEXTURE_POSITION[i].x;
-            textureCoordinates ~= TEXTURE_POSITION[i].y;
-        }
-        // Remember to remove this hardcode
-        ushort[] indices = [
-            3, 0, 1, 1, 2, 3
-        ];
+        int triangleCount = 0;
+        int vertexCount   = 0;
+
 
         //Remember to remove this hardcode
         for (int i = 0; i < 4; i++) {
-            vertices ~= FACE[1][i].x;
-            vertices ~= FACE[1][i].y;
-            vertices ~= FACE[1][i].z;
-        }
-
-        int triangleCount = 2;
+            vertices ~= FACE[5][i].x;
+            vertices ~= FACE[5][i].y;
+            vertices ~= FACE[5][i].z;
+        }        
 
         // For dispatching colors ubyte[]
 
