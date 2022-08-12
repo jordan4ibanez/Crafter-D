@@ -188,9 +188,72 @@ immutable Vector2[4] TEXTURE_POSITION = [
     Vector2(1,0)  // Top right    | 3
 ];
 
+// Texture culling for blockboxes
+/*
+A switcher for blockbox texture culling
+Settings:
 
-void buildIndices(ref ushort[] indices, ref uint vertexCount) {
+0 - Nothing
 
+1 - Min.x
+2 - Min.y
+3 - Min.z
+
+4 - Max.x
+5 - Max.y
+6 - Max.z
+*/
+immutable Vector3I[4][6] TEXTURE_CULL = [
+    // Back face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ],
+    // Front face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ],
+    // Left face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ],
+    // Right face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ],
+    // Bottom face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ],
+    // Top face
+    [
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0),
+        Vector3I(0,0,0)
+    ]
+];
+
+
+void buildIndices(ref ushort[] indices, ref int vertexCount) {
+    for (ushort i = 0; i < 6; i++) {
+        indices ~= cast(ushort)(INDICES[i] + vertexCount);
+    }
+    vertexCount += 4;
 }
 
 
@@ -199,21 +262,45 @@ void buildBlock(
     ref float[] vertices,
     ref float[] textureCoordinates,
     ref ushort[] indices,
-    ref uint triangleCount,
-    ref uint vertexCount
+    ref int triangleCount,
+    ref int vertexCount,
+    immutable float[][] blockBox
 ){
-    for (int i = 0; i < 6; i++) {
 
-        // Assign texture coordinates
-        for (int t = 0; i < 4; i++) {
-            textureCoordinates ~= TEXTURE_POSITION[t].x;
-            textureCoordinates ~= TEXTURE_POSITION[t].y;
+    Vector3 min = Vector3(0,0,0);
+    Vector3 max = Vector3(1,0.5,1);
+
+    // Allows normal blocks to be indexed with blank blockbox
+    for (int w = 0; w <= blockBox.length; w++) {
+        for (int i = 0; i < 6; i++) {
+
+            // Assign the indices
+            buildIndices(indices, vertexCount);
+
+            for (int f = 0; f < 4; f++) {
+
+                // Assign the vertex positions
+                vertices ~= (FACE[i][f].x == 0 ? min.x : max.x);
+                vertices ~= (FACE[i][f].y == 0 ? min.y : max.y);
+                vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
+
+                // Assign texture coordinates
+                final switch (TEXTURE_CULL[i][f].x) {
+                    case 0: {
+                        // Do nothing
+                    }
+                }
+                textureCoordinates ~= TEXTURE_POSITION[f].x == 0 ? min.x : max.x;
+                textureCoordinates ~= TEXTURE_POSITION[f].y == 0 ? min.y : max.y;
+
+            }
+            // Tick up tri count
+            triangleCount += 2;
         }
-
-
-        // Tick up counts
-        triangleCount += 2;
-        vertexCount += 4;
+        // Automatic breakout
+        if (w >= blockBox.length) {
+            break;
+        }
     }
 }
 
@@ -227,19 +314,17 @@ public static Mesh testAPI(uint ID) {
         Mesh myMesh = Mesh();
 
         float[] vertices;
+        ushort[] indices;
         // float[] normals;
         float[] textureCoordinates;
 
         int triangleCount = 0;
         int vertexCount   = 0;
 
+        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,[]);
 
-        //Remember to remove this hardcode
-        for (int i = 0; i < 4; i++) {
-            vertices ~= FACE[5][i].x;
-            vertices ~= FACE[5][i].y;
-            vertices ~= FACE[5][i].z;
-        }        
+        writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
+
 
         // For dispatching colors ubyte[]
 
