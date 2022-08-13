@@ -296,7 +296,7 @@ int translateRotationRender(int currentFace, ubyte currentRotation){
 
 
 // Assembles a block mesh piece and appends the necessary data
-void buildBlock(
+void buildThisBlock(
     ref float[] vertices,
     ref float[] textureCoordinates,
     ref ushort[] indices,
@@ -305,7 +305,7 @@ void buildBlock(
     BlockGraphicDefinition graphicsDefiniton,
     Vector3I position,
     ubyte rotation,
-    bool[] renderArray
+    bool[6] renderArray
 ){
 
     float[6][] blockBox = graphicsDefiniton.blockBox;
@@ -434,81 +434,48 @@ struct BlockGraphicDefinition {
 
 public static final class BlockGraphics {
 
-    BlockGraphicDefinition[uint] definitions;
+    private static BlockGraphicDefinition[uint] definitions;
     
-    void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2I[6] blockTextures){
-
-        auto test = definitions[33];
-
+    public static void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2I[6] blockTextures){
         this.definitions[id] = BlockGraphicDefinition(
             blockBox,
             blockTextures
         );
     }
 
-    public static Mesh buildChunk(uint ID) {
+    public static void classBuildBlock(
+        uint ID,
+        ref float[] vertices,
+        ref float[] textureCoordinates,
+        ref ushort[] indices,
+        ref int triangleCount,
+        ref int vertexCount,
+        Vector3I position,
+        ubyte rotation,
+        bool[6] renderArray
+        ) {
 
-        //BlockGraphicDefinition currentDefinition = this.definitions[ID];
-        // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
-        // BlockBox currentBlockBox = currentDefinition.blockBox;
+            if (ID == 0) {
+                writeln("RETURNING");
+                return;
+            }
 
-        BlockGraphicDefinition definition = BlockGraphicDefinition(
-            [
-                // [0,0,0,1,0.5,1],
-                // [0,0,0,0.5,1,0.5]
-            ],
-            [
-                Vector2I(4,0),
-                Vector2I(5,0),
-                Vector2I(6,0),
-                Vector2I(7,0),
-                Vector2I(8,0),
-                Vector2I(9,0)
-            ]
-        );
+            BlockGraphicDefinition definition = definitions[ID];
 
-        Mesh myMesh = Mesh();
-
-        float[] vertices;
-        ushort[] indices;
-        // float[] normals;
-        float[] textureCoordinates;
-
-        int triangleCount = 0;
-        int vertexCount   = 0;
-
-        for (int i = 0; i < 32_768; i++) {
-            buildBlock(
+            buildThisBlock(
                 vertices,
                 textureCoordinates,
                 indices,
                 triangleCount,
                 vertexCount,
                 definition,
-                Vector3I(i * 2,0,0), cast(ubyte)i % 4,
-                [true,true,true,true,true,true]
+                position,
+                rotation,
+                renderArray
             );
-        }
-
-        writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
-
-
-        // For dispatching colors ubyte[]
-
-        // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        // byte rotation = 3;
-
-        myMesh.triangleCount = triangleCount;
-        // 3 is the number of vertex points per triangle
-        myMesh.vertexCount = vertexCount;
-
-        myMesh.vertices  = vertices.ptr;
-        myMesh.indices   = indices.ptr;
-        // myMesh.normals   = normals.ptr;
-        myMesh.texcoords = textureCoordinates.ptr;
-
-        UploadMesh(&myMesh, false);
-        return myMesh;
     }
     
 }
+
+alias registerBlockGraphicsDefinition = BlockGraphics.registerBlockGraphicsDefinition;
+alias buildBlock = BlockGraphics.classBuildBlock;
