@@ -272,6 +272,95 @@ void buildIndices(ref ushort[] indices, ref int vertexCount) {
     vertexCount += 4;
 }
 
+// Rotation for the 4 outer faces (x an z)
+// Index 0 = 0, 1 = 90 degrees, 2 = 180 degrees, 3 = 270 degrees, repeat
+immutable int[4][4] TEXTURE_SKIP = [
+    // Back
+    [0,3,1,2],
+    // Front
+    [1,2,0,3],
+    // Left
+    [2,0,3,1],
+    // Right
+    [3,1,2,0]
+];
+int rotateTexture(int inputFace, ubyte inputRotation) {
+    if (inputRotation == 0 || inputFace > 3) {
+        return inputFace;
+    }
+    return TEXTURE_SKIP[inputFace][inputRotation];
+}
+
+
+// This rotates the texture coordinates 90 degrees * output (0,1,2,3)
+// A simple int shifter
+int rotateTopAndBottomTexture(int inputFace, ubyte currentRotation, int currentIndex) {
+    if (inputFace < 4 || currentRotation == 0) {
+        return currentIndex;
+    }
+    int output = (currentIndex + currentRotation) % 4;
+    // Top needs the rotation reversed
+    if (inputFace == 5){
+        immutable int[4] TOP_ROTATION = [2,3,0,1];
+        if (currentRotation == 1 || currentRotation == 3){
+            return TOP_ROTATION[output];
+        }
+    }
+    return output;
+}
+
+/*
+0 - Min.x
+1 - Min.y
+2 - Min.z
+
+3 - Max.x
+4 - Max.y
+5 - Max.z
+*/
+immutable int[6][4][2] BLOCKBOX_TOP_BOTTOM_FIX = [
+    // Bottom
+    [
+        // Rotation 0
+        [0,0,0,0,0,0],
+        // Rotation 1
+        [0,0,0,0,0,0],
+        // Rotation 2
+        [0,0,0,0,0,0],
+        // Rotation 3
+        [0,0,0,0,0,0]
+    ],
+    // Top
+    [
+        // Rotation 0
+        [0,0,0,0,0,0],
+        // Rotation 1
+        [0,0,0,0,0,0],
+        // Rotation 2
+        [0,0,0,0,0,0],
+        // Rotation 3
+        [0,0,0,0,0,0]
+    ]
+];
+
+
+float[6] fixBlockBoxRotationTextureCullingTopAndBottom(float[6] inputArray, int currentFace, ubyte rotation) {
+
+    if (currentFace < 4 || rotation == 0) {
+        return inputArray;
+    }
+
+    float[6] newArray;
+    // Gets the face to a 0 index
+    int faceTranslated = currentFace - 4;
+    
+    for (int i = 0; i < 6; i++) {
+        newArray[i] = inputArray[BLOCKBOX_TOP_BOTTOM_FIX[faceTranslated][rotation][i]];
+    }
+    
+    return inputArray;
+}
+
 // Assembles a block mesh piece and appends the necessary data
 void buildBlock(
     ref float[] vertices,
@@ -281,6 +370,8 @@ void buildBlock(
     ref int vertexCount,
     BlockGraphicDefinition graphicsDefiniton
 ){
+
+    ubyte rotation = 0;
 
     float[6][] blockBox = graphicsDefiniton.blockBox;
     Vector2I[6] textureDefinition = graphicsDefiniton.blockTextures;
@@ -305,24 +396,26 @@ void buildBlock(
             max = Vector3(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
         }
 
-        // Very important this is held on the stack
-        immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
-
         // Override min and max here if applicable
 
         for (int i = 0; i < 6; i++) {
 
-            Vector2I currentTexture = textureDefinition[i];
+            // Very important this is held on the stack
+            float[6] textureCullArray = fixBlockBoxRotationTextureCullingTopAndBottom([min.x, min.y, min.z, max.x, max.y, max.z], i, rotation);
+
+            Vector2I currentTexture = textureDefinition[rotateTexture(i, rotation)];
 
             // Assign the indices
             buildIndices(indices, vertexCount);
 
             for (int f = 0; f < 4; f++) {
 
+                int r = rotateTopAndBottomTexture(i, rotation, f);
+
                 // Assign the vertex positions
-                vertices ~= (FACE[i][f].x == 0 ? min.x : max.x);
-                vertices ~= (FACE[i][f].y == 0 ? min.y : max.y);
-                vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
+                vertices ~= (FACE[i][r].x == 0 ? min.x : max.x);
+                vertices ~= (FACE[i][r].y == 0 ? min.y : max.y);
+                vertices ~= (FACE[i][r].z == 0 ? min.z : max.z);
 
                 // Assign texture coordinates// Assign texture coordinates
 
@@ -398,7 +491,7 @@ public static Mesh testAPI(uint ID) {
         BlockGraphicDefinition definition = BlockGraphicDefinition(
             [
                 [0,0,0,1,0.5,1],
-                [0,0,0,1,1,0.5]
+                [0,0,0,0.5,1,1]
             ],
             [
                 Vector2I(4,0),
