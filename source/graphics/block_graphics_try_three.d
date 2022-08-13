@@ -136,7 +136,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(2,6),
         Vector2I(5,6),
         Vector2I(5,9)
-    ]
+    ],
     // Right face
     // +Z
     // X and Y affect this
@@ -154,4 +154,188 @@ void buildIndices(ref ushort[] indices, ref int vertexCount) {
         indices ~= cast(ushort)(INDICES[i] + vertexCount);
     }
     vertexCount += 4;
+}
+
+
+
+// Assembles a block mesh piece and appends the necessary data
+void buildBlock(
+    ref float[] vertices,
+    ref float[] textureCoordinates,
+    ref ushort[] indices,
+    ref int triangleCount,
+    ref int vertexCount,
+    BlockGraphicDefinition graphicsDefiniton
+){
+
+    ubyte rotation = 0;
+
+    float[6][] blockBox = graphicsDefiniton.blockBox;
+    Vector2I[6] textureDefinition = graphicsDefiniton.blockTextures;
+
+    Vector3 max = Vector3( 1,  1,  1 );
+    Vector3 min = Vector3( 0,  0,  0 );
+
+    // This needs to check for custom meshes and drawtypes
+    bool isBlockBox = (blockBox.length > 0);    
+
+    // Allows normal blocks to be indexed with blank blockbox
+    for (int w = 0; w <= blockBox.length; w++) {
+
+        // Automatic breakout
+        if (w >= blockBox.length && isBlockBox) {
+            break;
+        }
+
+        // If it is a blockbox, override defaults
+        if (isBlockBox) {
+            min = Vector3(blockBox[w][0], blockBox[w][1], blockBox[w][2]);
+            max = Vector3(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
+        }
+
+        // Override min and max here if applicable
+
+        for (int i = 0; i < 6; i++) {
+
+            // Very important this is held on the stack
+            float[6] textureCullArray = fixBlockBoxRotationTextureCullingTopAndBottom([min.x, min.y, min.z, max.x, max.y, max.z], i, rotation);
+
+            Vector2I currentTexture = textureDefinition[rotateTexture(i, rotation)];
+
+            // Assign the indices
+            buildIndices(indices, vertexCount);
+
+            for (int f = 0; f < 4; f++) {
+
+                // int r = rotateTopAndBottomTexture(i, rotation, f);
+
+                // Assign the vertex positions
+                vertices ~= (FACE[i][r].x == 0 ? min.x : max.x);
+                vertices ~= (FACE[i][r].y == 0 ? min.y : max.y);
+                vertices ~= (FACE[i][r].z == 0 ? min.z : max.z);
+
+                // Assign texture coordinates// Assign texture coordinates
+
+                final switch (isBlockBox) {
+
+                    case false: {
+                        // Normal drawtype
+                        textureCoordinates ~= ((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                        textureCoordinates ~= ((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                        break;
+                    }
+                    case true: {
+                        // Blockbox drawtype
+                        Vector2I textureCull = TEXTURE_CULL[i][f];
+
+                        // This can be written as a ternary, but easier to understand like this
+                        final switch (textureCull.x > 5) {
+                            case true: {
+                                textureCoordinates ~= ((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                break;
+                            }
+                            case false: {
+                                textureCoordinates ~= ((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                break;
+                            }
+                        }
+                        final switch (textureCull.y > 5) {
+                            case true: {
+                                textureCoordinates ~= ((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                break;
+                            }
+                            case false: {
+                                textureCoordinates ~= ((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            // Tick up tri count
+            triangleCount += 2;
+        }
+    }
+}
+
+
+
+
+
+struct BlockGraphicDefinition {
+    float[6][] blockBox;
+    Vector2I[6] blockTextures;
+
+    this(float[6][] blockBox, Vector2I[6] blockTextures) {
+        this.blockBox = blockBox;
+        this.blockTextures = blockTextures;
+    }
+}
+
+
+public static class BlockGraphics {
+    BlockGraphicDefinition[uint] definitions;
+    
+    void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2I[6] blockTextures){
+        this.definitions[id] = BlockGraphicDefinition(
+            blockBox, blockTextures
+        );
+    }
+    
+}
+
+public static Mesh testAPI(uint ID) {
+
+    //BlockGraphicDefinition currentDefinition = this.definitions[ID];
+    // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+    // BlockBox currentBlockBox = currentDefinition.blockBox;
+
+    BlockGraphicDefinition definition = BlockGraphicDefinition(
+        [
+            [0,0,0,1,0.5,1],
+            [0,0,0,0.5,1,1]
+        ],
+        [
+            Vector2I(4,0),
+            Vector2I(5,0),
+            Vector2I(6,0),
+            Vector2I(7,0),
+            Vector2I(8,0),
+            Vector2I(9,0)
+        ]
+    );
+
+    Mesh myMesh = Mesh();
+
+    float[] vertices;
+    ushort[] indices;
+    // float[] normals;
+    float[] textureCoordinates;
+
+    int triangleCount = 0;
+    int vertexCount   = 0;
+
+    buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition);
+
+    writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
+
+
+    // For dispatching colors ubyte[]
+
+    // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
+    // byte rotation = 3;
+
+    myMesh.triangleCount = triangleCount;
+    // 3 is the number of vertex points per triangle
+    myMesh.vertexCount = vertexCount;
+
+    myMesh.vertices  = vertices.ptr;
+    myMesh.indices   = indices.ptr;
+    // myMesh.normals   = normals.ptr;
+    myMesh.texcoords = textureCoordinates.ptr;
+
+    UploadMesh(&myMesh, false);
+
+    return myMesh;
 }
