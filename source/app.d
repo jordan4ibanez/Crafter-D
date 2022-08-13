@@ -12,7 +12,7 @@ import world.chunk;
 import world.world_generation;
 import raymath;
 import delta_time;
-import graphics.block_graphics_take_two;
+import graphics.chunk_mesh_generation;
 
 
 void main(string[] args) {
@@ -69,7 +69,7 @@ void main(string[] args) {
         // testRegister();
 
         // Generating a grass block debug
-        Model testingModel = LoadModelFromMesh(testAPI(2));
+        Model testingModel = LoadModelFromMesh(generateChunkMesh(0,0));
         // Texture testingTexture = LoadTexture("textures/debug.png");
         Texture testingTexture = LoadTexture("textures/world_texture_map.png");
         testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
