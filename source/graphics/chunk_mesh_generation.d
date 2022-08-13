@@ -2,7 +2,7 @@ module graphics.chunk_mesh_generation;
 
 import raylib;
 import graphics.block_graphics;
-import world.chunk;
+import chunk.chunk;
 
 
 // This is an interface to the block graphics
