@@ -7,11 +7,11 @@ import std.math: abs;
 
 
 // Defines how many textures are in the texture map
-const double textureMapTiles = 32;
+const double TEXTURE_MAP_TILES = 32;
 // Defines the width/height of each texture
-const double textureTileSize = 16;
+const double TEXTURE_TILE_SIZE = 16;
 // Defines the total width/height of the texture map in pixels
-const double textureMapSize = textureTileSize * textureMapTiles;
+const double TEXTURE_MAP_SIZE = TEXTURE_TILE_SIZE * TEXTURE_MAP_TILES;
 
 /*
 
@@ -264,7 +264,7 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
     ]
 ];
 
-
+// An automatic index builder
 void buildIndices(ref ushort[] indices, ref int vertexCount) {
     for (ushort i = 0; i < 6; i++) {
         indices ~= cast(ushort)(INDICES[i] + vertexCount);
@@ -272,22 +272,26 @@ void buildIndices(ref ushort[] indices, ref int vertexCount) {
     vertexCount += 4;
 }
 
-
-
+// Assembles a block mesh piece and appends the necessary data
 void buildBlock(
     ref float[] vertices,
     ref float[] textureCoordinates,
     ref ushort[] indices,
     ref int triangleCount,
     ref int vertexCount,
-    immutable float[][] blockBox
+    BlockGraphicDefinition graphicsDefiniton
 ){
+
+    float[6][] blockBox = graphicsDefiniton.blockBox;
+    Vector2I[6] textureDefinition = graphicsDefiniton.blockTextures;
 
     Vector3 max = Vector3( 1,  1,  1 );
     Vector3 min = Vector3( 0,  0,  0 );
 
     // This needs to check for custom meshes and drawtypes
     bool isBlockBox = (blockBox.length > 0);
+
+    writeln(" IS THIS A BLOCK BOX?: ", isBlockBox);
 
     // Allows normal blocks to be indexed with blank blockbox
     for (int w = 0; w <= blockBox.length; w++) {
@@ -313,6 +317,8 @@ void buildBlock(
 
         for (int i = 0; i < 6; i++) {
 
+            Vector2I currentTexture = textureDefinition[i];
+
             // Assign the indices
             buildIndices(indices, vertexCount);
 
@@ -328,8 +334,8 @@ void buildBlock(
                 final switch (isBlockBox) {
                     case false: {
                         // Normal drawtype
-                        textureCoordinates ~= TEXTURE_POSITION[f].x;
-                        textureCoordinates ~= TEXTURE_POSITION[f].y;
+                        textureCoordinates ~= ((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                        textureCoordinates ~= ((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
                         break;
                     }
                     case true: {
@@ -367,12 +373,46 @@ void buildBlock(
     }
 }
 
+struct BlockGraphicDefinition {
+    float[6][] blockBox;
+    Vector2I[6] blockTextures;
+
+    this(float[6][] blockBox, Vector2I[6] blockTextures) {
+        this.blockBox = blockBox;
+        this.blockTextures = blockTextures;
+    }
+}
+
+public static class BlockGraphics {
+    BlockGraphicDefinition[uint] definitions;
+    
+    void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2I[6] blockTextures){
+        this.definitions[id] = BlockGraphicDefinition(
+            blockBox, blockTextures
+        );
+    }
+    
+}
 
 public static Mesh testAPI(uint ID) {
 
         //BlockGraphicDefinition currentDefinition = this.definitions[ID];
         // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
         // BlockBox currentBlockBox = currentDefinition.blockBox;
+
+        BlockGraphicDefinition definition = BlockGraphicDefinition(
+            [
+                // [0,0,0,1,1,1]
+            ],
+            [
+                Vector2I(3,0),
+                Vector2I(3,0),
+                Vector2I(3,0),
+                Vector2I(3,0),
+                Vector2I(3,0),
+                Vector2I(3,0)
+            ]
+        );
 
         Mesh myMesh = Mesh();
 
@@ -384,13 +424,7 @@ public static Mesh testAPI(uint ID) {
         int triangleCount = 0;
         int vertexCount   = 0;
 
-        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,
-        // Test stair
-        [
-            [0,0,0, 1,0.5,1],
-            [0,0,0, 0.5,1,1]
-        ]
-        );
+        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition);
 
         writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
