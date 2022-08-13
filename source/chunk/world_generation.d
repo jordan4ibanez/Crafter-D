@@ -48,6 +48,11 @@ void generateTerrain (ref Chunk thisChunk) {
             writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
 
             // Here will go a stack fill with predefined layers and whatnot
+
+            for (int y = realHeight; y >= 0; y--){
+                // writeln("set 1 to: ", x, " ", y, " ", z);
+                thisChunk.setBlock(x,y,z,1);
+            }
         }
     }
 
