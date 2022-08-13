@@ -289,18 +289,13 @@ void buildBlock(
     Vector3 min = Vector3( 0,  0,  0 );
 
     // This needs to check for custom meshes and drawtypes
-    bool isBlockBox = (blockBox.length > 0);
-
-    writeln(" IS THIS A BLOCK BOX?: ", isBlockBox);
+    bool isBlockBox = (blockBox.length > 0);    
 
     // Allows normal blocks to be indexed with blank blockbox
     for (int w = 0; w <= blockBox.length; w++) {
 
-        writeln("GENERATING BOX: ", w);
-
         // Automatic breakout
         if (w >= blockBox.length && isBlockBox) {
-            writeln("BOX ", w, " WAS CANCELLED!");
             break;
         }
 
@@ -345,21 +340,21 @@ void buildBlock(
                         // This can be written as a ternary, but easier to understand like this
                         final switch (textureCull.x > 5) {
                             case true: {
-                                textureCoordinates ~= abs(textureCullArray[textureCull.x - 6] - 1);
+                                textureCoordinates ~= ((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
                                 break;
                             }
                             case false: {
-                                textureCoordinates ~= textureCullArray[textureCull.x];
+                                textureCoordinates ~= ((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
                                 break;
                             }
                         }
                         final switch (textureCull.y > 5) {
                             case true: {
-                                textureCoordinates ~= abs(textureCullArray[textureCull.y - 6] - 1);
+                                textureCoordinates ~= ((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
                                 break;
                             }
                             case false: {
-                                textureCoordinates ~= textureCullArray[textureCull.y];
+                                textureCoordinates ~= ((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
                                 break;
                             }
                         }
@@ -402,15 +397,16 @@ public static Mesh testAPI(uint ID) {
 
         BlockGraphicDefinition definition = BlockGraphicDefinition(
             [
-                // [0,0,0,1,1,1]
+                [0,0,0,1,0.5,1],
+                [0,0,0,1,1,0.5]
             ],
             [
-                Vector2I(3,0),
-                Vector2I(3,0),
-                Vector2I(3,0),
-                Vector2I(3,0),
-                Vector2I(3,0),
-                Vector2I(3,0)
+                Vector2I(4,0),
+                Vector2I(5,0),
+                Vector2I(6,0),
+                Vector2I(7,0),
+                Vector2I(8,0),
+                Vector2I(9,0)
             ]
         );
 
