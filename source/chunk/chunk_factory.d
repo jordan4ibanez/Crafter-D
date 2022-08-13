@@ -46,7 +46,7 @@ public static class ChunkFactory {
         writeln("I'm generating a new chunk at: ", newPosition);
 
         // random debug for prototyping processes
-        Chunk generatedChunk = new Chunk("default", newPosition);
+        Chunk generatedChunk = Chunk("default", newPosition);
 
         // Generation process goes here
         // It will take the object, do work with it, then give it back
