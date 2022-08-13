@@ -4,60 +4,60 @@ import std.stdio;
 import chunk.chunk;
 import fast_noise;
 import std.math.rounding;
+import helpers.structs;
 
-// This is another static factory class. Used for, you guessed it, world generation
-public static class WorldGenerator {
 
-    private static int seed = 12_345_678;
+private int SEED = 12_345_678;
 
-    public static void generateTerrain (ref Chunk thisChunk) {
+void generateTerrain (ref Chunk thisChunk) {
 
-        FNLState noise = fnlCreateState(this.seed);
-        noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
+    FNLState noise = fnlCreateState(SEED);
+    noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
-        // Get the real position of the chunk
-        int basePositionX = chunkX * 16;
-        int basePositionZ = chunkZ * 16;
+    Vector2I chunkPosition = thisChunk.getPosition();
 
-        // These will be defined in a biome container
+    // Get the real position of the chunk
+    int basePositionX = chunkPosition.x * chunkSizeX;
+    int basePositionZ = chunkPosition.y * chunkSizeZ;
 
-        // The base height of the chunk
-        int baseHeight = 70;
-        // How high or low it can fluctuate based on the noise (-1 to 1)
-        int fluxHeight = 20;
+    // These will be defined in a biome container
 
-        // Iterate the 2D noise of the chunk
-        for (int x = 0; x < chunkSizeX; x++) {
-            for (int z = 0; z < chunkSizeZ; z++) {
+    // The base height of the chunk
+    int baseHeight = 70;
+    // How high or low it can fluctuate based on the noise (-1 to 1)
+    int fluxHeight = 20;
 
-                // The real position in 2D space
-                int currentPositionX = x + basePositionX;
-                int currentPositionZ = z + basePositionZ;
+    // Iterate the 2D noise of the chunk
+    for (int x = 0; x < chunkSizeX; x++) {
+        for (int z = 0; z < chunkSizeZ; z++) {
 
-                // Noise at position
-                float currentNoise = fnlGetNoise2D(&noise, currentPositionX, currentPositionZ);
+            // The real position in 2D space
+            int currentPositionX = x + basePositionX;
+            int currentPositionZ = z + basePositionZ;
 
-                // Get the height fluctuation of the current position
-                int currentHeightFlux = cast(int)floor(fluxHeight * currentNoise);
+            // Noise at position
+            float currentNoise = fnlGetNoise2D(&noise, currentPositionX, currentPositionZ);
 
-                // Now add it to the defined baseHeight of the biome
-                int realHeight = baseHeight + currentHeightFlux;
+            // Get the height fluctuation of the current position
+            int currentHeightFlux = cast(int)floor(fluxHeight * currentNoise);
 
-                // Debug
-                writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
+            // Now add it to the defined baseHeight of the biome
+            int realHeight = baseHeight + currentHeightFlux;
 
-                // Here will go a stack fill with predefined layers and whatnot
-            }
+            // Debug
+            writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
+
+            // Here will go a stack fill with predefined layers and whatnot
         }
-
-
-        // This is the cavegen prototype, this is going to take a lot of tuning
-        /*
-        for (int i = 0; i < chunkArrayLength; i++) {
-            Vector3I currentPosition = indexToPosition(i);
-            //float currentNoise = fnlGetNoise3D(&noise, currentPosition.x, currentPosition.y, currentPosition.z);
-            // writeln("noise at ", currentPosition.x, ",", currentPosition.y, ",", currentPosition.z, " is ", currentNoise);
-        }
-        */
     }
+
+
+    // This is the cavegen prototype, this is going to take a lot of tuning
+    /*
+    for (int i = 0; i < chunkArrayLength; i++) {
+        Vector3I currentPosition = indexToPosition(i);
+        //float currentNoise = fnlGetNoise3D(&noise, currentPosition.x, currentPosition.y, currentPosition.z);
+        // writeln("noise at ", currentPosition.x, ",", currentPosition.y, ",", currentPosition.z, " is ", currentNoise);
+    }
+    */
 }
