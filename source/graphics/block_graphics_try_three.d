@@ -198,9 +198,9 @@ void buildBlock(
         for (int i = 0; i < 6; i++) {
 
             // Very important this is held on the stack
-            float[6] textureCullArray = fixBlockBoxRotationTextureCullingTopAndBottom([min.x, min.y, min.z, max.x, max.y, max.z], i, rotation);
+            float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-            Vector2I currentTexture = textureDefinition[rotateTexture(i, rotation)];
+            Vector2I currentTexture = textureDefinition[i];
 
             // Assign the indices
             buildIndices(indices, vertexCount);
@@ -210,9 +210,9 @@ void buildBlock(
                 // int r = rotateTopAndBottomTexture(i, rotation, f);
 
                 // Assign the vertex positions
-                vertices ~= (FACE[i][r].x == 0 ? min.x : max.x);
-                vertices ~= (FACE[i][r].y == 0 ? min.y : max.y);
-                vertices ~= (FACE[i][r].z == 0 ? min.z : max.z);
+                vertices ~= (FACE[i][f].x == 0 ? min.x : max.x);
+                vertices ~= (FACE[i][f].y == 0 ? min.y : max.y);
+                vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
 
                 // Assign texture coordinates// Assign texture coordinates
 
