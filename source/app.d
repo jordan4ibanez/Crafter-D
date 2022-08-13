@@ -68,6 +68,15 @@ void main(string[] args) {
         // This will get called automatically when blocks are registered
         // testRegister();
 
+        /* THIS IS DEBUG */
+
+        debugCreateBlockGraphics();
+
+
+        /* END DEBUG */
+
+
+
         Chunk thisChunk = Chunk("default", Vector2I(0,0));
 
         generateTerrain(thisChunk);
