@@ -484,55 +484,55 @@ public static class BlockGraphics {
 
 public static Mesh testAPI(uint ID) {
 
-        //BlockGraphicDefinition currentDefinition = this.definitions[ID];
-        // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
-        // BlockBox currentBlockBox = currentDefinition.blockBox;
+    //BlockGraphicDefinition currentDefinition = this.definitions[ID];
+    // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+    // BlockBox currentBlockBox = currentDefinition.blockBox;
 
-        BlockGraphicDefinition definition = BlockGraphicDefinition(
-            [
-                [0,0,0,1,0.5,1],
-                [0,0,0,0.5,1,1]
-            ],
-            [
-                Vector2I(4,0),
-                Vector2I(5,0),
-                Vector2I(6,0),
-                Vector2I(7,0),
-                Vector2I(8,0),
-                Vector2I(9,0)
-            ]
-        );
+    BlockGraphicDefinition definition = BlockGraphicDefinition(
+        [
+            [0,0,0,1,0.5,1],
+            [0,0,0,0.5,1,1]
+        ],
+        [
+            Vector2I(4,0),
+            Vector2I(5,0),
+            Vector2I(6,0),
+            Vector2I(7,0),
+            Vector2I(8,0),
+            Vector2I(9,0)
+        ]
+    );
 
-        Mesh myMesh = Mesh();
+    Mesh myMesh = Mesh();
 
-        float[] vertices;
-        ushort[] indices;
-        // float[] normals;
-        float[] textureCoordinates;
+    float[] vertices;
+    ushort[] indices;
+    // float[] normals;
+    float[] textureCoordinates;
 
-        int triangleCount = 0;
-        int vertexCount   = 0;
+    int triangleCount = 0;
+    int vertexCount   = 0;
 
-        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition);
+    buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition);
 
-        writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
+    writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
 
-        // For dispatching colors ubyte[]
+    // For dispatching colors ubyte[]
 
-        // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        // byte rotation = 3;
+    // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
+    // byte rotation = 3;
 
-        myMesh.triangleCount = triangleCount;
-        // 3 is the number of vertex points per triangle
-        myMesh.vertexCount = vertexCount;
+    myMesh.triangleCount = triangleCount;
+    // 3 is the number of vertex points per triangle
+    myMesh.vertexCount = vertexCount;
 
-        myMesh.vertices  = vertices.ptr;
-        myMesh.indices   = indices.ptr;
-        // myMesh.normals   = normals.ptr;
-        myMesh.texcoords = textureCoordinates.ptr;
+    myMesh.vertices  = vertices.ptr;
+    myMesh.indices   = indices.ptr;
+    // myMesh.normals   = normals.ptr;
+    myMesh.texcoords = textureCoordinates.ptr;
 
-        UploadMesh(&myMesh, false);
+    UploadMesh(&myMesh, false);
 
-        return myMesh;
-    }
+    return myMesh;
+}
