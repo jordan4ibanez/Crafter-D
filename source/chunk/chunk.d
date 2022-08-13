@@ -59,10 +59,10 @@ bool collide(int x, int y, int z) {
     return (collideX(x) && collideY(y) && collideZ(z));
 }
 
-public struct Chunk {
-    private int[chunkArrayLength]  block;
-    private byte[chunkArrayLength] light;
-    private byte[chunkArrayLength] rotation;
+struct Chunk {
+    private uint[chunkArrayLength]  block;
+    private ubyte[chunkArrayLength] light;
+    private ubyte[chunkArrayLength] rotation;
     // Height map needs to be added in
 
     private string biome;
@@ -86,26 +86,41 @@ public struct Chunk {
     }
 
     // Complex boilerplate with boundary checks
-    int getBlock(int x, int y, int z) {
+    uint getBlock(int x, int y, int z) {
         if (collide(x,y,z)) {
             return(this.block[positionToIndex(x,y,z)]);
         } else {
             // failed for some reason
             writeln("Getblock FAILED!");
-            return -1;
+            return 0;
         }
     }
-    void setBlock(int x, int y, int z, int newBlock) {
+    void setBlock(int x, int y, int z, uint newBlock) {
         if (collide(x,y,z)) {
             this.block[positionToIndex(x,y,z)] = newBlock;
         }
     }
     // Overloads
-    int getBlock(int index) {
+    uint getBlock(int index) {
         return this.block[index];
     }
-    void setBlock(int index, int newBlock) {
+    void setBlock(int index, int newBlock){
         this.block[index] = newBlock;
+    }
+
+    ubyte getRotation(int x, int y, int z) {
+        if (collide(x,y,z)) {
+            return(this.rotation[positionToIndex(x,y,z)]);
+        } else {
+            // failed for some reason
+            writeln("Getblock FAILED!");
+            return 0;
+        }
+    }
+    void setRotation(int x, int y, int z, ubyte newRotation) {
+        if (collide(x,y,z)) {
+            this.rotation[positionToIndex(x,y,z)] = newRotation;
+        }
     }
 
     string getBiome() {
