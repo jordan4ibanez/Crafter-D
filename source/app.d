@@ -6,10 +6,9 @@ import entity.mob.mob_definitions.zombie;
 import entity.mob.mob_factory;
 import entity.player.player;
 import entity.player.player_factory;
-import world.chunk;
-import world.chunk_factory;
-import world.chunk;
-import world.world_generation;
+import chunk.chunk;
+import chunk.chunk_factory;
+import chunk.world_generation;
 import raymath;
 import delta_time;
 import graphics.chunk_mesh_generation;
@@ -68,8 +67,10 @@ void main(string[] args) {
         // This will get called automatically when blocks are registered
         // testRegister();
 
+        Chunk thisChunk = Chunk("default", Vector2I(0,0));
+
         // Generating a grass block debug
-        Model testingModel = LoadModelFromMesh(generateChunkMesh(0,0));
+        Model testingModel = LoadModelFromMesh(thisChunk);
         // Texture testingTexture = LoadTexture("textures/debug.png");
         Texture testingTexture = LoadTexture("textures/world_texture_map.png");
         testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
