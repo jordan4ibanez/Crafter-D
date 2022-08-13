@@ -70,3 +70,13 @@ immutable Vector3[4][6] FACE = [
 
 // Immutable index order
 immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
+
+// Normals allow modders to bolt on lighting
+immutable Vector3[6] NORMAL = [
+    Vector3(-1, 0, 0), // Back   | 0
+    Vector3( 0,-1, 0), // Bottom | 1
+    Vector3( 0, 0,-1), // Left   | 2
+    Vector3( 1, 0, 0), // Front  | 3
+    Vector3( 0, 1, 0), // Top    | 4
+    Vector3( 0, 0, 1)  // Right  | 5
+];
