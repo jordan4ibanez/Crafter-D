@@ -447,8 +447,8 @@ public static Mesh testAPI(uint ID) {
     int triangleCount = 0;
     int vertexCount   = 0;
 
-    for (int i = 0; i < 4; i++) {
-        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition, Vector3I(i * 2,0,0), cast(ubyte)i);
+    for (int i = 0; i < 32_768; i++) {
+        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition, Vector3I(i * 2,0,0), cast(ubyte)i % 4);
     }
 
     writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
