@@ -88,3 +88,62 @@ immutable Vector2[4] TEXTURE_POSITION = [
     Vector2(1,1), // Bottom right | 2
     Vector2(1,0)  // Top right    | 3
 ];
+
+immutable Vector2I[4][6] TEXTURE_CULL = [
+    // Back face
+    // -X
+    // Z and Y affect this
+    [
+        Vector2I(2,10),
+        Vector2I(2,7),
+        Vector2I(5,7),
+        Vector2I(5,10)
+    ],
+    // Bottom face
+    // -Y
+    // X and Z affect this
+    [
+        Vector2I(11,9),
+        Vector2I(11,6),
+        Vector2I(8,6),
+        Vector2I(8,9)
+    ],
+    // Left face
+    // -Z
+    // X and Y affect this
+    [
+        Vector2I(9,10),
+        Vector2I(9,7),
+        Vector2I(6,7),
+        Vector2I(6,10)
+    ],
+
+
+    // Front face
+    // +X
+    // Z and Y affect this
+    [
+        Vector2I(11,10),
+        Vector2I(11,7),
+        Vector2I(8,7),
+        Vector2I(8,10)
+    ],
+    // Top face
+    // +Y
+    // X and Z affect this
+    [
+        Vector2I(2,9),
+        Vector2I(2,6),
+        Vector2I(5,6),
+        Vector2I(5,9)
+    ]
+    // Right face
+    // +Z
+    // X and Y affect this
+    [
+        Vector2I(0,10),
+        Vector2I(0,7),
+        Vector2I(3,7),
+        Vector2I(3,10)
+    ],
+];
