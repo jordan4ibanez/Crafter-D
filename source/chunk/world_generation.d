@@ -1,7 +1,7 @@
-module world.world_generation;
+module chunk.world_generation;
 
 import std.stdio;
-import world.chunk;
+import chunk.chunk;
 import fast_noise;
 import std.math.rounding;
 
@@ -10,8 +10,7 @@ public static class WorldGenerator {
 
     private static int seed = 12_345_678;
 
-    // IMPORTANT: THIS NEEDS TO DO WORK ON A CHUNK!
-    public static void generate (int chunkX, int chunkZ) {
+    public static void generateTerrain (ref Chunk thisChunk) {
 
         FNLState noise = fnlCreateState(this.seed);
         noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
@@ -61,7 +60,4 @@ public static class WorldGenerator {
         }
         */
     }
-
-
-    
 }

@@ -1,8 +1,8 @@
-module world.chunk_factory;
+module chunk.chunk_factory;
 
 
 import std.stdio;
-import world.chunk;
+import chunk.chunk;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
 import helpers.structs;

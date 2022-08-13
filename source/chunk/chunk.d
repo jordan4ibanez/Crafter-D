@@ -1,4 +1,4 @@
-module world.chunk;
+module chunk.chunk;
 
 import raylib;
 import std.stdio;
