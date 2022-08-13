@@ -67,3 +67,6 @@ immutable Vector3[4][6] FACE = [
         Vector3(1,1,1), // Top Right    | 3
     ]
 ];
+
+// Immutable index order
+immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
