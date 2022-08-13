@@ -12,6 +12,7 @@ import chunk.world_generation;
 import raymath;
 import delta_time;
 import graphics.chunk_mesh_generation;
+import helpers.structs;
 
 
 void main(string[] args) {
@@ -69,8 +70,10 @@ void main(string[] args) {
 
         Chunk thisChunk = Chunk("default", Vector2I(0,0));
 
+        generateTerrain(thisChunk);
+
         // Generating a grass block debug
-        Model testingModel = LoadModelFromMesh(thisChunk);
+        Model testingModel = LoadModelFromMesh(generateChunkMesh(thisChunk));
         // Texture testingTexture = LoadTexture("textures/debug.png");
         Texture testingTexture = LoadTexture("textures/world_texture_map.png");
         testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
