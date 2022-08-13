@@ -59,7 +59,7 @@ bool collide(int x, int y, int z) {
     return (collideX(x) && collideY(y) && collideZ(z));
 }
 
-public class Chunk {
+public struct Chunk {
     private int[chunkArrayLength]  block;
     private byte[chunkArrayLength] light;
     private byte[chunkArrayLength] rotation;
