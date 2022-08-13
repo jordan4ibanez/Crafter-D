@@ -80,3 +80,11 @@ immutable Vector3[6] NORMAL = [
     Vector3( 0, 1, 0), // Top    | 4
     Vector3( 0, 0, 1)  // Right  | 5
 ];
+
+// Immutable texture position
+immutable Vector2[4] TEXTURE_POSITION = [
+    Vector2(0,0), // Top left     | 0
+    Vector2(0,1), // Bottom Left  | 1
+    Vector2(1,1), // Bottom right | 2
+    Vector2(1,0)  // Top right    | 3
+];
