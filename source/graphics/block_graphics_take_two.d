@@ -1,4 +1,4 @@
-module code_vault.block_graphics_take_two;
+module graphics.block_graphics_take_two;
 
 import std.stdio;
 import raylib;
