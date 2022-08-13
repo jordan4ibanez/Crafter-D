@@ -281,10 +281,10 @@ void buildBlock(
     ref ushort[] indices,
     ref int triangleCount,
     ref int vertexCount,
-    BlockGraphicDefinition graphicsDefiniton
+    BlockGraphicDefinition graphicsDefiniton,
+    Vector3I position,
+    ubyte rotation
 ){
-
-    ubyte rotation = 1;
 
     float[6][] blockBox = graphicsDefiniton.blockBox;
     Vector2I[6] textureDefinition = graphicsDefiniton.blockTextures;
@@ -313,7 +313,6 @@ void buildBlock(
 
         for (int i = 0; i < 6; i++) {
 
-            // Very important this is held on the stack
             immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
             Vector2I currentTexture = textureDefinition[i];
@@ -322,19 +321,38 @@ void buildBlock(
             buildIndices(indices, vertexCount);
 
             for (int f = 0; f < 4; f++) {
+                // Assign the vertex positions with rotation
+                final switch (rotation) {
+                    case 0: {
+                        vertices ~= (FACE[i][f].x == 0 ? min.x : max.x) + position.x;
+                        vertices ~= (FACE[i][f].y == 0 ? min.y : max.y) + position.y;
+                        vertices ~= (FACE[i][f].z == 0 ? min.z : max.z) + position.z;
+                        break;
+                    }
+                    case 1: {
+                        // Notice: Axis order X and Z are swapped
+                        vertices ~= abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.x;
+                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
+                        vertices ~=     (FACE[i][f].x == 0 ? min.x : max.x)      + position.z;
+                        break;
+                    }
+                    case 2: {
+                        vertices ~= abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.x;
+                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
+                        vertices ~= abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.z;
+                        break;
+                    }
+                    case 3: {
+                        // Notice: Axis order X and Z are swapped
+                        vertices ~=     (FACE[i][f].z == 0 ? min.z : max.z)      + position.x;
+                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
+                        vertices ~= abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.z;
+                        break;
+                    }
+                }
 
-                // Assign the vertex positions
-                vertices ~= (FACE[i][f].x == 0 ? min.x : max.x);
-                vertices ~= (FACE[i][f].y == 0 ? min.y : max.y);
-                vertices ~= (FACE[i][f].z == 0 ? min.z : max.z);
+                // Assign texture coordinates// Assign texture coordinates               
 
-                // Assign texture coordinates// Assign texture coordinates
-
-
-                textureCoordinates ~= ((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
-                textureCoordinates ~= ((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
-
-                /*
                 final switch (isBlockBox) {
                     case false: {
                         // Normal drawtype
@@ -370,7 +388,6 @@ void buildBlock(
                         break;
                     }
                 }
-                */
             }
             // Tick up tri count
             triangleCount += 2;
@@ -407,8 +424,8 @@ public static Mesh testAPI(uint ID) {
 
     BlockGraphicDefinition definition = BlockGraphicDefinition(
         [
-            // [0,0,0,1,0.5,1],
-            // [0,0,0,0.5,1,1]
+            [0,0,0,1,0.5,1],
+            [0,0,0,0.5,1,0.5]
         ],
         [
             Vector2I(4,0),
@@ -430,7 +447,9 @@ public static Mesh testAPI(uint ID) {
     int triangleCount = 0;
     int vertexCount   = 0;
 
-    buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition);
+    for (int i = 0; i < 4; i++) {
+        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition, Vector3I(i * 2,0,0), cast(ubyte)i);
+    }
 
     writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
