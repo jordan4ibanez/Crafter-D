@@ -50,6 +50,14 @@ immutable Vector3[4][6] FACE = [
         Vector3(1,0,0), // Bottom Right | 2
         Vector3(1,1,0), // Top Right    | 3
     ],
+    // Axis base:        Y 1
+    // Normal direction: Y 1
+    [
+        Vector3(1,1,0), // Top Left     | 0
+        Vector3(0,1,0), // Bottom Left  | 1
+        Vector3(0,1,1), // Bottom Right | 2
+        Vector3(1,1,1), // Top Right    | 3
+    ],
     // Axis base:        Z 1
     // Normal direction: Z 1
     [
@@ -58,14 +66,6 @@ immutable Vector3[4][6] FACE = [
         Vector3(1,0,1), // Bottom Right | 2
         Vector3(1,1,1), // Top Right    | 3
     ],
-    // Axis base:        Y 1
-    // Normal direction: Y 1
-    [
-        Vector3(1,1,0), // Top Left     | 0
-        Vector3(0,1,0), // Bottom Left  | 1
-        Vector3(0,1,1), // Bottom Right | 2
-        Vector3(1,1,1), // Top Right    | 3
-    ]
 ];
 
 // Immutable index order
