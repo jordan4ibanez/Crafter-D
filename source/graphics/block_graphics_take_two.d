@@ -272,6 +272,27 @@ void buildIndices(ref ushort[] indices, ref int vertexCount) {
     vertexCount += 4;
 }
 
+// An automatic rotation translator for what faces are not generated
+immutable int[4][4] rotationTranslation = 
+[
+    // index 0 is always unused for [][here]
+    // Back
+    [0,2,1,3],
+    // Front
+    [1,3,0,2],
+    // Left
+    [2,1,3,0],
+    // Right
+    [3,0,2,1],
+];
+int translateRotationRender(int currentFace, ubyte currentRotation){
+    // Don't bother if not on the X or Z axis or if no rotation
+    if (currentFace > 3 || currentRotation == 0) {
+        return currentFace;
+    }
+    return rotationTranslation[currentFace][currentRotation];
+}
+
 
 
 // Assembles a block mesh piece and appends the necessary data
@@ -283,7 +304,8 @@ void buildBlock(
     ref int vertexCount,
     BlockGraphicDefinition graphicsDefiniton,
     Vector3I position,
-    ubyte rotation
+    ubyte rotation,
+    bool[] renderArray
 ){
 
     float[6][] blockBox = graphicsDefiniton.blockBox;
@@ -312,6 +334,11 @@ void buildBlock(
         // Override min and max here if applicable
 
         for (int i = 0; i < 6; i++) {
+
+            // Don't render this face if it's a normal block
+            if (!isBlockBox && !renderArray[translateRotationRender(i, rotation)]) {
+                continue;
+            }
 
             immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
@@ -424,8 +451,8 @@ public static Mesh testAPI(uint ID) {
 
     BlockGraphicDefinition definition = BlockGraphicDefinition(
         [
-            [0,0,0,1,0.5,1],
-            [0,0,0,0.5,1,0.5]
+            // [0,0,0,1,0.5,1],
+            // [0,0,0,0.5,1,0.5]
         ],
         [
             Vector2I(4,0),
@@ -448,7 +475,16 @@ public static Mesh testAPI(uint ID) {
     int vertexCount   = 0;
 
     for (int i = 0; i < 32_768; i++) {
-        buildBlock(vertices, textureCoordinates,indices,triangleCount,vertexCount,definition, Vector3I(i * 2,0,0), cast(ubyte)i % 4);
+        buildBlock(
+            vertices,
+            textureCoordinates,
+            indices,
+            triangleCount,
+            vertexCount,
+            definition,
+            Vector3I(i * 2,0,0), cast(ubyte)i % 4,
+            [true,true,true,true,true,true]
+        );
     }
 
     writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
