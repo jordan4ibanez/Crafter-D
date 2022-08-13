@@ -147,3 +147,11 @@ immutable Vector2I[4][6] TEXTURE_CULL = [
         Vector2I(3,10)
     ],
 ];
+
+// An automatic index builder
+void buildIndices(ref ushort[] indices, ref int vertexCount) {
+    for (ushort i = 0; i < 6; i++) {
+        indices ~= cast(ushort)(INDICES[i] + vertexCount);
+    }
+    vertexCount += 4;
+}
