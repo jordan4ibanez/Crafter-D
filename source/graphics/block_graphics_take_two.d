@@ -330,6 +330,11 @@ void buildBlock(
 
                 // Assign texture coordinates// Assign texture coordinates
 
+
+                textureCoordinates ~= ((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                textureCoordinates ~= ((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+
+                /*
                 final switch (isBlockBox) {
                     case false: {
                         // Normal drawtype
@@ -365,6 +370,7 @@ void buildBlock(
                         break;
                     }
                 }
+                */
             }
             // Tick up tri count
             triangleCount += 2;
@@ -401,8 +407,8 @@ public static Mesh testAPI(uint ID) {
 
     BlockGraphicDefinition definition = BlockGraphicDefinition(
         [
-            [0,0,0,1,0.5,1],
-            [0,0,0,0.5,1,1]
+            // [0,0,0,1,0.5,1],
+            // [0,0,0,0.5,1,1]
         ],
         [
             Vector2I(4,0),
