@@ -17,12 +17,15 @@ They utilize 1D to 3D spatial striping to be fast.
 
 
 // Pre-calculation
-const int chunkSizeX = 16;
-const int chunkSizeY = 128;
-const int chunkSizeZ = 16;
+immutable int chunkSizeX = 16;
+immutable int chunkSizeY = 128;
+immutable int chunkSizeZ = 16;
 
-const int chunkArrayLength = chunkSizeX * chunkSizeY * chunkSizeZ;
-const int yStride = chunkSizeX * chunkSizeY;
+// This needs to be divisible by 8 so (chunkSizeY / this) == 8
+immutable int chunkStackSizeY = 16;
+
+immutable int chunkArrayLength = chunkSizeX * chunkSizeY * chunkSizeZ;
+immutable int yStride = chunkSizeX * chunkSizeY;
 
 // 1D index to Vector3 position
 Vector3I indexToPosition(int index) {
@@ -63,6 +66,7 @@ struct Chunk {
     private uint[chunkArrayLength]  block;
     private ubyte[chunkArrayLength] light;
     private ubyte[chunkArrayLength] rotation;
+    private Model[8] chunkModelStack; 
     // Height map needs to be added in
 
     private string biome;
@@ -73,16 +77,18 @@ struct Chunk {
         this.setBiome(biomeName);
     }
 
-    void runADebug(int index) {
-
-
-        Vector3I test = indexToPosition(index);
-
-        int test2 = positionToIndex(test);
-
-        assert(index == test2, "ERROR! INDEX MISMATCH!!");
-
-        writeln("---------\n","Start: ", index ,"\n", test, "\n", test2, "\n-----------");
+    // Model manipulation
+    void setModel(int yStack, Model newModel) {
+        this.chunkModelStack[yStack] = newModel;
+    }
+    void removeModel(int yStack) {
+        UnloadModel(this.chunkModelStack[yStack]);
+    }
+    Model getModel(int yStack) {
+        return this.chunkModelStack[yStack];
+    }
+    void drawModel(int yStack) {
+        DrawModel(this.chunkModelStack[yStack], Vector3(0,0,0),1,Colors.WHITE);
     }
 
     // Complex boilerplate with boundary checks
