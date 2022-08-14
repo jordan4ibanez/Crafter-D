@@ -104,9 +104,13 @@ void main(string[] args) {
         // Client loop
         while(!WindowShouldClose()) {
 
-            UpdateCamera(&camera);
             // Delta calculation must come first
             calculateDelta();
+
+            // Automatically plops the FPS and delta time onto the window title
+            SetWindowTitle((getVersionTitle() ~ " | FPS: " ~ to!string(GetFPS()) ~ " | Delta: " ~ to!string(getDelta())).ptr);
+
+            UpdateCamera(&camera);
 
             BeginDrawing();
 
