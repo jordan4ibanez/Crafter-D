@@ -82,11 +82,22 @@ struct Chunk {
     void removeModel(int yStack) {
         UnloadModel(this.chunkModelStack[yStack]);
     }
+    /* // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
         return this.chunkModelStack[yStack];
     }
+    */
     void drawModel(int yStack) {
-        DrawModel(this.chunkModelStack[yStack], Vector3(0,0,0),1,Colors.WHITE);
+        DrawModel(
+            this.chunkModelStack[yStack],
+            Vector3(
+                this.chunkPosition.x * chunkSizeX,
+                0,
+                this.chunkPosition.y * chunkSizeZ
+            ),
+            1,
+            Colors.WHITE
+        );
     }
 
     // Complex boilerplate with boundary checks
