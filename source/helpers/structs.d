@@ -18,4 +18,11 @@ struct Vector3I {
         this.y = y;
         this.z = z;
     }
+    Vector3I add(Vector3I other) {
+        return Vector3I(
+            this.x + other.x,
+            this.y + other.y,
+            this.z + other.z
+        );
+    }
 }
