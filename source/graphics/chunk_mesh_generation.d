@@ -7,6 +7,7 @@ import chunk.chunk;
 import helpers.structs;
 
 void debugCreateBlockGraphics(){
+    // Stone
     registerBlockGraphicsDefinition(
         1,
         [
@@ -14,12 +15,40 @@ void debugCreateBlockGraphics(){
             // [0,0,0,0.5,1,0.5]
         ],
         [
-            Vector2I(4,0),
-            Vector2I(5,0),
-            Vector2I(6,0),
-            Vector2I(7,0),
-            Vector2I(8,0),
-            Vector2I(9,0)
+            Vector2I(0,0),
+            Vector2I(0,0),
+            Vector2I(0,0),
+            Vector2I(0,0),
+            Vector2I(0,0),
+            Vector2I(0,0)
+        ]
+    );
+
+    // Grass
+    registerBlockGraphicsDefinition(
+        2,
+        [],
+        [
+            Vector2I(1,0),
+            Vector2I(1,0),
+            Vector2I(1,0),
+            Vector2I(1,0),
+            Vector2I(3,0),
+            Vector2I(2,0)
+        ]
+    );
+
+    // Dirt
+    registerBlockGraphicsDefinition(
+        3,
+        [],
+        [
+            Vector2I(3,0),
+            Vector2I(3,0),
+            Vector2I(3,0),
+            Vector2I(3,0),
+            Vector2I(3,0),
+            Vector2I(3,0)
         ]
     );
 }
@@ -74,7 +103,7 @@ Mesh generateChunkMesh(Chunk chunk) {
             }
         }
 
-        if (currentBlock == 1) {
+        if (currentBlock != 0) {
             buildBlock(
                 currentBlock,
                 vertices,
