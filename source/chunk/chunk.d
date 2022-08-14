@@ -66,11 +66,13 @@ struct Chunk {
     // Height map needs to be added in
 
     private string biome;
-    private Vector2I position = Vector2I(0,0);
+    private Vector2I chunkPosition = Vector2I(0,0);
     private bool positionLock = false;
 
     this(string biomeName, Vector2I position) {
         this.setBiome(biomeName);
+        this.chunkPosition = position;
+        this.positionLock = true;
     }
 
     // Model manipulation
@@ -128,18 +130,8 @@ struct Chunk {
     string getBiome() {
         return this.biome;
     }
-    void setBiome(string newBiome) {
-        this.biome = newBiome;
-    }
 
     Vector2I getPosition() {
         return this.position;
-    }
-    // One way switch for setting position
-    void setPosition(int x, int z) {
-        if (!this.positionLock) {
-            this.positionLock = true;
-            this.position = Vector2I(x,z);
-        }
     }
 }
