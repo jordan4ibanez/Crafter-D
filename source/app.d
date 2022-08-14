@@ -54,6 +54,8 @@ void main(string[] args) {
         InitWindow(1280,720, ("Crafter " ~ GAME_VERSION).ptr);
         SetTargetFPS(60);
 
+        SetWindowIcon(LoadImage("textures/icon.png"));
+
         // Debug camera
         Camera camera = Camera(
             Vector3(0,66,-1),
