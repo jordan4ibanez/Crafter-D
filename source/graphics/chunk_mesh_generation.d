@@ -93,25 +93,24 @@ void generateChunkMesh(ref Chunk chunk, ubyte yStack) {
         for (int z = 0; z < chunkSizeZ; z++) {
             for (int y = yMin; y < yMax; y++) {
                 // writeln(x," ", y, " ", z);
+
                 Vector3I position = Vector3I(x,y,z);
-                uint currentBlock = chunk.getBlock(position.x,position.y,position.z);
-                ubyte currentRotation = chunk.getRotation(position.x, position.y, position.z);
+
+                uint currentBlock = chunk.getBlock(position);
+                ubyte currentRotation = chunk.getRotation(position);
 
                 bool[6] renderingPositions = [false,false,false,false,false,false];
 
                 for (int w = 0; w < 6; w++) {
                     Vector3I selectedPosition = checkPositions[w];
 
-                    Vector3I currentCheckPosition = Vector3I(
-                        position.x + selectedPosition.x,
-                        position.y + selectedPosition.y,
-                        position.z + selectedPosition.z,
-                    );
+                    // Can add structs together like their base components
+                    Vector3I currentCheckPosition = position.add(selectedPosition);
 
-                    if (!collide(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z)) {
+                    if (!collide(currentCheckPosition)) {
                         renderingPositions[w] = true;
                     } else {
-                        if (chunk.getBlock(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z) == 0) {
+                        if (chunk.getBlock(currentCheckPosition) == 0) {
                             renderingPositions[w] = true;
                         }
                     }
