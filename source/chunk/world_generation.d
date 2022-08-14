@@ -45,7 +45,7 @@ void generateTerrain (ref Chunk thisChunk) {
             int realHeight = baseHeight + currentHeightFlux;
 
             // Debug
-            writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
+            // writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
 
             // Here will go a stack fill with predefined layers and whatnot
 
