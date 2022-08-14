@@ -1,5 +1,6 @@
-# voxel_thing
- 
+# Crafter
+
+Discord: https://discord.gg/dRPyvubfyg
 
 WIP
 
