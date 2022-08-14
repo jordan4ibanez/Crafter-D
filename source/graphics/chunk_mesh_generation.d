@@ -6,6 +6,17 @@ import graphics.block_graphics;
 import chunk.chunk;
 import helpers.structs;
 
+private Texture TEXTURE_ATLAS;
+private bool lock = false;
+
+void loadTextureAtlas() {
+    // Avoid memory leak
+    if (!lock) {
+        TEXTURE_ATLAS = LoadTexture("textures/world_texture_map.png");
+        lock = true;
+    }
+}
+
 void debugCreateBlockGraphics(){
     // Stone
     registerBlockGraphicsDefinition(
@@ -63,8 +74,7 @@ immutable Vector3I[6] checkPositions = [
 ];
 
 
-Mesh generateChunkMesh(Chunk chunk) {
-    Mesh myMesh = Mesh();
+void generateChunkMesh(ref Chunk chunk, ubyte yStack) {
 
     float[] vertices;
     ushort[] indices;
@@ -76,63 +86,80 @@ Mesh generateChunkMesh(Chunk chunk) {
     int vertexCount   = 0;
 
     // Work goes here
+    immutable int yMin = yStack * chunkStackSizeY;
+    immutable int yMax = (yStack + 1) * chunkStackSizeY;
 
-    for (int i = 0; i < chunkArrayLength; i++) {
-        Vector3I position = indexToPosition(i);
+    for (int x = 0; x < chunkSizeX; x++){
+        for (int z = 0; z < chunkSizeZ; z++) {
+            for (int y = yMin; y < yMax; y++) {
+                // writeln(x," ", y, " ", z);
+                Vector3I position = Vector3I(x,y,z);
+                uint currentBlock = chunk.getBlock(position.x,position.y,position.z);
+                ubyte currentRotation = chunk.getRotation(position.x, position.y, position.z);
 
-        uint currentBlock = chunk.getBlock(position.x,position.y,position.z);
-        ubyte currentRotation = chunk.getRotation(position.x, position.y, position.z);
+                bool[6] renderingPositions = [false,false,false,false,false,false];
 
-        bool[6] renderingPositions = [false,false,false,false,false,false];
+                for (int w = 0; w < 6; w++) {
+                    Vector3I selectedPosition = checkPositions[w];
 
-        for (int w = 0; w < 6; w++) {
-            Vector3I selectedPosition = checkPositions[w];
+                    Vector3I currentCheckPosition = Vector3I(
+                        position.x + selectedPosition.x,
+                        position.y + selectedPosition.y,
+                        position.z + selectedPosition.z,
+                    );
 
-            Vector3I currentCheckPosition = Vector3I(
-                position.x + selectedPosition.x,
-                position.y + selectedPosition.y,
-                position.z + selectedPosition.z,
-            );
+                    if (!collide(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z)) {
+                        renderingPositions[w] = true;
+                    } else {
+                        if (chunk.getBlock(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z) == 0) {
+                            renderingPositions[w] = true;
+                        }
+                    }
+                }
 
-            if (!collide(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z)) {
-                renderingPositions[w] = true;
-            } else {
-                if (chunk.getBlock(currentCheckPosition.x, currentCheckPosition.y, currentCheckPosition.z) == 0) {
-                    renderingPositions[w] = true;
+                if (currentBlock != 0) {
+                    buildBlock(
+                        currentBlock,
+                        vertices,
+                        textureCoordinates,
+                        indices,
+                        triangleCount,
+                        vertexCount,
+                        position,
+                        currentRotation,
+                        renderingPositions
+                    );
                 }
             }
         }
-
-        if (currentBlock != 0) {
-            buildBlock(
-                currentBlock,
-                vertices,
-                textureCoordinates,
-                indices,
-                triangleCount,
-                vertexCount,
-                position,
-                currentRotation,
-                renderingPositions
-            );
-        }
     }
 
-
+    // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
+    chunk.removeModel(yStack);
 
     writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
+    // No more processing is required, it's nothing
+    if (vertexCount == 0) {
+        return;
+    }
 
-    myMesh.triangleCount = triangleCount;
-    myMesh.vertexCount = vertexCount;
+    Mesh thisChunkMesh = Mesh();
 
-    myMesh.vertices  = vertices.ptr;
-    myMesh.indices   = indices.ptr;
-    // myMesh.normals   = normals.ptr;
-    myMesh.texcoords = textureCoordinates.ptr;
+    thisChunkMesh.triangleCount = triangleCount;
+    thisChunkMesh.vertexCount = vertexCount;
 
-    UploadMesh(&myMesh, false);
+    thisChunkMesh.vertices  = vertices.ptr;
+    thisChunkMesh.indices   = indices.ptr;
+    // thisChunkMesh.normals   = normals.ptr;
+    thisChunkMesh.texcoords = textureCoordinates.ptr;
 
+    UploadMesh(&thisChunkMesh, false);
 
-    return myMesh;    
+    Model thisChunkModel = LoadModelFromMesh(thisChunkMesh);
+
+    thisChunkModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_ATLAS;
+
+    chunk.setModel(yStack, thisChunkModel);
+
 }
