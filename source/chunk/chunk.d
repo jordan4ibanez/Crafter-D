@@ -22,6 +22,7 @@ immutable int chunkSizeY = 128;
 immutable int chunkSizeZ = 16;
 
 // This needs to be divisible by 8 so (chunkSizeY / this) == 8
+// This is only used for dividing the chunk meshes up into bite sized pieces
 immutable int chunkStackSizeY = 16;
 
 immutable int chunkArrayLength = chunkSizeX * chunkSizeY * chunkSizeZ;
@@ -38,12 +39,7 @@ Vector3I indexToPosition(int index) {
 
 // Vector3 position to 1D index
 int positionToIndex(Vector3I position) {
-    return (position.z * yStride) + (position.y * chunkSizeX) + position.x;
-}
-
-// Overload
-int positionToIndex(int x, int y, int z) {
-    return (x * yStride) + (z * chunkSizeY) + y;
+    return (position.x * yStride) + (position.z * chunkSizeY) + position.y;
 }
 
 
@@ -58,8 +54,8 @@ bool collideZ(int value) {
     return (value >= 0 && value < chunkSizeZ);
 }
 // All at once
-bool collide(int x, int y, int z) {
-    return (collideX(x) && collideY(y) && collideZ(z));
+bool collide(Vector3I position) {
+    return (collideX(position.x) && collideY(position.y) && collideZ(position.z));
 }
 
 struct Chunk {
@@ -92,18 +88,18 @@ struct Chunk {
     }
 
     // Complex boilerplate with boundary checks
-    uint getBlock(int x, int y, int z) {
-        if (collide(x,y,z)) {
-            return(this.block[positionToIndex(x,y,z)]);
+    uint getBlock(Vector3I position) {
+        if (collide(position)) {
+            return(this.block[positionToIndex(position)]);
         } else {
             // failed for some reason
             writeln("Getblock FAILED!");
             return 0;
         }
     }
-    void setBlock(int x, int y, int z, uint newBlock) {
-        if (collide(x,y,z)) {
-            this.block[positionToIndex(x,y,z)] = newBlock;
+    void setBlock(Vector3I position, uint newBlock) {
+        if (collide(position)) {
+            this.block[positionToIndex(position)] = newBlock;
         }
     }
     // Overloads
@@ -114,18 +110,18 @@ struct Chunk {
         this.block[index] = newBlock;
     }
 
-    ubyte getRotation(int x, int y, int z) {
-        if (collide(x,y,z)) {
-            return(this.rotation[positionToIndex(x,y,z)]);
+    ubyte getRotation(Vector3I position) {
+        if (collide(position)) {
+            return(this.rotation[positionToIndex(position)]);
         } else {
             // failed for some reason
             writeln("Getblock FAILED!");
             return 0;
         }
     }
-    void setRotation(int x, int y, int z, ubyte newRotation) {
-        if (collide(x,y,z)) {
-            this.rotation[positionToIndex(x,y,z)] = newRotation;
+    void setRotation(Vector3I position, ubyte newRotation) {
+        if (collide(position)) {
+            this.rotation[positionToIndex(position)] = newRotation;
         }
     }
 
