@@ -56,6 +56,8 @@ void main(string[] args) {
 
         SetWindowIcon(LoadImage("textures/icon.png"));
 
+        loadTextureAtlas();
+
         // Debug camera
         Camera camera = Camera(
             Vector3(0,66,-1),
@@ -84,11 +86,15 @@ void main(string[] args) {
 
         generateTerrain(thisChunk);
 
+        for (ubyte i = 0; i < 8; i++) {
+            generateChunkMesh(thisChunk, i);
+        }
+
         // Generating a grass block debug
-        Model testingModel = LoadModelFromMesh(generateChunkMesh(thisChunk));
+
         // Texture testingTexture = LoadTexture("textures/debug.png");
-        Texture testingTexture = LoadTexture("textures/world_texture_map.png");
-        testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
+        
+        // testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
 
 
 
@@ -110,7 +116,11 @@ void main(string[] args) {
 
             DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
-            DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
+            for (ubyte i = 0; i < 8; i++) {
+                thisChunk.drawModel(i);
+            }
+
+            // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
             // DrawCube(Vector3(1.5,0.5,1.5),1,1,1,Colors.RED);
 
 
