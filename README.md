@@ -1,4 +1,4 @@
-# Crafter
+# Crafter v0.0.0 - Prototyping
 
 Discord: https://discord.gg/dRPyvubfyg
 
