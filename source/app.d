@@ -14,6 +14,7 @@ import delta_time;
 import graphics.chunk_mesh_generation;
 import helpers.structs;
 
+immutable string GAME_VERSION = "0.0.0 - Prototype";
 
 void main(string[] args) {
 
@@ -50,7 +51,7 @@ void main(string[] args) {
 
 
 
-        InitWindow(1280,720, "Voxel Thing");
+        InitWindow(1280,720, ("Crafter " ~ GAME_VERSION).ptr);
         SetTargetFPS(60);
 
         // Debug camera
