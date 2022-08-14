@@ -82,7 +82,7 @@ void main(string[] args) {
 
 
 
-        Chunk thisChunk = Chunk("default", Vector2I(0,0));
+        Chunk thisChunk = Chunk("default", Vector2I(-1,-1));
 
         generateTerrain(thisChunk);
 
