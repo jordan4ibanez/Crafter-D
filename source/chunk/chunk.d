@@ -70,7 +70,7 @@ struct Chunk {
     private bool positionLock = false;
 
     this(string biomeName, Vector2I position) {
-        this.setBiome(biomeName);
+        this.biome = biomeName;
         this.chunkPosition = position;
         this.positionLock = true;
     }
@@ -132,6 +132,6 @@ struct Chunk {
     }
 
     Vector2I getPosition() {
-        return this.position;
+        return this.chunkPosition;
     }
 }
