@@ -1,6 +1,7 @@
 module crafter;
 
 import std.stdio;
+import std.conv;
 
 import raylib;
 import entity.mob.mob;
@@ -15,10 +16,11 @@ import raymath;
 import delta_time;
 import graphics.chunk_mesh_generation;
 import helpers.structs;
-
-immutable string GAME_VERSION = "0.0.0 - Prototype";
+import helpers.version_info;
 
 void main(string[] args) {
+
+    initVersionTitle();    
 
     if (args.length > 1 && args[1] == "--server") {
         // Server loop
@@ -52,8 +54,7 @@ void main(string[] args) {
         */
 
 
-
-        InitWindow(1280,720, ("Crafter " ~ GAME_VERSION).ptr);
+        InitWindow(1280,720, getVersionTitle().ptr);
         SetTargetFPS(60);
 
         SetWindowIcon(LoadImage("textures/icon.png"));
@@ -102,7 +103,6 @@ void main(string[] args) {
 
         // Client loop
         while(!WindowShouldClose()) {
-
 
             UpdateCamera(&camera);
             // Delta calculation must come first
