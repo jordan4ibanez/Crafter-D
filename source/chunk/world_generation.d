@@ -32,11 +32,11 @@ void generateTerrain (ref Chunk thisChunk) {
         for (int z = 0; z < chunkSizeZ; z++) {
 
             // The real position in 2D space
-            int currentPositionX = x + basePositionX;
-            int currentPositionZ = z + basePositionZ;
+            int realPositionX = x + basePositionX;
+            int realPositionZ = z + basePositionZ;
 
             // Noise at position
-            float currentNoise = fnlGetNoise2D(&noise, currentPositionX, currentPositionZ);
+            float currentNoise = fnlGetNoise2D(&noise, realPositionX, realPositionZ);
 
             // Get the height fluctuation of the current position
             int currentHeightFlux = cast(int)floor(fluxHeight * currentNoise);
@@ -45,7 +45,7 @@ void generateTerrain (ref Chunk thisChunk) {
             int realHeight = baseHeight + currentHeightFlux;
 
             // Debug
-            // writeln("the height at ", currentPositionX, ",", currentPositionZ, " is ", realHeight);
+            // writeln("the height at ", realPositionX, ",", realPositionZ, " is ", realHeight);
 
             // Here will go a stack fill with predefined layers and whatnot
 
