@@ -3,9 +3,9 @@
         "jordan4ibanez"
     ],
 
-    "license": "MIT",
-
     "name": "crafter",
+    
+    "license": "MIT",
 
     "description": "A voxel thing written in D",
 
