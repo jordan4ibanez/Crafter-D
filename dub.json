@@ -11,6 +11,8 @@
 
     "copyright": "Copyright © 2022, jordan4ibanez",
 
+    "mainSourceFile": "source/crafter.d",
+
     "dependencies": {
         "fast_noise": "~>1.0.3",
         "delta_time": "~>1.0.2",
