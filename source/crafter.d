@@ -1,3 +1,5 @@
+module crafter;
+
 import std.stdio;
 
 import raylib;
