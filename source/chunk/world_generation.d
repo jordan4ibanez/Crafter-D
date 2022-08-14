@@ -49,7 +49,17 @@ void generateTerrain (ref Chunk thisChunk) {
 
             // Here will go a stack fill with predefined layers and whatnot
 
-            for (int y = realHeight; y >= 0; y--){
+            // Grass top
+            thisChunk.setBlock(x,realHeight,z,2);
+
+            // Dirt filler
+            for (int y = realHeight - 1; y > realHeight - 4 ; y--){
+                // writeln("set 1 to: ", x, " ", y, " ", z);
+                thisChunk.setBlock(x,y,z,3);
+            }
+
+            // Stone bottom
+            for (int y = realHeight - 3; y >= 0 ; y--){
                 // writeln("set 1 to: ", x, " ", y, " ", z);
                 thisChunk.setBlock(x,y,z,1);
             }
