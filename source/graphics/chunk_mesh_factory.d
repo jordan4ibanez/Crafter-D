@@ -34,17 +34,17 @@ Vector3I[] newStack;
 Vector3I[] updatingStack;
 
 void newChunkMeshUpdate(Vector3I position) {
-    // if (!newStack.canFind(position)) {
+    if (!newStack.canFind(position)) {
         newStack.insertInPlace(0, position);
         // newStack ~= position;
-    // }
+    }
 }
 
 void updateChunkMesh(Vector3I position) {
-    // if (!updatingStack.canFind(position)) {
+    if (!updatingStack.canFind(position)) {
         // newStack.insertInPlace(0, position);
         updatingStack ~= position;
-    // }
+    }
 }
 
 void processChunkMeshUpdateStack(){
