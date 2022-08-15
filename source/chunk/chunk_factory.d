@@ -59,7 +59,7 @@ void processTerrainGenerationStack() {
 
         Vector2I poppedValue = stack[0];
         stack.popFront();
-        writeln("popped: ", poppedValue);
+        // writeln("popped: ", poppedValue);
 
         // Ship them to the chunk generator process
         internalGenerateChunk(poppedValue);
