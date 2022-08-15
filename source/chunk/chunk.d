@@ -63,7 +63,7 @@ struct Chunk {
     private uint[chunkArrayLength]  block;
     private ubyte[chunkArrayLength] light;
     private ubyte[chunkArrayLength] rotation;
-    private Model[8] chunkModelStack; 
+    private Model[8] chunkModelStack;
     // Height map needs to be added in
 
     private string biome;
