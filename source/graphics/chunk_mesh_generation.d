@@ -214,7 +214,7 @@ void generateChunkMesh(
         }
     }
 
-    writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
+    // writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
 
     // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
     // This causes a crash for some reason
