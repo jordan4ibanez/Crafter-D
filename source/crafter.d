@@ -126,7 +126,7 @@ void main(string[] args) {
 
             
 
-            DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
+            // DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
             renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
