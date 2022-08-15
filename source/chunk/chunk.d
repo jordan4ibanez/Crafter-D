@@ -59,7 +59,7 @@ bool collide(Vector3I position) {
 }
 
 struct Chunk {
-    private bool exists = false;
+    private bool thisExists = false;
     private uint[chunkArrayLength]  block;
     private ubyte[chunkArrayLength] light;
     private ubyte[chunkArrayLength] rotation;
@@ -74,11 +74,11 @@ struct Chunk {
         this.biome = biomeName;
         this.chunkPosition = position;
         this.positionLock = true;
-        this.exists = true;
+        this.thisExists = true;
     }
 
     bool exists() {
-        return this.exists;
+        return this.thisExists;
     }
 
     // Model manipulation
