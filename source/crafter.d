@@ -82,7 +82,9 @@ void main(string[] args) {
             CameraProjection.CAMERA_PERSPECTIVE
         );
 
-        SetCameraMode(camera, CameraMode.CAMERA_FIRST_PERSON);
+        SetCameraMode(camera, CameraMode.CAMERA_CUSTOM);
+
+        
 
         // Testing the block graphics registration
         // This will get called automatically when blocks are registered
