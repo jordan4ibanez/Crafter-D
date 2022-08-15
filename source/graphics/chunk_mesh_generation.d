@@ -221,9 +221,9 @@ void generateChunkMesh(
     chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
-    if (vertexCount == 0) {
-        return;
-    }
+    // if (vertexCount == 0) {
+        // return;
+    // }
 
     Mesh thisChunkMesh = Mesh();
 
