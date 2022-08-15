@@ -62,7 +62,7 @@ void main(string[] args) {
 
         loadTextureAtlas();
 
-        int debugSize = 4;
+        int debugSize = 2;
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
