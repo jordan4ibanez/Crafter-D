@@ -56,13 +56,16 @@ void main(string[] args) {
 
 
         InitWindow(1280,720, getVersionTitle().ptr);
-        SetTargetFPS(60);
+        // SetTargetFPS(400);
+
+        // Uncomment this to get a cleaner terminal - Disables raylib logging
+        SetTraceLogLevel(10_000);
 
         SetWindowIcon(LoadImage("textures/icon.png"));
 
         loadTextureAtlas();
 
-        int debugSize = 2;
+        int debugSize = 10;
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
@@ -72,7 +75,7 @@ void main(string[] args) {
 
         // Debug camera
         Camera camera = Camera(
-            Vector3(0,70,-1),
+            Vector3(0,100,-1),
             Vector3(1,0,-2),
             Vector3(0,1,0),
             73,
