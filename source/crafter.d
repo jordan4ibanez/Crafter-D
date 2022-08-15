@@ -104,8 +104,6 @@ void main(string[] args) {
         
         // testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
 
-
-
         // Client loop
         while(!WindowShouldClose()) {
 
