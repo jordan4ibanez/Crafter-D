@@ -87,7 +87,7 @@ struct Chunk {
         this.chunkModelStack[yStack] = newModel;
     }
     void removeModel(int yStack) {
-        UnloadModelKeepMeshes(this.chunkModelStack[yStack]);
+        UnloadModel(this.chunkModelStack[yStack]);
     }
     /* // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
