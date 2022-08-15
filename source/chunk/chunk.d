@@ -54,6 +54,7 @@ bool collideZ(int value) {
     return (value >= 0 && value < chunkSizeZ);
 }
 // All at once
+// True: Is within the chunk
 bool collide(Vector3I position) {
     return (collideX(position.x) && collideY(position.y) && collideZ(position.z));
 }
