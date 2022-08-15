@@ -121,7 +121,7 @@ void main(string[] args) {
 
             BeginDrawing();
 
-            ClearBackground(Colors.RAYWHITE);
+            ClearBackground(Colors.SKYBLUE);
 
             BeginMode3D(camera);
 
