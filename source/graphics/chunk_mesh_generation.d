@@ -218,7 +218,7 @@ void generateChunkMesh(
 
     // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
     // This causes a crash for some reason
-    // chunk.removeModel(yStack);
+    chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
     if (vertexCount == 0) {
