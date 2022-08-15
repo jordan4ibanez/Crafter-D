@@ -74,7 +74,13 @@ immutable Vector3I[6] checkPositions = [
 ];
 
 
-void generateChunkMesh(ref Chunk chunk, ubyte yStack) {
+void generateChunkMesh(
+    ref Chunk chunk,
+    Chunk neighborNegativeX,
+    Chunk neighborPositiveX,
+    Chunk neighborNegativeZ,
+    Chunk neighborPositiveZ,
+    ubyte yStack) {
 
     float[] vertices;
     ushort[] indices;
@@ -88,6 +94,11 @@ void generateChunkMesh(ref Chunk chunk, ubyte yStack) {
     // Work goes here
     immutable int yMin = yStack * chunkStackSizeY;
     immutable int yMax = (yStack + 1) * chunkStackSizeY;
+
+    bool neighborNegativeXExists = neighborNegativeX.exists();
+    bool neighborPositiveXExists = neighborNegativeX.exists();
+    bool neighborNegativeZExists = neighborNegativeZ.exists();
+    bool neighborPositiveZExists = neighborPositiveZ.exists();
 
     for (int x = 0; x < chunkSizeX; x++){
         for (int z = 0; z < chunkSizeZ; z++) {

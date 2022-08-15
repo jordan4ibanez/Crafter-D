@@ -8,6 +8,7 @@ import std.algorithm : canFind;
 import helpers.structs;
 import chunk.world_generation;
 import graphics.chunk_mesh_generation;
+import graphics.chunk_mesh_factory;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
 properties to treat the entire file as a static class
@@ -30,8 +31,28 @@ void generateChunk(Vector2I position) {
     }
 }
 
-// Will poll the generation stack 
-void processStack() {
+// Gets a chunk from the container
+Chunk getChunk(Vector2I position) {
+    if (position in container) {
+        return container[position];
+    }
+    // Return non-existent chunk
+    return Chunk();
+}
+
+Chunk fakeChunk = Chunk();
+// Gets a mutable chunk from the container
+ref Chunk getMutableChunk(Vector2I position) {
+    if (position in container) {
+        return container[position];
+    }
+    assert(true == true, "WARNING HAVE HIT A NULL POSITION");
+    // This becomes garbage data
+    return fakeChunk;
+}
+
+// Polls the generation stack 
+void processTerrainGenerationStack() {
 
     // See if there are any new chunk generations
     if (stack.length > 0) {
@@ -47,20 +68,20 @@ void processStack() {
 
 // Internal chunk generation dispatch
 private void internalGenerateChunk(Vector2I newPosition) {
-    writeln("I'm generating a new chunk at: ", newPosition);
 
     // random debug for prototyping processes
     Chunk generatedChunk = Chunk("default", newPosition);
 
+    // World generator processes new chunk
     generateTerrain(generatedChunk);
 
-    // This is debug for testing
-    for (ubyte i = 0; i < 8; i++) {
-        generateChunkMesh(generatedChunk, i);
-    }
-
-    // Finally insert the chunk into the container
+    // Insert the chunk into the container
     container[newPosition] = generatedChunk;
+
+    // Finally add a new chunk mesh update
+    for (ubyte y = 0; y < 8; y++) {
+        newChunkMeshUpdate(Vector3I(newPosition.x, y, newPosition.y));
+    }
 
     // The factory is now done processing the chunk
 }

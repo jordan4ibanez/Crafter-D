@@ -17,6 +17,7 @@ import delta_time;
 import graphics.chunk_mesh_generation;
 import helpers.structs;
 import helpers.version_info;
+import graphics.chunk_mesh_factory;
 
 void main(string[] args) {
 
@@ -61,7 +62,7 @@ void main(string[] args) {
 
         loadTextureAtlas();
 
-        int debugSize = 10;
+        int debugSize = 4;
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
@@ -71,7 +72,7 @@ void main(string[] args) {
 
         // Debug camera
         Camera camera = Camera(
-            Vector3(0,66,-1),
+            Vector3(0,50,-1),
             Vector3(1,0,-2),
             Vector3(0,1,0),
             73,
@@ -92,11 +93,6 @@ void main(string[] args) {
         /* END DEBUG */
 
 
-
-        Chunk thisChunk = Chunk("default", Vector2I(-1,-1));
-
-        generateTerrain(thisChunk);
-
         // Generating a grass block debug
 
         // Texture testingTexture = LoadTexture("textures/debug.png");
@@ -108,7 +104,9 @@ void main(string[] args) {
         // Client loop
         while(!WindowShouldClose()) {
 
-            processStack();
+            // These two functions literally build the environent
+            processTerrainGenerationStack();
+            processChunkMeshUpdateStack();
 
             // Delta calculation must come first
             calculateDelta();
@@ -126,7 +124,7 @@ void main(string[] args) {
 
             
 
-            // DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
+            DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
             renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
