@@ -34,15 +34,17 @@ Vector3I[] newStack;
 Vector3I[] updatingStack;
 
 void newChunkMeshUpdate(Vector3I position) {
-    if (!newStack.canFind(position)) {
-        newStack ~= position;
-    }
+    // if (!newStack.canFind(position)) {
+        newStack.insertInPlace(0, position);
+        // newStack ~= position;
+    // }
 }
 
 void updateChunkMesh(Vector3I position) {
-    if (!updatingStack.canFind(position)) {
+    // if (!updatingStack.canFind(position)) {
+        // newStack.insertInPlace(0, position);
         updatingStack ~= position;
-    }
+    // }
 }
 
 void processChunkMeshUpdateStack(){
@@ -51,7 +53,7 @@ void processChunkMeshUpdateStack(){
 
         Vector3I poppedValue = newStack[0];
         newStack.popFront();
-        writeln("popped: ", poppedValue);
+        // writeln("popped: ", poppedValue);
 
         // Ship them to the chunk generator process
         internalGenerateChunkMesh(poppedValue);
@@ -62,7 +64,7 @@ void processChunkMeshUpdateStack(){
 
         Vector3I poppedValue = updatingStack[0];
         updatingStack.popFront();
-        writeln("popped: ", poppedValue);
+        // writeln("popped: ", poppedValue);
 
         // Ship them to the chunk generator process
         internalUpdateChunkMesh(poppedValue);
