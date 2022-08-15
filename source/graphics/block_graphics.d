@@ -455,8 +455,7 @@ public static final class BlockGraphics {
         bool[6] renderArray
         ) {
 
-            if (ID == 0) {
-                writeln("RETURNING");
+            if (ID == 0) {  // Replace 0 check with block graphics definition check                
                 return;
             }
 
