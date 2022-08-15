@@ -61,6 +61,14 @@ void main(string[] args) {
 
         loadTextureAtlas();
 
+        int debugSize = 10;
+
+        for (int x = -debugSize; x <= debugSize; x++) {
+            for (int z = -debugSize; z <= debugSize; z++) {
+                generateChunk(Vector2I(x,z));
+            }
+        }
+
         // Debug camera
         Camera camera = Camera(
             Vector3(0,66,-1),
@@ -89,10 +97,6 @@ void main(string[] args) {
 
         generateTerrain(thisChunk);
 
-        for (ubyte i = 0; i < 8; i++) {
-            generateChunkMesh(thisChunk, i);
-        }
-
         // Generating a grass block debug
 
         // Texture testingTexture = LoadTexture("textures/debug.png");
@@ -103,6 +107,8 @@ void main(string[] args) {
 
         // Client loop
         while(!WindowShouldClose()) {
+
+            processStack();
 
             // Delta calculation must come first
             calculateDelta();
@@ -122,10 +128,7 @@ void main(string[] args) {
 
             DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
-            for (ubyte i = 0; i < 8; i++) {
-                thisChunk.drawModel(i);
-            }
-
+            renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
             // DrawCube(Vector3(1.5,0.5,1.5),1,1,1,Colors.RED);
 
