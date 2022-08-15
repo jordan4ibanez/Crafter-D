@@ -115,7 +115,9 @@ void main(string[] args) {
             calculateDelta();
 
             // Automatically plops the FPS and delta time onto the window title
-            SetWindowTitle((getVersionTitle() ~ " | FPS: " ~ to!string(GetFPS()) ~ " | Delta: " ~ to!string(getDelta())).ptr);
+            SetWindowTitle((
+                getVersionTitle() ~ " | FPS: " ~ to!string(GetFPS()) ~ " | Delta: " ~ to!string(getDelta())).ptr
+            );
 
             UpdateCamera(&camera);
 
