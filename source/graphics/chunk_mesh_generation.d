@@ -96,7 +96,7 @@ void generateChunkMesh(
     immutable int yMax = (yStack + 1) * chunkStackSizeY;
 
     bool neighborNegativeXExists = neighborNegativeX.exists();
-    bool neighborPositiveXExists = neighborNegativeX.exists();
+    bool neighborPositiveXExists = neighborPositiveX.exists();
     bool neighborNegativeZExists = neighborNegativeZ.exists();
     bool neighborPositiveZExists = neighborPositiveZ.exists();
 
@@ -144,10 +144,10 @@ void generateChunkMesh(
         }
     }
 
-    // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
-    chunk.removeModel(yStack);
-
     writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
+
+    // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
+    // chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
     if (vertexCount == 0) {
