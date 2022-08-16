@@ -23,7 +23,7 @@
 		"bindbc-glfw": "~>1.0.1",
 		"bindbc-openal": "~>1.0.0",
 		"bindbc-opengl": "~>1.0.2",
-		"delta_time": "~>1.0.2",
+		"delta_time": "~>1.0.3",
 		"fast_noise": "~>1.0.3",
 		"gl3n": "~>1.4.1",
 		"raylib-d": "~>4.0.0"
