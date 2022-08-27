@@ -7,11 +7,12 @@ import vector_2i;
 import vector_2d;
 import vector_4d;
 import vector_3d;
-import helper.log;
 
-import Keyboard = input.keyboard;
-import loader = bindbc.loader.sharedlib;
-import Mouse = input.mouse;
+import engine.helper.log;
+
+import loader   = bindbc.loader.sharedlib;
+import Keyboard = engine.input.keyboard;
+import Mouse    = engine.input.mouse;
 
 // Starts off as a null pointer
 private GLFWwindow* window = null;
