@@ -4,6 +4,7 @@ import std.algorithm;
 import std.stdio;
 import std.range: popFront;
 import std.array: insertInPlace;
+import vector_3i;
 
 import game.chunk.chunk_factory;
 import game.chunk.chunk;
@@ -28,19 +29,19 @@ That's about it really
 */
 
 // New meshes call this update to fully update neighbors
-Vector3I[] newStack;
+Vector3i[] newStack;
 
 // Preexisting meshes call this update to only update necessary neighbors
-Vector3I[] updatingStack;
+Vector3i[] updatingStack;
 
-void newChunkMeshUpdate(Vector3I position) {
+void newChunkMeshUpdate(Vector3i position) {
     if (!newStack.canFind(position)) {
         newStack.insertInPlace(0, position);
         // newStack ~= position;
     }
 }
 
-void updateChunkMesh(Vector3I position) {
+void updateChunkMesh(Vector3i position) {
     if (!updatingStack.canFind(position)) {
         // newStack.insertInPlace(0, position);
         updatingStack ~= position;
@@ -51,7 +52,7 @@ void processChunkMeshUpdateStack(){
     // See if there are any new chunk generations
     if (newStack.length > 0) {
 
-        Vector3I poppedValue = newStack[0];
+        Vector3i poppedValue = newStack[0];
         newStack.popFront();
         // writeln("popped: ", poppedValue);
 
@@ -62,7 +63,7 @@ void processChunkMeshUpdateStack(){
     // See if there are any existing chunk mesh updates
     if (updatingStack.length > 0) {
 
-        Vector3I poppedValue = updatingStack[0];
+        Vector3i poppedValue = updatingStack[0];
         updatingStack.popFront();
         // writeln("popped: ", poppedValue);
 
@@ -71,16 +72,16 @@ void processChunkMeshUpdateStack(){
     }
 }
 
-private void internalGenerateChunkMesh(Vector3I position) {
+private void internalGenerateChunkMesh(Vector3i position) {
     // Get chunk neighbors
     // These do not exist by default
-    Chunk neighborNegativeX = getChunk(Vector2I(position.x - 1, position.z));
-    Chunk neighborPositiveX = getChunk(Vector2I(position.x + 1, position.z));
-    Chunk neighborNegativeZ = getChunk(Vector2I(position.x, position.z - 1));
-    Chunk neighborPositiveZ = getChunk(Vector2I(position.x, position.z + 1));
+    Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
+    Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
+    Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
+    Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
-        getMutableChunk(Vector2I(position.x, position.z)),
+        getMutableChunk(Vector2i(position.x, position.z)),
         neighborNegativeX,
         neighborPositiveX,
         neighborNegativeZ,
@@ -91,29 +92,29 @@ private void internalGenerateChunkMesh(Vector3I position) {
     // Update neighbors
     
     if (neighborNegativeX.exists()) {
-        updateChunkMesh(Vector3I(position.x - 1, position.y, position.z));
+        updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
     }
     if (neighborPositiveX.exists()) {
-        updateChunkMesh(Vector3I(position.x + 1, position.y, position.z));
+        updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
     }
     if (neighborNegativeZ.exists()) {
-        updateChunkMesh(Vector3I(position.x, position.y, position.z - 1));
+        updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
     }
     if (neighborPositiveZ.exists()) {
-        updateChunkMesh(Vector3I(position.x, position.y, position.z + 1));
+        updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
     }
 }
 
-private void internalUpdateChunkMesh(Vector3I position) {
+private void internalUpdateChunkMesh(Vector3i position) {
     // Get chunk neighbors
     // These do not exist by default
-    Chunk neighborNegativeX = getChunk(Vector2I(position.x - 1, position.z));
-    Chunk neighborPositiveX = getChunk(Vector2I(position.x + 1, position.z));
-    Chunk neighborNegativeZ = getChunk(Vector2I(position.x, position.z - 1));
-    Chunk neighborPositiveZ = getChunk(Vector2I(position.x, position.z + 1));
+    Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
+    Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
+    Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
+    Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
-        getMutableChunk(Vector2I(position.x, position.z)),
+        getMutableChunk(Vector2i(position.x, position.z)),
         neighborNegativeX,
         neighborPositiveX,
         neighborNegativeZ,
