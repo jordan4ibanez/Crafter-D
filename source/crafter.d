@@ -137,14 +137,13 @@ void main(string[] args) {
         while(!Window.shouldClose()) {
 
             // These two functions literally build the environent
-            // processTerrainGenerationStack();
-            // processChunkMeshUpdateStack();
+            processTerrainGenerationStack();
+            processChunkMeshUpdateStack();
 
             // Delta calculation must come first
             calculateDelta();
 
             // Automatically plops the FPS and delta time onto the window title
-            writeln("remember to set the window title!");
             Window.setTitle((
                 getVersionTitle() ~ " | FPS: " ~ to!string(Window.getFPS()) ~ " | Delta: " ~ to!string(getDelta()))
             );
