@@ -267,9 +267,9 @@ immutable Vector2i[4][6] TEXTURE_CULL = [
 ];
 
 // An automatic index builder
-void buildIndices(ref ushort[] indices, ref int vertexCount) {
-    for (ushort i = 0; i < 6; i++) {
-        indices ~= cast(ushort)(INDICES[i] + vertexCount);
+void buildIndices(ref int[] indices, ref int vertexCount) {
+    for (int i = 0; i < 6; i++) {
+        indices ~= INDICES[i] + vertexCount;
     }
     vertexCount += 4;
 }
@@ -301,7 +301,8 @@ int translateRotationRender(int currentFace, ubyte currentRotation){
 void buildThisBlock(
     ref float[] vertices,
     ref float[] textureCoordinates,
-    ref ushort[] indices,
+    ref int[] indices,
+    ref float[] lights,
     ref int triangleCount,
     ref int vertexCount,
     BlockGraphicDefinition graphicsDefiniton,
@@ -449,7 +450,8 @@ public static final class BlockGraphics {
         uint ID,
         ref float[] vertices,
         ref float[] textureCoordinates,
-        ref ushort[] indices,
+        ref int[] indices,
+        ref float[] lights,
         ref int triangleCount,
         ref int vertexCount,
         Vector3i position,
@@ -467,6 +469,7 @@ public static final class BlockGraphics {
                 vertices,
                 textureCoordinates,
                 indices,
+                lights,
                 triangleCount,
                 vertexCount,
                 definition,
