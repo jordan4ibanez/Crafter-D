@@ -334,8 +334,7 @@ void buildThisBlock(
             max = Vector3d(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
         }
 
-        // Override min and max here if applicable
-
+        // Index faces
         for (int i = 0; i < 6; i++) {
 
             // Don't render this face if it's a normal block
@@ -346,6 +345,10 @@ void buildThisBlock(
             immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
             Vector2i currentTexture = textureDefinition[i];
+
+            for (int q = 0; q < 12; q++) {
+                lights ~= 1.0;
+            }
 
             // Assign the indices
             buildIndices(indices, vertexCount);
