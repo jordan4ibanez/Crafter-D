@@ -7,6 +7,8 @@ import vector_2i;
 import vector_2d;
 import vector_4d;
 import vector_3d;
+import delta_time;
+
 
 import engine.helpers.log;
 
@@ -21,6 +23,11 @@ private GLFWvidmode videoMode;
 private Vector2i size = Vector2i(0,0);
 private bool fullscreen = false;
 private byte vsync = 1; // 0 none, 1 normal vsync, 2 double buffered
+
+// These 3 functions calculate the FPS
+private double deltaAccumulator = 0.0;
+private int fpsCounter = 0;
+private int FPS = 0;
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
@@ -66,6 +73,22 @@ double getAspectRatio() {
 
 void pollEvents() {
     glfwPollEvents();
+    deltaAccumulator += getDelta();
+    fpsCounter += 1;
+    // Got a full second, reset counter, set variable
+    if (deltaAccumulator >= 1) {
+        deltaAccumulator = 0.0;
+        FPS = fpsCounter;
+        fpsCounter = 0;
+    }
+}
+
+int getFPS() {
+    return FPS;
+}
+
+void setTitle(string newTitle) {
+    glfwSetWindowTitle(window, cast(const(char*))newTitle);
 }
 
 void close() {
