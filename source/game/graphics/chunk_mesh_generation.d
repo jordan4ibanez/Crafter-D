@@ -1,4 +1,4 @@
-module graphics.chunk_mesh_generation;
+module game.graphics.chunk_mesh_generation;
 
 import raylib;
 import std.stdio;

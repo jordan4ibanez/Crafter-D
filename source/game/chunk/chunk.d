@@ -1,4 +1,4 @@
-module chunk.chunk;
+module game.chunk.chunk;
 
 import raylib;
 import std.stdio;

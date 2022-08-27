@@ -1,4 +1,4 @@
-module entity.mob.mob_definitions.zombie;
+module game.entity.mob.mob_definitions.zombie;
 
 import entity.mob.mob;
 import std.stdio;

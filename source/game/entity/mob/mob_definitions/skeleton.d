@@ -1,4 +1,4 @@
-module entity.mob.mob_definitions.skeleton;
+module game.entity.mob.mob_definitions.skeleton;
 
 import entity.mob.mob;
 import std.stdio;

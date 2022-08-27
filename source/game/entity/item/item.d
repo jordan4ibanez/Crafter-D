@@ -1,4 +1,4 @@
-module entity.item.item;
+module game.entity.item.item;
 
 import entity.entity;
 

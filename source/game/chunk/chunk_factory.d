@@ -1,4 +1,4 @@
-module chunk.chunk_factory;
+module game.chunk.chunk_factory;
 
 
 import std.stdio;

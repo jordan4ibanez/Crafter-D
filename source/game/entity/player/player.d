@@ -1,4 +1,4 @@
-module entity.player.player;
+module game.entity.player.player;
 
 import std.stdio;
 import entity.mob.mob;

@@ -1,4 +1,4 @@
-module graphics.chunk_mesh_factory;
+module game.graphics.chunk_mesh_factory;
 
 import graphics.chunk_mesh_generation;
 import helpers.structs;

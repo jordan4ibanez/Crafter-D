@@ -1,4 +1,4 @@
-module entity.mob.mob_factory;
+module game.entity.mob.mob_factory;
 
 import std.stdio;
 import std.uuid;

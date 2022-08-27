@@ -1,4 +1,4 @@
-module chunk.world_generation;
+module game.chunk.world_generation;
 
 import std.stdio;
 import chunk.chunk;

@@ -1,4 +1,4 @@
-module entity.mob.mob;
+module game.entity.mob.mob;
 
 import std.stdio;
 import entity.entity;

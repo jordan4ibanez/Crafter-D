@@ -1,4 +1,4 @@
-module graphics.block_graphics;
+module game.graphics.block_graphics;
 
 import std.stdio;
 import raylib;

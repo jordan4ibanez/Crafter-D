@@ -1,4 +1,4 @@
-module entity.entity;
+module game.entity.entity;
 
 import raylib;
 import std.uuid;
