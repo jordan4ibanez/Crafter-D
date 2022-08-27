@@ -4,6 +4,7 @@ module game.chunk.chunk_factory;
 import std.stdio;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
+import vector_2i;
 
 import game.chunk.chunk;
 import game.chunk.world_generation;
@@ -18,13 +19,13 @@ This is meant to be handled functionally
 
 
 // Hashmap container for generated chunks
-private Chunk[Vector2I] container;
+private Chunk[Vector2i] container;
 
 // Generation stack
-private Vector2I[] stack;
+private Vector2i[] stack;
 
 // External entry point into adding new chunks to the map
-void generateChunk(Vector2I position) {
+void generateChunk(Vector2i position) {
     // Do not dispatch a new chunk generation into stack if it's already there
     if (!stack.canFind(position)) {
         stack ~= position;
@@ -32,7 +33,7 @@ void generateChunk(Vector2I position) {
 }
 
 // Gets a chunk from the container
-Chunk getChunk(Vector2I position) {
+Chunk getChunk(Vector2i position) {
     if (position in container) {
         return container[position];
     }
@@ -42,7 +43,7 @@ Chunk getChunk(Vector2I position) {
 
 Chunk fakeChunk = Chunk();
 // Gets a mutable chunk from the container
-ref Chunk getMutableChunk(Vector2I position) {
+ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
         return container[position];
     }
@@ -57,7 +58,7 @@ void processTerrainGenerationStack() {
     // See if there are any new chunk generations
     if (stack.length > 0) {
 
-        Vector2I poppedValue = stack[0];
+        Vector2i poppedValue = stack[0];
         stack.popFront();
         // writeln("popped: ", poppedValue);
 
@@ -67,7 +68,7 @@ void processTerrainGenerationStack() {
 }
 
 // Internal chunk generation dispatch
-private void internalGenerateChunk(Vector2I newPosition) {
+private void internalGenerateChunk(Vector2i newPosition) {
 
     // random debug for prototyping processes
     Chunk generatedChunk = Chunk("default", newPosition);
