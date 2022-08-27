@@ -129,7 +129,7 @@ struct Mesh {
 
         GLuint glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH CONSTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
@@ -153,37 +153,44 @@ struct Mesh {
             }
             return;
         }
+
+        // This is done like this because it works around driver issues
         
+        // When you bind to the array, the buffers are automatically unbound
+        glBindVertexArray(this.vao);
+
+        // Disable all attributes of this "object"
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+
         // Delete the positions vbo
         glDeleteBuffers(1, &this.pbo);
-
         assert (glIsBuffer(this.pbo) == GL_FALSE);
     
         // Delete the texture coordinates vbo
         glDeleteBuffers(1, &this.tbo);
-
         assert (glIsBuffer(this.tbo) == GL_FALSE);
 
         // Delete the colors vbo
         glDeleteBuffers(1, &this.cbo);
-
         assert (glIsBuffer(this.cbo) == GL_FALSE);
 
         // Delete the indices vbo
         glDeleteBuffers(1, &this.ibo);
-
         assert (glIsBuffer(this.ibo) == GL_FALSE);
 
-        // Delete the vao
+        // Unbind the "object"
+        glBindVertexArray(0);
+        // Now we can delete it without any issues
         glDeleteVertexArrays(1, &this.vao);
-
         assert(glIsVertexArray(this.vao) == GL_FALSE);
 
         
 
         GLenum glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH DESTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
@@ -222,7 +229,7 @@ struct Mesh {
         
         GLuint glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH RENDER");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
