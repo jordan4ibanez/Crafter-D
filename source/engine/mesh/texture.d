@@ -1,4 +1,4 @@
-module mesh.texture;
+module engine.mesh.texture;
 
 import std.stdio;
 import bindbc.opengl;

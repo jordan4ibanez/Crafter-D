@@ -1,4 +1,4 @@
-module input.mouse;
+module engine.input.mouse;
 
 import std.stdio;
 import vector_2d;

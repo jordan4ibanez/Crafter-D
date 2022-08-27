@@ -1,4 +1,4 @@
-module window.window;
+module engine.window.window;
 
 import std.stdio;
 import bindbc.glfw;

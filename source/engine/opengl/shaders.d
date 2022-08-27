@@ -1,4 +1,4 @@
-module opengl.shaders;
+module engine.opengl.shaders;
 
 import bindbc.opengl;
 import std.stdio;

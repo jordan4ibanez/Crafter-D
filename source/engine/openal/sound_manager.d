@@ -1,4 +1,4 @@
-module openal.sound_manager;
+module engine.openal.sound_manager;
 
 import std.stdio;
 import bindbc.openal;

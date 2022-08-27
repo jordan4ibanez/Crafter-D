@@ -1,4 +1,4 @@
-module mesh.mesh;
+module engine.mesh.mesh;
 
 import std.stdio;
 import bindbc.opengl;

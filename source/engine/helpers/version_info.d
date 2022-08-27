@@ -1,4 +1,4 @@
-module helpers.version_info;
+module engine.helpers.version_info;
 
 import std.stdio;
 import std.range;

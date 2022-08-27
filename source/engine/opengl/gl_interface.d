@@ -1,4 +1,4 @@
-module opengl.gl_interface;
+module engine.opengl.gl_interface;
 
 import std.stdio;
 import bindbc.glfw;

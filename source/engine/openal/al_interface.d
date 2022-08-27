@@ -1,4 +1,4 @@
-module openal.al_interface;
+module engine.openal.al_interface;
 
 import bindbc.openal;
 import std.stdio;

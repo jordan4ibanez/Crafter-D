@@ -1,4 +1,4 @@
-module input.keyboard;
+module engine.input.keyboard;
 
 import std.stdio;
 import bindbc.glfw;
