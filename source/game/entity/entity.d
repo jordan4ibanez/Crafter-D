@@ -2,17 +2,19 @@ module game.entity.entity;
 
 import std.uuid;
 import std.stdio;
+import vector_3d;
+import vector_2d;
 
 // The base abstract class which all entity sub-types will inherit
 abstract class Entity {
 
     // Entities must have spatial fields
-    private Vector3 position = Vector3(0,0,0);
-    private Vector3 inertia  = Vector3(0,0,0);
-    private Vector3 rotation = Vector3(0,0,0);
+    private Vector3d position = Vector3(0,0,0);
+    private Vector3d inertia  = Vector3(0,0,0);
+    private Vector3d rotation = Vector3(0,0,0);
 
     // Entities have a width/depth (x) and a height (y)
-    private Vector2 dimensions = Vector2(0,0);
+    private Vector2d dimensions = Vector2(0,0);
 
     /*
     Entities must have a physical state, collision detection with environment
@@ -33,22 +35,22 @@ abstract class Entity {
 
 
     // Boilerplate
-    Vector3 getPosition() {
+    Vector3d getPosition() {
         return this.position;
     }
-    void setPosition(Vector3 newPosition) {
+    void setPosition(Vector3d newPosition) {
         this.position = newPosition;
     }
-    Vector3 getIneritia() {
+    Vector3d getIneritia() {
         return this.inertia;
     }
-    void setInertia(Vector3 newInertia) {
+    void setInertia(Vector3d newInertia) {
         this.inertia = newInertia;
     }
-    Vector3 getRotation() {
+    Vector3d getRotation() {
         return this.rotation;
     }
-    void setRotation(Vector3 newRotation) {
+    void setRotation(Vector3d newRotation) {
         this.rotation = newRotation;
     }
     UUID getUUID() {
@@ -60,10 +62,10 @@ abstract class Entity {
             this.uuid = randomUUID();
         }
     }
-    Vector2 getDimensions() {
+    Vector2d getDimensions() {
         return this.dimensions;
     }
-    void setDimensions(Vector2 newDimensions) {
+    void setDimensions(Vector2d newDimensions) {
         this.dimensions = newDimensions;
     }
     double getWidth() {
