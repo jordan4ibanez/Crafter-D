@@ -86,6 +86,7 @@ struct Chunk {
 
     // Mesh manipulation
     void setMesh(int yStack, Mesh newMesh) {
+        // This will check if the mesh was ever initialized automatically
         this.chunkMeshStack[yStack].cleanUp();
         this.chunkMeshStack[yStack] = newMesh;
     }
