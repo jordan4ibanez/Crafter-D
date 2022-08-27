@@ -67,7 +67,7 @@ void main(string[] args) {
         */
 
         // Window acts as a static class handler for GLFW & game window    
-        if (Window.initializeWindow(getVersionTitle(), true)) {
+        if (Window.initializeWindow(getVersionTitle(), false)) {
             writeln("GLFW init failed!");
             return;
         }    
@@ -137,8 +137,8 @@ void main(string[] args) {
         while(!Window.shouldClose()) {
 
             // These two functions literally build the environent
-            processTerrainGenerationStack();
-            processChunkMeshUpdateStack();
+            // processTerrainGenerationStack();
+            // processChunkMeshUpdateStack();
 
             // Delta calculation must come first
             calculateDelta();
@@ -163,6 +163,10 @@ void main(string[] args) {
 
             // BEGIN ORTHOLINEAR HUD 3D!
 
+
+            Window.swapBuffers();
+
+            Window.pollEvents();
 
         }
 
