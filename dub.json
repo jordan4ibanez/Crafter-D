@@ -17,5 +17,9 @@
     "license": "MIT",
     "mainSourceFile": "source/crafter.d",
     "name": "crafter",
-    "targetType": "executable"
+    "targetType": "executable",
+    "versions": [
+		"GLFW_33",
+		"GL_41"
+	]
 }
