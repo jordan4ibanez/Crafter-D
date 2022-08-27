@@ -5,6 +5,7 @@ import std.stdio;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
 import vector_2i;
+import vector_3i;
 
 import game.chunk.chunk;
 import game.chunk.world_generation;
@@ -81,7 +82,7 @@ private void internalGenerateChunk(Vector2i newPosition) {
 
     // Finally add a new chunk mesh update
     for (ubyte y = 0; y < 8; y++) {
-        newChunkMeshUpdate(Vector3I(newPosition.x, y, newPosition.y));
+        newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
     }
 
     // The factory is now done processing the chunk
@@ -90,7 +91,7 @@ private void internalGenerateChunk(Vector2i newPosition) {
 void renderWorld() {
     foreach (Chunk thisChunk; container) {
         for (ubyte i = 0; i < 8; i++) {
-            thisChunk.drawModel(i);
+            thisChunk.drawMesh(i);
         }
     }
 }
