@@ -2,28 +2,29 @@ module engine.helpers.version_info;
 
 import std.stdio;
 import std.range;
-import std.string;
+import std.conv: to;
 
 
-private char[] VERSION_TITLE;
-private bool LOCK;
+private string VERSION_TITLE;
+private bool titleLock;
 
 void initVersionTitle() {
-    if (LOCK) {
+    if (titleLock) {
         return;
     }
     File readme = File("README.md");
     string tempString = readme.readln;
-    char[] tempCharArray;
     ulong length = tempString.length;
     length -= 1;
+
+    string tempTitleHolder;
     foreach (char letter; tempString[2..length]) {
-        tempCharArray ~= letter;
+        tempTitleHolder ~= letter;
     }
-    VERSION_TITLE = tempCharArray;
+    VERSION_TITLE = tempTitleHolder;
     readme.close();
 }
 
-char[] getVersionTitle() {
+string getVersionTitle() {
     return VERSION_TITLE;
 }
