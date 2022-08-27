@@ -3,9 +3,10 @@ module engine.opengl.gl_interface;
 import std.stdio;
 import bindbc.glfw;
 import bindbc.opengl;
-import helper.log;
 import std.conv: to;
 import vector_2i;
+
+import engine.helpers.log;
 
 import loader = bindbc.loader.sharedlib;
 import Window = engine.window.window;

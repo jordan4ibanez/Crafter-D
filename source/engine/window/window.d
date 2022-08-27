@@ -8,7 +8,7 @@ import vector_2d;
 import vector_4d;
 import vector_3d;
 
-import engine.helper.log;
+import engine.helpers.log;
 
 import loader   = bindbc.loader.sharedlib;
 import Keyboard = engine.input.keyboard;
