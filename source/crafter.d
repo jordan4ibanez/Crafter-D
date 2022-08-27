@@ -162,10 +162,13 @@ void main(string[] args) {
 
 
             // BEGIN RENDERING 3D!
+
+            glUseProgram(getShader("main").shaderProgram);
+
             Camera.setClearColor(1,1,1);
             Camera.clear();
 
-            glUseProgram(getShader("main").shaderProgram);
+            Camera.clearDepthBuffer();
 
             Camera.updateCameraMatrix();
 
