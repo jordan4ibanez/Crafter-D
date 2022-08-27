@@ -3,6 +3,8 @@ module game.chunk.world_generation;
 import std.stdio;
 import fast_noise;
 import std.math.rounding;
+import vector_2i;
+import vector_3i;
 
 import game.chunk.chunk;
 
@@ -14,7 +16,7 @@ void generateTerrain (ref Chunk thisChunk) {
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
-    Vector2I chunkPosition = thisChunk.getPosition();
+    Vector2i chunkPosition = thisChunk.getPosition();
 
     // Get the real position of the chunk
     int basePositionX = chunkPosition.x * chunkSizeX;
@@ -50,18 +52,18 @@ void generateTerrain (ref Chunk thisChunk) {
             // Here will go a stack fill with predefined layers and whatnot
 
             // Grass top
-            thisChunk.setBlock(Vector3I(x,realHeight,z),2);
+            thisChunk.setBlock(Vector3i(x,realHeight,z),2);
 
             // Dirt filler
             for (int y = realHeight - 1; y > realHeight - 4 ; y--){
                 // writeln("set 1 to: ", x, " ", y, " ", z);
-                thisChunk.setBlock(Vector3I(x,y,z),3);
+                thisChunk.setBlock(Vector3i(x,y,z),3);
             }
 
             // Stone bottom
             for (int y = realHeight - 3; y >= 0 ; y--){
                 // writeln("set 1 to: ", x, " ", y, " ", z);
-                thisChunk.setBlock(Vector3I(x,y,z),1);
+                thisChunk.setBlock(Vector3i(x,y,z),1);
             }
         }
     }
@@ -70,7 +72,7 @@ void generateTerrain (ref Chunk thisChunk) {
     // This is the cavegen prototype, this is going to take a lot of tuning
     /*
     for (int i = 0; i < chunkArrayLength; i++) {
-        Vector3I currentPosition = indexToPosition(i);
+        Vector3i currentPosition = indexToPosition(i);
         //float currentNoise = fnlGetNoise3D(&noise, currentPosition.x, currentPosition.y, currentPosition.z);
         // writeln("noise at ", currentPosition.x, ",", currentPosition.y, ",", currentPosition.z, " is ", currentNoise);
     }
