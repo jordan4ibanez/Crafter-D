@@ -8,7 +8,7 @@ import std.conv: to;
 import vector_2i;
 
 import loader = bindbc.loader.sharedlib;
-import Window = window.window;
+import Window = engine.window.window;
 
 bool initializeOpenGL() {
     /*
