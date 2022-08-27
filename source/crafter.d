@@ -84,6 +84,18 @@ void main(string[] args) {
             return;
         }
 
+        createShaderProgram(
+            "main",
+            "shaders/vertex.vs",
+            "shaders/fragment.fs",
+            [
+                "cameraMatrix",
+                "objectMatrix",
+                "textureSampler",
+                "light"
+            ]
+        );   
+
         writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
         writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
     
@@ -150,6 +162,12 @@ void main(string[] args) {
 
 
             // BEGIN RENDERING 3D!
+            Camera.setClearColor(1,1,1);
+            Camera.clear();
+
+            glUseProgram(getShader("main").shaderProgram);
+
+            Camera.updateCameraMatrix();
 
 
             renderWorld();
