@@ -1,8 +1,9 @@
 module game.chunk.chunk;
 
 import std.stdio;
-import vector_3i;
 import vector_2i;
+import vector_3i;
+import vector_3d;
 import engine.mesh.mesh;
 
 /*
@@ -95,22 +96,21 @@ struct Chunk {
     Model getModel(int yStack) {
         return this.chunkMeshStack[yStack];
     }
-
+    */
     // DO NOT USE THIS
-    void drawModel(int yStack) {
-        writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!")
-        DrawModel(
-            this.chunkMeshStack[yStack],
-            Vector3(
+    void drawMesh(int yStack) {
+        writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!");
+        this.chunkMeshStack[yStack].render(
+            Vector3d(
                 this.chunkPosition.x * chunkSizeX,
                 0,
                 this.chunkPosition.y * chunkSizeZ
             ),
+            Vector3d(0,0,0),
             1,
-            Colors.WHITE
+            1
         );
     }
-    */
 
     // Complex boilerplate with boundary checks
     uint getBlock(Vector3i position) {
