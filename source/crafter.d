@@ -65,7 +65,7 @@ void main(string[] args) {
         // Need to make a version of this internal to engine
         //SetWindowIcon(LoadImage("textures/icon.png"));
 
-        loadTextureAtlas();
+        newTexture("textures/world_texture_map.png");
 
         int debugSize = 10;
 
