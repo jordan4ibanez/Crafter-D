@@ -75,18 +75,6 @@ void main(string[] args) {
             }
         }
 
-        // Debug camera
-        Camera camera = Camera(
-            Vector3(0,100,-1),
-            Vector3(1,0,-2),
-            Vector3(0,1,0),
-            73,
-            CameraProjection.CAMERA_PERSPECTIVE
-        );
-
-        SetCameraMode(camera, CameraMode.CAMERA_CUSTOM);
-
-        
 
         // Testing the block graphics registration
         // This will get called automatically when blocks are registered
