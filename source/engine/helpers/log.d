@@ -1,4 +1,4 @@
-module helper.log;
+module engine.helpers.log;
 
 import std.stdio;
 import std.conv: to;
