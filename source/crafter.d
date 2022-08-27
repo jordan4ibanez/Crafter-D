@@ -145,11 +145,9 @@ void main(string[] args) {
 
             // Automatically plops the FPS and delta time onto the window title
             writeln("remember to set the window title!");
-            /*
-            SetWindowTitle((
-                getVersionTitle() ~ " | FPS: " ~ to!string(GetFPS()) ~ " | Delta: " ~ to!string(getDelta())).ptr
+            Window.setTitle((
+                getVersionTitle() ~ " | FPS: " ~ to!string(Window.getFPS()) ~ " | Delta: " ~ to!string(getDelta()))
             );
-            */
 
 
             // BEGIN RENDERING 3D!
