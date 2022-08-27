@@ -4,6 +4,8 @@ import std.stdio;
 
 import delta_time;
 import vector_2i;
+import std.conv: to;
+import bindbc.opengl;
 
 
 import engine.helpers.version_info;
@@ -149,28 +151,24 @@ void main(string[] args) {
             );
             */
 
-            UpdateCamera(&camera);
 
-            BeginDrawing();
+            // BEGIN RENDERING 3D!
 
-            ClearBackground(Colors.SKYBLUE);
-
-            BeginMode3D(camera);
-
-            
-
-            DrawCube(Vector3(0,0,-1),1,1,1,Colors.BLACK);
 
             renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
             // DrawCube(Vector3(1.5,0.5,1.5),1,1,1,Colors.RED);
 
 
-            EndMode3D();
 
-            EndDrawing();
+            // BEGIN ORTHOLINEAR HUD 3D!
+
+
         }
 
-        CloseWindow();
+        cleanUpAllTextures();
+        deleteShaders();
+        cleanUpOpenAL();
+        Window.destroy();
     // }
 }
