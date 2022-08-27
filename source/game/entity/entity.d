@@ -9,12 +9,12 @@ import vector_2d;
 abstract class Entity {
 
     // Entities must have spatial fields
-    private Vector3d position = Vector3(0,0,0);
-    private Vector3d inertia  = Vector3(0,0,0);
-    private Vector3d rotation = Vector3(0,0,0);
+    private Vector3d position = Vector3d(0,0,0);
+    private Vector3d inertia  = Vector3d(0,0,0);
+    private Vector3d rotation = Vector3d(0,0,0);
 
     // Entities have a width/depth (x) and a height (y)
-    private Vector2d dimensions = Vector2(0,0);
+    private Vector2d dimensions = Vector2d(0,0);
 
     /*
     Entities must have a physical state, collision detection with environment
