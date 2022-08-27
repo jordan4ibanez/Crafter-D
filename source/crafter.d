@@ -22,9 +22,10 @@ import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 
-import Math = math;
-import Window = engine.window.window;
-import Camera = engine.camera.camera;
+import Math         = math;
+import Window       = engine.window.window;
+import Camera       = engine.camera.camera;
+import SoundManager = engine.openal.sound_manager;
 
 
 void main(string[] args) {
@@ -80,6 +81,9 @@ void main(string[] args) {
             writeln("OpenAL init failed!");
             return;
         }
+
+        writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
+        writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
     
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
@@ -89,6 +93,7 @@ void main(string[] args) {
         // Need to make a version of this internal to engine
         //SetWindowIcon(LoadImage("textures/icon.png"));
 
+        writeln("Loaded chunk texture atlas!");
         newTexture("textures/world_texture_map.png");
 
         int debugSize = 10;
@@ -98,6 +103,10 @@ void main(string[] args) {
                 generateChunk(Vector2i(x,z));
             }
         }
+
+        // How low can we go before people start going through the floor?
+        // Limboooooo
+        setMaxDeltaFPS(3);
 
 
         // Testing the block graphics registration
@@ -117,6 +126,10 @@ void main(string[] args) {
         // Texture testingTexture = LoadTexture("textures/debug.png");
         
         // testingModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = testingTexture;
+
+        // Click! The game opened right, wow!
+        SoundManager.playSound("sounds/button.ogg");
+        
 
         // Client loop
         while(!Window.shouldClose()) {
