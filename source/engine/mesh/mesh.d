@@ -2,7 +2,6 @@ module engine.mesh.mesh;
 
 import std.stdio;
 import bindbc.opengl;
-import bindbc.glfw;
 import vector_3d;
 
 import engine.texture.texture;
