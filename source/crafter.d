@@ -59,9 +59,11 @@ void main(string[] args) {
         Window.initializeWindow(getVersionTitle());
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
-        SetTraceLogLevel(10_000);
+        // Maybe make a version of this somehow
+        // SetTraceLogLevel(10_000);
 
-        SetWindowIcon(LoadImage("textures/icon.png"));
+        // Need to make a version of this internal to engine
+        //SetWindowIcon(LoadImage("textures/icon.png"));
 
         loadTextureAtlas();
 
