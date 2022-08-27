@@ -2,7 +2,8 @@ module game.entity.mob.mob_factory;
 
 import std.stdio;
 import std.uuid;
-import entity.mob.mob;
+
+import game.entity.mob.mob;
 
 
 // A static factory/container class, allowing functional programming inside of OOP

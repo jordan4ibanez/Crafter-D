@@ -1,7 +1,8 @@
 module game.entity.player.player_factory;
 
 import std.stdio;
-import entity.player.player;
+
+import game.entity.player.player;
 
 // A static factory/container class, allowing functional programming inside of OOP
 public static class PlayerFactory {

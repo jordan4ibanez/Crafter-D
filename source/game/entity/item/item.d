@@ -1,6 +1,6 @@
 module game.entity.item.item;
 
-import entity.entity;
+import game.entity.entity;
 
 // All items implement Entity, even in your inventory
 public class Item : Entity {

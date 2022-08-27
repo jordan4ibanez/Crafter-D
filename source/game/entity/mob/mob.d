@@ -1,8 +1,8 @@
 module game.entity.mob.mob;
 
 import std.stdio;
-import entity.entity;
-import raylib;
+
+import game.entity.entity;
 
 // The base class for all mobs
 abstract class Mob : Entity {

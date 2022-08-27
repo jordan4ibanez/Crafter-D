@@ -1,6 +1,5 @@
 module game.entity.entity;
 
-import raylib;
 import std.uuid;
 import std.stdio;
 

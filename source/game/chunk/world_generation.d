@@ -1,10 +1,10 @@
 module game.chunk.world_generation;
 
 import std.stdio;
-import chunk.chunk;
 import fast_noise;
 import std.math.rounding;
-import helpers.structs;
+
+import game.chunk.chunk;
 
 
 private int SEED = 12_345_678;

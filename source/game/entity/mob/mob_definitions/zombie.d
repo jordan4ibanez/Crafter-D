@@ -1,7 +1,7 @@
 module game.entity.mob.mob_definitions.zombie;
 
-import entity.mob.mob;
 import std.stdio;
+import game.entity.mob.mob;
 
 public class Zombie : Mob {
 

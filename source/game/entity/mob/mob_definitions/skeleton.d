@@ -1,7 +1,7 @@
 module game.entity.mob.mob_definitions.skeleton;
 
-import entity.mob.mob;
 import std.stdio;
+import game.entity.mob.mob;
 
 public class Skeleton : Mob {
 

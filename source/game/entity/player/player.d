@@ -1,7 +1,8 @@
 module game.entity.player.player;
 
 import std.stdio;
-import entity.mob.mob;
+
+import game.entity.mob.mob;
 
 // A player. This is not a static object because: Multiplayer
 // Inherits from mob to allow full compatibility between them

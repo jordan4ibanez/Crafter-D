@@ -1,13 +1,13 @@
 module game.graphics.chunk_mesh_factory;
 
-import graphics.chunk_mesh_generation;
-import helpers.structs;
 import std.algorithm;
 import std.stdio;
 import std.range: popFront;
-import chunk.chunk_factory;
-import chunk.chunk;
 import std.array: insertInPlace;
+
+import game.chunk.chunk_factory;
+import game.chunk.chunk;
+import game.graphics.chunk_mesh_generation;
 
 // Mesh Generation Factory
 

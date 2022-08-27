@@ -1,8 +1,6 @@
 module game.chunk.chunk;
 
-import raylib;
 import std.stdio;
-import helpers.structs;
 
 /*
 Notes:

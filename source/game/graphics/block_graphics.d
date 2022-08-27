@@ -1,8 +1,6 @@
 module game.graphics.block_graphics;
 
 import std.stdio;
-import raylib;
-import helpers.structs;
 import std.math: abs;
 
 

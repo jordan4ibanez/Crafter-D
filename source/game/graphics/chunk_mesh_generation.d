@@ -1,10 +1,9 @@
 module game.graphics.chunk_mesh_generation;
 
-import raylib;
 import std.stdio;
-import graphics.block_graphics;
-import chunk.chunk;
-import helpers.structs;
+
+import game.chunk.chunk;
+import game.graphics.block_graphics;
 
 private Texture TEXTURE_ATLAS;
 private bool lock = false;

@@ -2,13 +2,13 @@ module game.chunk.chunk_factory;
 
 
 import std.stdio;
-import chunk.chunk;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
-import helpers.structs;
-import chunk.world_generation;
-import graphics.chunk_mesh_generation;
-import graphics.chunk_mesh_factory;
+
+import game.chunk.chunk;
+import game.chunk.world_generation;
+import game.graphics.chunk_mesh_generation;
+import game.graphics.chunk_mesh_factory;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
 properties to treat the entire file as a static class
