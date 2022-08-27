@@ -6,7 +6,7 @@ import vector_2i;
 import vector_3d;
 import vector_3i;
 
-import engine.texture.texture;
+import engine.mesh.mesh;
 import game.chunk.chunk;
 import game.graphics.block_graphics;
 
@@ -77,10 +77,13 @@ void generateChunkMesh(
     ubyte yStack) {
 
     float[] vertices;
-    ushort[] indices;
+    int[] indices;
     // float[] normals;
     float[] textureCoordinates;
-    // For dispatching colors ubyte[]
+    // translate lights from ubyte to float
+    writeln("you should probably implement the lighting eventually");
+    float[] lights;
+    
 
     int triangleCount = 0;
     int vertexCount   = 0;
@@ -197,6 +200,7 @@ void generateChunkMesh(
                         vertices,
                         textureCoordinates,
                         indices,
+                        lights,
                         triangleCount,
                         vertexCount,
                         position,
@@ -209,32 +213,27 @@ void generateChunkMesh(
     }
 
     // writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
-
-    // Discard old gpu data, OpenGL will silently fail internally with invalid VAO, this is wanted
-    // This causes a crash for some reason
-    chunk.removeModel(yStack);
+    // chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
     // if (vertexCount == 0) {
         // return;
     // }
 
-    Mesh thisChunkMesh = Mesh();
+    
+    // maybe reuse this calculation in an overload?
+    // thisChunkMesh.triangleCount = triangleCount;
+    // thisChunkMesh.vertexCount = vertexCount;    
 
-    thisChunkMesh.triangleCount = triangleCount;
-    thisChunkMesh.vertexCount = vertexCount;
-
-    thisChunkMesh.vertices  = vertices.ptr;
-    thisChunkMesh.indices   = indices.ptr;
-    // thisChunkMesh.normals   = normals.ptr;
-    thisChunkMesh.texcoords = textureCoordinates.ptr;
-
-    UploadMesh(&thisChunkMesh, false);
-
-    Model thisChunkModel = LoadModelFromMesh(thisChunkMesh);
-
-    thisChunkModel.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = TEXTURE_ATLAS;
-
-    chunk.setModel(yStack, thisChunkModel);
+    chunk.setMesh(
+        yStack, 
+        Mesh(
+            vertices,
+            indices,
+            textureCoordinates,
+            lights,
+            "textures/world_texture_atlas.png"
+        )
+    );
 
 }
