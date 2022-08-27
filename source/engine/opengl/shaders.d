@@ -28,14 +28,12 @@ struct GameShader {
         
         GLenum glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(true) {
-                    
-            }
+            assert(true == false);
         }
     }
 
@@ -44,14 +42,12 @@ struct GameShader {
         
         GLenum glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(true) {
-                    
-            }
+            assert(true == false);
         }
     }
 
@@ -168,14 +164,12 @@ void createShaderProgram(
         thisShader.createUniform(uniformName);
         GLenum glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(true) {
-                    
-            }
+            assert(true == false);
         }
     }
     
