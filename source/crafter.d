@@ -3,18 +3,18 @@ module crafter;
 import std.stdio;
 import std.conv;
 
-import entity.mob.mob;
-import entity.mob.mob_definitions.zombie;
-import entity.mob.mob_factory;
-import entity.player.player;
-import entity.player.player_factory;
-import chunk.chunk;
-import chunk.chunk_factory;
-import chunk.world_generation;
+import game.entity.mob.mob;
+import game.entity.mob.mob_definitions.zombie;
+import game.entity.mob.mob_factory;
+import game.entity.player.player;
+import game.entity.player.player_factory;
+import game.chunk.chunk;
+import game.chunk.chunk_factory;
+import game.chunk.world_generation;
 import delta_time;
-import graphics.chunk_mesh_generation;
-import helpers.version_info;
-import graphics.chunk_mesh_factory;
+import game.graphics.chunk_mesh_generation;
+import engine.helpers.version_info;
+import game.graphics.chunk_mesh_factory;
 
 void main(string[] args) {
 
