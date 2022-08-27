@@ -17,10 +17,14 @@ import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 
+import Math = math;
+import Window = engine.window.window;
+
 void main(string[] args) {
 
     initVersionTitle();    
 
+    /*
     if (args.length > 1 && args[1] == "--server") {
         // Server loop
         bool serverShouldClose = false;
@@ -32,7 +36,7 @@ void main(string[] args) {
     } else {
         //WorldGenerator.generate(128,0);
 
-        /*
+        
         // Debug mobs
         MobFactory.spawnMob(new Zombie());
         MobFactory.debugFactory();
@@ -52,9 +56,7 @@ void main(string[] args) {
         }
         */
 
-
-        InitWindow(1280,720, getVersionTitle().ptr);
-        // SetTargetFPS(400);
+        Window.initializeWindow(getVersionTitle());
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
         SetTraceLogLevel(10_000);
@@ -140,5 +142,5 @@ void main(string[] args) {
         }
 
         CloseWindow();
-    }
+    // }
 }
