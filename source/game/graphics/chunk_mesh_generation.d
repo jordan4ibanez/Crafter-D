@@ -1,19 +1,19 @@
 module game.graphics.chunk_mesh_generation;
 
 import std.stdio;
+import vector_2d;
+import vector_2i;
+import vector_3d;
+import vector_3i;
+
 
 import game.chunk.chunk;
 import game.graphics.block_graphics;
+import engine.mesh.texture;
 
-private Texture TEXTURE_ATLAS;
-private bool lock = false;
-
+// This can just be called during runtime, no need to have a function
 void loadTextureAtlas() {
-    // Avoid memory leak
-    if (!lock) {
-        TEXTURE_ATLAS = LoadTexture("textures/world_texture_map.png");
-        lock = true;
-    }
+    newTexture("textures/world_texture_map.png");
 }
 
 void debugCreateBlockGraphics(){
@@ -25,12 +25,12 @@ void debugCreateBlockGraphics(){
             // [0,0,0,0.5,1,0.5]
         ],
         [
-            Vector2I(0,0),
-            Vector2I(0,0),
-            Vector2I(0,0),
-            Vector2I(0,0),
-            Vector2I(0,0),
-            Vector2I(0,0)
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0)
         ]
     );
 
@@ -39,12 +39,12 @@ void debugCreateBlockGraphics(){
         2,
         [],
         [
-            Vector2I(1,0),
-            Vector2I(1,0),
-            Vector2I(1,0),
-            Vector2I(1,0),
-            Vector2I(3,0),
-            Vector2I(2,0)
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(3,0),
+            Vector2i(2,0)
         ]
     );
 
@@ -53,23 +53,23 @@ void debugCreateBlockGraphics(){
         3,
         [],
         [
-            Vector2I(3,0),
-            Vector2I(3,0),
-            Vector2I(3,0),
-            Vector2I(3,0),
-            Vector2I(3,0),
-            Vector2I(3,0)
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0)
         ]
     );
 }
 
-immutable Vector3I[6] checkPositions = [
-    Vector3I(-1, 0, 0),
-    Vector3I( 1, 0, 0),
-    Vector3I( 0, 0,-1),
-    Vector3I( 0, 0, 1),
-    Vector3I( 0,-1, 0),
-    Vector3I( 0, 1, 0)
+immutable Vector3i[6] checkPositions = [
+    Vector3i(-1, 0, 0),
+    Vector3i( 1, 0, 0),
+    Vector3i( 0, 0,-1),
+    Vector3i( 0, 0, 1),
+    Vector3i( 0,-1, 0),
+    Vector3i( 0, 1, 0)
 ];
 
 
@@ -104,7 +104,7 @@ void generateChunkMesh(
             for (int y = yMin; y < yMax; y++) {
                 // writeln(x," ", y, " ", z);
 
-                Vector3I position = Vector3I(x,y,z);
+                Vector3i position = Vector3i(x,y,z);
 
                 uint currentBlock = chunk.getBlock(position);
                 ubyte currentRotation = chunk.getRotation(position);
@@ -112,10 +112,10 @@ void generateChunkMesh(
                 bool[6] renderingPositions = [false,false,false,false,false,false];
 
                 for (int w = 0; w < 6; w++) {
-                    Vector3I selectedPosition = checkPositions[w];
+                    Vector3i selectedPosition = checkPositions[w];
 
                     // Can add structs together like their base components
-                    Vector3I currentCheckPosition = position.add(selectedPosition);
+                    Vector3i currentCheckPosition = position.add(selectedPosition);
 
                     // If it's not within the current chunk
                     if (!collide(currentCheckPosition)) {
@@ -126,7 +126,7 @@ void generateChunkMesh(
                                 if (
                                     (neighborPositiveXExists &&
                                     neighborPositiveX.getBlock(
-                                        Vector3I(
+                                        Vector3i(
                                             currentCheckPosition.x - chunkSizeX,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z
@@ -141,7 +141,7 @@ void generateChunkMesh(
                                 if (
                                     (neighborNegativeXExists &&
                                     neighborNegativeX.getBlock(
-                                        Vector3I(
+                                        Vector3i(
                                             currentCheckPosition.x + chunkSizeX,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z
@@ -161,7 +161,7 @@ void generateChunkMesh(
                                 if (
                                     (neighborPositiveZExists &&
                                     neighborPositiveZ.getBlock(
-                                        Vector3I(
+                                        Vector3i(
                                             currentCheckPosition.x,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z - chunkSizeZ
@@ -176,7 +176,7 @@ void generateChunkMesh(
                                 if (
                                     (neighborNegativeZExists &&
                                     neighborNegativeZ.getBlock(
-                                        Vector3I(
+                                        Vector3i(
                                             currentCheckPosition.x,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z + chunkSizeZ
