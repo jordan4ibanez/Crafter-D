@@ -1,36 +1,21 @@
 {
-	"authors": [
-		"jordan4ibanez"
-	],
-	"configurations": [
-		{
-			"libs": [
-				"raylibdll"
-			],
-			"name": "windows",
-			"targetType": "executable"
-		},
-		{
-			"libs": [
-				"raylib"
-			],
-			"name": "linux",
-			"targetType": "executable"
-		}
-	],
-	"copyright": "Copyright © 2022, jordan4ibanez",
-	"dependencies": {
-		"bindbc-glfw": "~>1.0.1",
-		"bindbc-openal": "~>1.0.0",
-		"bindbc-opengl": "~>1.0.2",
-		"delta_time": "~>1.0.3",
-		"fast_noise": "~>1.0.3",
-		"gl3n": "~>1.4.1",
-		"raylib-d": "~>4.0.0"
-	},
-	"description": "A voxel thing written in D",
-	"license": "MIT",
-	"mainSourceFile": "source/crafter.d",
-	"name": "crafter",
-	"targetType": "executable"
+    "authors": [
+        "jordan4ibanez"
+    ],
+    "copyright": "Copyright © 2022, jordan4ibanez",
+    "dependencies": {
+        "bindbc-glfw": "~>1.0.1",
+        "bindbc-openal": "~>1.0.0",
+        "bindbc-opengl": "~>1.0.2",
+        "delta_time": "~>1.0.3",
+        "fast_noise": "~>1.0.3",
+        "arsd-official:image_files": "~>10.8.4",
+        "doml": "~>0.0.3",
+        "stb_vorbis": "~>1.0.0"
+    },
+    "description": "A voxel thing written in D",
+    "license": "MIT",
+    "mainSourceFile": "source/crafter.d",
+    "name": "crafter",
+    "targetType": "executable"
 }
