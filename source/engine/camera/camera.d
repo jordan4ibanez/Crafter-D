@@ -1,4 +1,4 @@
-module camera.camera;
+module engine.camera.camera;
 
 import std.stdio;
 import matrix_4d;
