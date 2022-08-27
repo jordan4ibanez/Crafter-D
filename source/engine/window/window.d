@@ -64,6 +64,10 @@ double getAspectRatio() {
     return cast(double)size.x / cast(double)size.y;
 }
 
+void pollEvents() {
+    glfwPollEvents();
+}
+
 void close() {
     glfwSetWindowShouldClose(window, true);
 }
