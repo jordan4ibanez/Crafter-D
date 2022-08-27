@@ -6,8 +6,8 @@ import vector_3d;
 
 private immutable bool debugNow = false;
 
-import Window = window.window;
-import Camera = camera.camera;
+import Window = engine.window.window;
+import Camera = engine.camera.camera;
 
 private Vector2d oldPosition = Vector2d(0,0);
 private Vector2d position    = Vector2d(0,0);

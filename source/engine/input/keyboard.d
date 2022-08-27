@@ -4,8 +4,8 @@ import std.stdio;
 import bindbc.glfw;
 import std.conv: to;
 
-import Mouse = input.mouse;
-import Window = window.window;
+import Mouse  = engine.input.mouse;
+import Window = engine.window.window;
 
 // Automate keyboard input across the entire board
 // Do this when not half awake
