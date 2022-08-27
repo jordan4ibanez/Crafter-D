@@ -3,7 +3,6 @@ module crafter;
 import std.stdio;
 import std.conv;
 
-import raylib;
 import entity.mob.mob;
 import entity.mob.mob_definitions.zombie;
 import entity.mob.mob_factory;
@@ -12,10 +11,8 @@ import entity.player.player_factory;
 import chunk.chunk;
 import chunk.chunk_factory;
 import chunk.world_generation;
-import raymath;
 import delta_time;
 import graphics.chunk_mesh_generation;
-import helpers.structs;
 import helpers.version_info;
 import graphics.chunk_mesh_factory;
 
