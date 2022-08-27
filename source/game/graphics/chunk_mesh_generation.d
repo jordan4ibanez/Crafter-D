@@ -225,6 +225,8 @@ void generateChunkMesh(
     // thisChunkMesh.triangleCount = triangleCount;
     // thisChunkMesh.vertexCount = vertexCount;    
 
+    // writeln("length compare: ", lights.length, " ", vertices.length);
+
     chunk.setMesh(
         yStack, 
         Mesh(
