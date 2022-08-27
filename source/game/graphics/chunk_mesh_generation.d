@@ -11,11 +11,6 @@ import game.chunk.chunk;
 import game.graphics.block_graphics;
 import engine.mesh.texture;
 
-// This can just be called during runtime, no need to have a function
-void loadTextureAtlas() {
-    newTexture("textures/world_texture_map.png");
-}
-
 void debugCreateBlockGraphics(){
     // Stone
     registerBlockGraphicsDefinition(
