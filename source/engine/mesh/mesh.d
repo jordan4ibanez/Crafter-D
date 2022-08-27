@@ -3,11 +3,12 @@ module engine.mesh.mesh;
 import std.stdio;
 import bindbc.opengl;
 import bindbc.glfw;
-import mesh.texture;
-import opengl.shaders;
 import vector_3d;
 
-import Camera = camera.camera;
+import engine.mesh.texture;
+import engine.opengl.shaders;
+
+import Camera = engine.camera.camera;
 
 private immutable bool debugNow = false;
 
