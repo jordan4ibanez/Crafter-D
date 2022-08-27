@@ -148,12 +148,14 @@ void main(string[] args) {
         // Client loop
         while(!Window.shouldClose()) {
 
+            // Delta calculation must come first
+            calculateDelta();
+
             // These two functions literally build the environent
             processTerrainGenerationStack();
             processChunkMeshUpdateStack();
 
-            // Delta calculation must come first
-            calculateDelta();
+            Camera.testCameraHackRemoveThis();
 
             // Automatically plops the FPS and delta time onto the window title
             Window.setTitle((
