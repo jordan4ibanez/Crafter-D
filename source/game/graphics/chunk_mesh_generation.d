@@ -81,7 +81,7 @@ void generateChunkMesh(
     // float[] normals;
     float[] textureCoordinates;
     // translate lights from ubyte to float
-    writeln("you should probably implement the lighting eventually");
+    // writeln("you should probably implement the lighting eventually");
     float[] lights;
     
 
@@ -216,9 +216,9 @@ void generateChunkMesh(
     // chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
-    // if (vertexCount == 0) {
-        // return;
-    // }
+    if (vertexCount == 0) {
+        return;
+    }
 
     
     // maybe reuse this calculation in an overload?
@@ -232,7 +232,7 @@ void generateChunkMesh(
             indices,
             textureCoordinates,
             lights,
-            "textures/world_texture_atlas.png"
+            "textures/world_texture_map.png"
         )
     );
 
