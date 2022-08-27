@@ -63,9 +63,9 @@ bool collide(Vector3i position) {
 
 struct Chunk {
     private bool thisExists = false;
-    private uint[chunkArrayLength]  block;
-    private ubyte[chunkArrayLength] light;
-    private ubyte[chunkArrayLength] rotation;
+    private uint[]  block = new uint[chunkArrayLength];
+    private ubyte[] light = new ubyte[chunkArrayLength];
+    private ubyte[] rotation = new ubyte[chunkArrayLength];
     private Mesh[8] chunkMeshStack;
     // Height map needs to be added in
 
@@ -100,7 +100,7 @@ struct Chunk {
     */
     // DO NOT USE THIS
     void drawMesh(int yStack) {
-        writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!");
+        // writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!");
         this.chunkMeshStack[yStack].render(
             Vector3d(
                 this.chunkPosition.x * chunkSizeX,
