@@ -2,11 +2,13 @@ module engine.openal.sound_manager;
 
 import std.stdio;
 import bindbc.openal;
-import openal.al_interface;
 import vector_3d;
 import matrix_4d;
-import Math = math;
-import Camera = camera.camera;
+
+import engine.openal.al_interface;
+
+import Math   = math;
+import Camera = engine.camera.camera;
 
 /*
 This is the work horse of the game's OpenAL implementation.

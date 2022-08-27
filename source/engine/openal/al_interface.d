@@ -5,7 +5,8 @@ import std.stdio;
 import stb_vorbis;
 import std.conv: to;
 import vector_3d;
-import openal.sound_manager;
+
+import engine.openal.sound_manager;
 
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
