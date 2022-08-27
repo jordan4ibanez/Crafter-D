@@ -175,3 +175,7 @@ void setRotation(Vector3d newRotation) {
     rotation = newRotation;
     rotationLimiter();
 }
+
+Vector3d getRotation() {
+    return rotation;
+}
