@@ -7,10 +7,11 @@ import bindbc.opengl;
 import vector_3d;
 import delta_time;
 
-import Keyboard = input.keyboard;
-import Window = window.window;
-import Math = math;
-import opengl.shaders;
+import engine.opengl.shaders;
+
+import Keyboard = engine.input.keyboard;
+import Window   = engine.window.window;
+import Math     = math;
 
 // There can only be one camera in the game, this is it
 
