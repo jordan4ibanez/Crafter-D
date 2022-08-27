@@ -85,22 +85,22 @@ struct Chunk {
 
     // Mesh manipulation
     void setMesh(int yStack, Mesh newMesh) {
-        this.chunkModelStack[yStack].cleanUp();
-        this.chunkModelStack[yStack] = newModel;
+        this.chunkMeshStack[yStack].cleanUp();
+        this.chunkMeshStack[yStack] = newMesh;
     }
     void removeModel(int yStack) {
-        this.chunkModelStack[yStack].cleanUp();
+        this.chunkMeshStack[yStack].cleanUp();
     }
     /* // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
-        return this.chunkModelStack[yStack];
+        return this.chunkMeshStack[yStack];
     }
 
     // DO NOT USE THIS
     void drawModel(int yStack) {
         writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!")
         DrawModel(
-            this.chunkModelStack[yStack],
+            this.chunkMeshStack[yStack],
             Vector3(
                 this.chunkPosition.x * chunkSizeX,
                 0,
