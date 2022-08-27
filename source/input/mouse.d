@@ -4,7 +4,7 @@ import std.stdio;
 import vector_2d;
 import vector_3d;
 
-private immutable bool debugNow = true;
+private immutable bool debugNow = false;
 
 import Window = window.window;
 import Camera = camera.camera;
