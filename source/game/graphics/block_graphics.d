@@ -2,6 +2,10 @@ module game.graphics.block_graphics;
 
 import std.stdio;
 import std.math: abs;
+import vector_2d;
+import vector_2i;
+import vector_3d;
+import vector_3i;
 
 
 // Defines how many textures are in the texture map
@@ -112,56 +116,56 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 // Immutable face vertex positions
 // This is documented as if you were facing the quad with it's texture position aligned to you
 // Idices order = [ 3, 0, 1, 1, 2, 3 ]
-immutable Vector3[4][6] FACE = [
+immutable Vector3d[4][6] FACE = [
     // Axis base:        X 0
     // Normal direction: X -1
     [
-        Vector3(0,1,0), // Top Left     | 0
-        Vector3(0,0,0), // Bottom Left  | 1
-        Vector3(0,0,1), // Bottom Right | 2
-        Vector3(0,1,1), // Top Right    | 3   
+        Vector3d(0,1,0), // Top Left     | 0
+        Vector3d(0,0,0), // Bottom Left  | 1
+        Vector3d(0,0,1), // Bottom Right | 2
+        Vector3d(0,1,1), // Top Right    | 3   
     ],
     // Axis base:        X 1
     // Normal direction: X 1
     [
-        Vector3(1,1,1), // Top Left     | 0
-        Vector3(1,0,1), // Bottom Left  | 1
-        Vector3(1,0,0), // Bottom Right | 2
-        Vector3(1,1,0), // Top Right    | 3
+        Vector3d(1,1,1), // Top Left     | 0
+        Vector3d(1,0,1), // Bottom Left  | 1
+        Vector3d(1,0,0), // Bottom Right | 2
+        Vector3d(1,1,0), // Top Right    | 3
     ],
 
     // Axis base:        Z 0
     // Normal direction: Z -1
     [
-        Vector3(1,1,0), // Top Left     | 0
-        Vector3(1,0,0), // Bottom Left  | 1
-        Vector3(0,0,0), // Bottom Right | 2
-        Vector3(0,1,0), // Top Right    | 3
+        Vector3d(1,1,0), // Top Left     | 0
+        Vector3d(1,0,0), // Bottom Left  | 1
+        Vector3d(0,0,0), // Bottom Right | 2
+        Vector3d(0,1,0), // Top Right    | 3
     ],
     // Axis base:        Z 1
     // Normal direction: Z 1
     [
-        Vector3(0,1,1), // Top Left     | 0
-        Vector3(0,0,1), // Bottom Left  | 1
-        Vector3(1,0,1), // Bottom Right | 2
-        Vector3(1,1,1), // Top Right    | 3
+        Vector3d(0,1,1), // Top Left     | 0
+        Vector3d(0,0,1), // Bottom Left  | 1
+        Vector3d(1,0,1), // Bottom Right | 2
+        Vector3d(1,1,1), // Top Right    | 3
     ],
 
     // Axis base:        Y 0
     // Normal direction: Y -1
     [
-        Vector3(1,0,1), // Top Left     | 0
-        Vector3(0,0,1), // Bottom Left  | 1
-        Vector3(0,0,0), // Bottom Right | 2
-        Vector3(1,0,0), // Top Right    | 3
+        Vector3d(1,0,1), // Top Left     | 0
+        Vector3d(0,0,1), // Bottom Left  | 1
+        Vector3d(0,0,0), // Bottom Right | 2
+        Vector3d(1,0,0), // Top Right    | 3
     ],
     // Axis base:        Y 1
     // Normal direction: Y 1
     [
-        Vector3(1,1,0), // Top Left     | 0
-        Vector3(0,1,0), // Bottom Left  | 1
-        Vector3(0,1,1), // Bottom Right | 2
-        Vector3(1,1,1), // Top Right    | 3
+        Vector3d(1,1,0), // Top Left     | 0
+        Vector3d(0,1,0), // Bottom Left  | 1
+        Vector3d(0,1,1), // Bottom Right | 2
+        Vector3d(1,1,1), // Top Right    | 3
     ]
 ];
 
@@ -169,21 +173,21 @@ immutable Vector3[4][6] FACE = [
 immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
 
 // Normals allow modders to bolt on lighting
-immutable Vector3[6] NORMAL = [
-    Vector3(-1, 0, 0), // Back   | 0
-    Vector3( 1, 0, 0), // Front  | 1
-    Vector3( 0, 0,-1), // Left   | 2
-    Vector3( 0, 0, 1), // Right  | 3
-    Vector3( 0,-1, 0), // Bottom | 4
-    Vector3( 0, 1, 0)  // Top    | 5
+immutable Vector3d[6] NORMAL = [
+    Vector3d(-1, 0, 0), // Back   | 0
+    Vector3d( 1, 0, 0), // Front  | 1
+    Vector3d( 0, 0,-1), // Left   | 2
+    Vector3d( 0, 0, 1), // Right  | 3
+    Vector3d( 0,-1, 0), // Bottom | 4
+    Vector3d( 0, 1, 0)  // Top    | 5
 ];
 
 // Immutable texture position
-immutable Vector2[4] TEXTURE_POSITION = [
-    Vector2(0,0), // Top left     | 0
-    Vector2(0,1), // Bottom Left  | 1
-    Vector2(1,1), // Bottom right | 2
-    Vector2(1,0)  // Top right    | 3
+immutable Vector2d[4] TEXTURE_POSITION = [
+    Vector2d(0,0), // Top left     | 0
+    Vector2d(0,1), // Bottom Left  | 1
+    Vector2d(1,1), // Bottom right | 2
+    Vector2d(1,0)  // Top right    | 3
 ];
 
 // Texture culling for blockboxes
@@ -211,54 +215,54 @@ Settings:
 11 - Max.z- 5
 
 */
-immutable Vector2I[4][6] TEXTURE_CULL = [
+immutable Vector2i[4][6] TEXTURE_CULL = [
     // Back face
     // Z and Y affect this
     [
-        Vector2I(2,10),
-        Vector2I(2,7),
-        Vector2I(5,7),
-        Vector2I(5,10)
+        Vector2i(2,10),
+        Vector2i(2,7),
+        Vector2i(5,7),
+        Vector2i(5,10)
     ],
     // Front face
     // Z and Y affect this
     [
-        Vector2I(11,10),
-        Vector2I(11,7),
-        Vector2I(8,7),
-        Vector2I(8,10)
+        Vector2i(11,10),
+        Vector2i(11,7),
+        Vector2i(8,7),
+        Vector2i(8,10)
     ],
     // Left face
     // X and Y affect this
     [
-        Vector2I(9,10),
-        Vector2I(9,7),
-        Vector2I(6,7),
-        Vector2I(6,10)
+        Vector2i(9,10),
+        Vector2i(9,7),
+        Vector2i(6,7),
+        Vector2i(6,10)
     ],
     // Right face
     // X and Y affect this
     [
-        Vector2I(0,10),
-        Vector2I(0,7),
-        Vector2I(3,7),
-        Vector2I(3,10)
+        Vector2i(0,10),
+        Vector2i(0,7),
+        Vector2i(3,7),
+        Vector2i(3,10)
     ],
     // Bottom face
     // X and Z affect this
     [
-        Vector2I(11,9),
-        Vector2I(11,6),
-        Vector2I(8,6),
-        Vector2I(8,9)
+        Vector2i(11,9),
+        Vector2i(11,6),
+        Vector2i(8,6),
+        Vector2i(8,9)
     ],
     // Top face
     // X and Z affect this
     [
-        Vector2I(2,9),
-        Vector2I(2,6),
-        Vector2I(5,6),
-        Vector2I(5,9)
+        Vector2i(2,9),
+        Vector2i(2,6),
+        Vector2i(5,6),
+        Vector2i(5,9)
     ]
 ];
 
@@ -301,16 +305,16 @@ void buildThisBlock(
     ref int triangleCount,
     ref int vertexCount,
     BlockGraphicDefinition graphicsDefiniton,
-    Vector3I position,
+    Vector3i position,
     ubyte rotation,
     bool[6] renderArray
 ){
 
     float[6][] blockBox = graphicsDefiniton.blockBox;
-    Vector2I[6] textureDefinition = graphicsDefiniton.blockTextures;
+    Vector2i[6] textureDefinition = graphicsDefiniton.blockTextures;
 
-    Vector3 max = Vector3( 1,  1,  1 );
-    Vector3 min = Vector3( 0,  0,  0 );
+    Vector3d max = Vector3d( 1,  1,  1 );
+    Vector3d min = Vector3d( 0,  0,  0 );
 
     // This needs to check for custom meshes and drawtypes
     bool isBlockBox = (blockBox.length > 0);    
@@ -325,8 +329,8 @@ void buildThisBlock(
 
         // If it is a blockbox, override defaults
         if (isBlockBox) {
-            min = Vector3(blockBox[w][0], blockBox[w][1], blockBox[w][2]);
-            max = Vector3(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
+            min = Vector3d(blockBox[w][0], blockBox[w][1], blockBox[w][2]);
+            max = Vector3d(blockBox[w][3], blockBox[w][4], blockBox[w][5]);
         }
 
         // Override min and max here if applicable
@@ -340,7 +344,7 @@ void buildThisBlock(
 
             immutable float[6] textureCullArray = [min.x, min.y, min.z, max.x, max.y, max.z];
 
-            Vector2I currentTexture = textureDefinition[i];
+            Vector2i currentTexture = textureDefinition[i];
 
             // Assign the indices
             buildIndices(indices, vertexCount);
@@ -387,7 +391,7 @@ void buildThisBlock(
                     }
                     case true: {
                         // Blockbox drawtype
-                        Vector2I textureCull = TEXTURE_CULL[i][f];
+                        Vector2i textureCull = TEXTURE_CULL[i][f];
 
                         // This can be written as a ternary, but easier to understand like this
                         final switch (textureCull.x > 5) {
@@ -422,9 +426,9 @@ void buildThisBlock(
 
 struct BlockGraphicDefinition {
     float[6][] blockBox;
-    Vector2I[6] blockTextures;
+    Vector2i[6] blockTextures;
 
-    this(float[6][] blockBox, Vector2I[6] blockTextures) {
+    this(float[6][] blockBox, Vector2i[6] blockTextures) {
         this.blockBox = blockBox;
         this.blockTextures = blockTextures;
     }
@@ -434,7 +438,7 @@ public static final class BlockGraphics {
 
     private static BlockGraphicDefinition[uint] definitions;
     
-    public static void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2I[6] blockTextures){
+    public static void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2i[6] blockTextures){
         this.definitions[id] = BlockGraphicDefinition(
             blockBox,
             blockTextures
@@ -448,7 +452,7 @@ public static final class BlockGraphics {
         ref ushort[] indices,
         ref int triangleCount,
         ref int vertexCount,
-        Vector3I position,
+        Vector3i position,
         ubyte rotation,
         bool[6] renderArray
         ) {
