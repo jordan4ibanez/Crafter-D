@@ -4,6 +4,7 @@ import std.algorithm;
 import std.stdio;
 import std.range: popFront;
 import std.array: insertInPlace;
+import vector_2i;
 import vector_3i;
 
 import game.chunk.chunk_factory;
