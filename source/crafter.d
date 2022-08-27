@@ -1,11 +1,16 @@
 module crafter;
 
 import std.stdio;
-import std.conv;
 
 import delta_time;
+import vector_2i;
+
 
 import engine.helpers.version_info;
+import engine.texture.texture;
+import engine.opengl.gl_interface;
+import engine.opengl.shaders;
+import engine.openal.al_interface;
 import game.entity.mob.mob;
 import game.entity.mob.mob_definitions.zombie;
 import game.entity.mob.mob_factory;
@@ -19,6 +24,8 @@ import game.graphics.chunk_mesh_factory;
 
 import Math = math;
 import Window = engine.window.window;
+import Camera = engine.camera.camera;
+
 
 void main(string[] args) {
 
@@ -56,7 +63,24 @@ void main(string[] args) {
         }
         */
 
-        Window.initializeWindow(getVersionTitle());
+        // Window acts as a static class handler for GLFW & game window    
+        if (Window.initializeWindow(getVersionTitle(), true)) {
+            writeln("GLFW init failed!");
+            return;
+        }    
+
+        // GL init is purely functional
+        if(initializeOpenGL()) {
+            writeln("OpenGL init failed!");
+            return;
+        }
+
+        // OpenAL acts like a static class handler for all of OpenAL Soft
+        if (initializeOpenAL()){
+            writeln("OpenAL init failed!");
+            return;
+        }
+    
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
         // Maybe make a version of this somehow
@@ -71,7 +95,7 @@ void main(string[] args) {
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
-                generateChunk(Vector2I(x,z));
+                generateChunk(Vector2i(x,z));
             }
         }
 
@@ -105,9 +129,12 @@ void main(string[] args) {
             calculateDelta();
 
             // Automatically plops the FPS and delta time onto the window title
+            writeln("remember to set the window title!");
+            /*
             SetWindowTitle((
                 getVersionTitle() ~ " | FPS: " ~ to!string(GetFPS()) ~ " | Delta: " ~ to!string(getDelta())).ptr
             );
+            */
 
             UpdateCamera(&camera);
 
