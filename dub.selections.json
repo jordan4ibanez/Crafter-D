@@ -1,17 +1,20 @@
 {
 	"fileVersion": 1,
 	"versions": {
+		"arsd-official": "10.8.4",
 		"bindbc-glfw": "1.0.1",
 		"bindbc-loader": "1.0.1",
 		"bindbc-openal": "1.0.0",
 		"bindbc-opengl": "1.0.2",
 		"ddmp": "0.0.1-0.dev.3",
 		"delta_time": "1.0.5",
+		"doml": "0.0.4",
 		"fast_noise": "1.0.5",
 		"fluent-asserts": "0.13.3",
 		"gl3n": "1.4.1",
 		"libdparse": "0.14.0",
 		"raylib-d": "4.0.1",
+		"stb_vorbis": "1.0.0",
 		"stdx-allocator": "2.77.5"
 	}
 }
