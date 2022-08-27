@@ -1,6 +1,9 @@
 module game.chunk.chunk;
 
 import std.stdio;
+import vector_3i;
+import vector_2i;
+import engine.mesh.mesh;
 
 /*
 Notes:
@@ -27,8 +30,8 @@ immutable int chunkArrayLength = chunkSizeX * chunkSizeY * chunkSizeZ;
 immutable int yStride = chunkSizeX * chunkSizeY;
 
 // 1D index to Vector3 position
-Vector3I indexToPosition(int index) {
-    return Vector3I(
+Vector3i indexToPosition(int index) {
+    return Vector3i(
         index % 16,
         (index % yStride) / chunkSizeX,
         index / yStride        
@@ -36,7 +39,7 @@ Vector3I indexToPosition(int index) {
 }
 
 // Vector3 position to 1D index
-int positionToIndex(Vector3I position) {
+int positionToIndex(Vector3i position) {
     return (position.x * yStride) + (position.z * chunkSizeY) + position.y;
 }
 
@@ -53,7 +56,7 @@ bool collideZ(int value) {
 }
 // All at once
 // True: Is within the chunk
-bool collide(Vector3I position) {
+bool collide(Vector3i position) {
     return (collideX(position.x) && collideY(position.y) && collideZ(position.z));
 }
 
@@ -62,14 +65,14 @@ struct Chunk {
     private uint[chunkArrayLength]  block;
     private ubyte[chunkArrayLength] light;
     private ubyte[chunkArrayLength] rotation;
-    private Model[8] chunkModelStack;
+    private Mesh[8] chunkMeshStack;
     // Height map needs to be added in
 
     private string biome;
-    private Vector2I chunkPosition = Vector2I(0,0);
+    private Vector2i chunkPosition = Vector2i(0,0);
     private bool positionLock = false;
 
-    this(string biomeName, Vector2I position) {
+    this(string biomeName, Vector2i position) {
         this.biome = biomeName;
         this.chunkPosition = position;
         this.positionLock = true;
@@ -80,19 +83,22 @@ struct Chunk {
         return this.thisExists;
     }
 
-    // Model manipulation
-    void setModel(int yStack, Model newModel) {
+    // Mesh manipulation
+    void setMesh(int yStack, Mesh newMesh) {
+        this.chunkModelStack[yStack].cleanUp();
         this.chunkModelStack[yStack] = newModel;
     }
     void removeModel(int yStack) {
-        UnloadModel(this.chunkModelStack[yStack]);
+        this.chunkModelStack[yStack].cleanUp();
     }
     /* // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
         return this.chunkModelStack[yStack];
     }
-    */
+
+    // DO NOT USE THIS
     void drawModel(int yStack) {
+        writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!")
         DrawModel(
             this.chunkModelStack[yStack],
             Vector3(
@@ -104,9 +110,10 @@ struct Chunk {
             Colors.WHITE
         );
     }
+    */
 
     // Complex boilerplate with boundary checks
-    uint getBlock(Vector3I position) {
+    uint getBlock(Vector3i position) {
         if (collide(position)) {
             return(this.block[positionToIndex(position)]);
         } else {
@@ -115,7 +122,7 @@ struct Chunk {
             return 0;
         }
     }
-    void setBlock(Vector3I position, uint newBlock) {
+    void setBlock(Vector3i position, uint newBlock) {
         if (collide(position)) {
             this.block[positionToIndex(position)] = newBlock;
         }
@@ -128,7 +135,7 @@ struct Chunk {
         this.block[index] = newBlock;
     }
 
-    ubyte getRotation(Vector3I position) {
+    ubyte getRotation(Vector3i position) {
         if (collide(position)) {
             return(this.rotation[positionToIndex(position)]);
         } else {
@@ -137,7 +144,7 @@ struct Chunk {
             return 0;
         }
     }
-    void setRotation(Vector3I position, ubyte newRotation) {
+    void setRotation(Vector3i position, ubyte newRotation) {
         if (collide(position)) {
             this.rotation[positionToIndex(position)] = newRotation;
         }
@@ -147,7 +154,7 @@ struct Chunk {
         return this.biome;
     }
 
-    Vector2I getPosition() {
+    Vector2i getPosition() {
         return this.chunkPosition;
     }
 }
