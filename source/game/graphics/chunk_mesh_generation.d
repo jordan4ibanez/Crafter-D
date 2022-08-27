@@ -9,7 +9,7 @@ import vector_3i;
 
 import game.chunk.chunk;
 import game.graphics.block_graphics;
-import engine.mesh.texture;
+import engine.texture.texture;
 
 void debugCreateBlockGraphics(){
     // Stone

@@ -5,7 +5,7 @@ import bindbc.opengl;
 import bindbc.glfw;
 import vector_3d;
 
-import engine.mesh.texture;
+import engine.texture.texture;
 import engine.opengl.shaders;
 
 import Camera = engine.camera.camera;
