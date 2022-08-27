@@ -433,7 +433,7 @@ struct BlockGraphicDefinition {
         this.blockTextures = blockTextures;
     }
 }
-
+// This file is a mess: todo, redo this disaster
 public static final class BlockGraphics {
 
     private static BlockGraphicDefinition[uint] definitions;
