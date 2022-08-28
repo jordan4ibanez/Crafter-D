@@ -110,7 +110,7 @@ void main(string[] args) {
         writeln("Loaded chunk texture atlas!");
         newTexture("textures/world_texture_map.png");
 
-        int debugSize = 10;
+        int debugSize = 2;
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
