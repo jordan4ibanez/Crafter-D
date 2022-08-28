@@ -38,8 +38,8 @@ private struct Face {
 
 
     this(Vector3[6] vertexData, TexturePosition[6] textureCoordinateData, Vector3 normals) {
-        this.vertex = vertexData;
-        this.textureCoordinate = textureCoordinateData;
+        this.vertex = new float[6].copy(vertexData);
+        this.textureCoordinate = new float[6].copy(textureCoordinateData);
         this.normal = normal;
     }
 }
