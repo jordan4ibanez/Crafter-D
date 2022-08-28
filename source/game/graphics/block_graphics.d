@@ -116,7 +116,7 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 // Immutable face vertex positions
 // This is documented as if you were facing the quad with it's texture position aligned to you
 // Idices order = [ 3, 0, 1, 1, 2, 3 ]
-immutable Vector3d[4][6] FACE = [
+private immutable Vector3d[4][6] FACE = [
     // Axis base:        X 0
     // Normal direction: X -1
     [
@@ -170,10 +170,10 @@ immutable Vector3d[4][6] FACE = [
 ];
 
 // Immutable index order
-immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
+private immutable ushort[] INDICES = [ 3, 0, 1, 1, 2, 3 ];
 
 // Normals allow modders to bolt on lighting
-immutable Vector3d[6] NORMAL = [
+private immutable Vector3d[6] NORMAL = [
     Vector3d(-1, 0, 0), // Back   | 0
     Vector3d( 1, 0, 0), // Front  | 1
     Vector3d( 0, 0,-1), // Left   | 2
@@ -183,7 +183,7 @@ immutable Vector3d[6] NORMAL = [
 ];
 
 // Immutable texture position
-immutable Vector2d[4] TEXTURE_POSITION = [
+private immutable Vector2d[4] TEXTURE_POSITION = [
     Vector2d(0,0), // Top left     | 0
     Vector2d(0,1), // Bottom Left  | 1
     Vector2d(1,1), // Bottom right | 2
@@ -215,7 +215,7 @@ Settings:
 11 - Max.z- 5
 
 */
-immutable Vector2i[4][6] TEXTURE_CULL = [
+private immutable Vector2i[4][6] TEXTURE_CULL = [
     // Back face
     // Z and Y affect this
     [
@@ -275,7 +275,7 @@ void buildIndices(ref int[] indices, ref int vertexCount) {
 }
 
 // An automatic rotation translator for what faces are not generated
-immutable int[4][4] rotationTranslation = 
+private immutable int[4][4] rotationTranslation = 
 [
     // index 0 is always unused for [][here]
     // Back
