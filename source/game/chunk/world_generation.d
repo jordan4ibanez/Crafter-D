@@ -65,6 +65,17 @@ void generateTerrain (ref Chunk thisChunk) {
                 // writeln("set 1 to: ", x, " ", y, " ", z);
                 thisChunk.setBlock(Vector3i(x,y,z),1);
             }
+
+            // "water"
+
+            // Water height is 65, and goes to 0
+            /*
+            for (int y = 65; y >= 0; y--){
+                if (thisChunk.getBlock(Vector3i(x,y,z)) == 0) {
+                    thisChunk.setBlock(Vector3i(x,y,z),4);
+                }
+            }
+            */
         }
     }
 
