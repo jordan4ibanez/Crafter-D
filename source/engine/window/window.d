@@ -52,7 +52,7 @@ static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double 
 
 // Internally handles interfacing to C
 bool shouldClose() {
-    shared(bool) decoupledBool = glfwWindowShouldClose(window) != 0;
+    shared(bool) decoupledBool = (glfwWindowShouldClose(window) != 0);
     return decoupledBool;
 }
 
