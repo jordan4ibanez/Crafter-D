@@ -437,52 +437,47 @@ struct BlockGraphicDefinition {
         this.blockTextures = blockTextures;
     }
 }
-// This file is a mess: todo, redo this disaster
-public static final class BlockGraphics {
 
-    private static BlockGraphicDefinition[uint] definitions;
-    
-    public static void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2i[6] blockTextures){
-        this.definitions[id] = BlockGraphicDefinition(
-            blockBox,
-            blockTextures
-        );
-    }
 
-    public static void classBuildBlock(
-        uint ID,
-        ref float[] vertices,
-        ref float[] textureCoordinates,
-        ref int[] indices,
-        ref float[] lights,
-        ref int triangleCount,
-        ref int vertexCount,
-        Vector3i position,
-        ubyte rotation,
-        bool[6] renderArray
-        ) {
+private static BlockGraphicDefinition[uint] definitions;
 
-            if (ID == 0) {  // Replace 0 check with block graphics definition check                
-                return;
-            }
-
-            BlockGraphicDefinition definition = definitions[ID];
-
-            buildThisBlock(
-                vertices,
-                textureCoordinates,
-                indices,
-                lights,
-                triangleCount,
-                vertexCount,
-                definition,
-                position,
-                rotation,
-                renderArray
-            );
-    }
-    
+void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2i[6] blockTextures){
+    definitions[id] = BlockGraphicDefinition(
+        blockBox,
+        blockTextures
+    );
 }
 
-alias registerBlockGraphicsDefinition = BlockGraphics.registerBlockGraphicsDefinition;
-alias buildBlock = BlockGraphics.classBuildBlock;
+void buildBlock(
+    uint ID,
+    ref float[] vertices,
+    ref float[] textureCoordinates,
+    ref int[] indices,
+    ref float[] lights,
+    ref int triangleCount,
+    ref int vertexCount,
+    Vector3i position,
+    ubyte rotation,
+    bool[6] renderArray
+    ) {
+
+        if (ID == 0) {  // Replace 0 check with block graphics definition check                
+            return;
+        }
+
+        BlockGraphicDefinition definition = definitions[ID];
+
+        buildThisBlock(
+            vertices,
+            textureCoordinates,
+            indices,
+            lights,
+            triangleCount,
+            vertexCount,
+            definition,
+            position,
+            rotation,
+            renderArray
+        );
+}
+
