@@ -31,13 +31,12 @@ In full version, the static class will simply get this info from --
 */
 
 private struct Face {
-    Vector3[6] vertex;
-    TexturePosition[6] textureCoordinate;
+    Vector3[] vertex;
+    TexturePosition[] textureCoordinate;
     // Blocks are square in face, rigid, axis aligned. Only need one direction per face
     Vector3 normal;
 
-
-    this(Vector3[6] vertexData, TexturePosition[6] textureCoordinateData, Vector3 normals) {
+    this(Vector3[] vertexData, TexturePosition[] textureCoordinateData, Vector3 normals) {
         this.vertex = new float[6].copy(vertexData);
         this.textureCoordinate = new float[6].copy(textureCoordinateData);
         this.normal = normal;
