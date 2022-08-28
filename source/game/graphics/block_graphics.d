@@ -297,7 +297,7 @@ int translateRotationRender(int currentFace, ubyte currentRotation){
 
 
 // Assembles a block mesh piece and appends the necessary data
-void buildThisBlock(
+private void internalBlockBuilder(
     ref float[] vertices,
     ref float[] textureCoordinates,
     ref int[] indices,
@@ -467,7 +467,7 @@ void buildBlock(
 
         BlockGraphicDefinition definition = definitions[ID];
 
-        buildThisBlock(
+        internalBlockBuilder(
             vertices,
             textureCoordinates,
             indices,
