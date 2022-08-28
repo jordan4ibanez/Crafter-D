@@ -56,6 +56,23 @@ void debugCreateBlockGraphics(){
             Vector2i(3,0)
         ]
     );
+
+    /*
+    // Water?
+    registerBlockGraphicsDefinition(
+        4,
+        [],
+        [
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0)
+        ]
+    );
+    */
+
 }
 
 immutable Vector3i[6] checkPositions = [
