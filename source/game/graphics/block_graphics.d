@@ -296,7 +296,6 @@ int translateRotationRender(int currentFace, ubyte currentRotation){
 }
 
 
-
 // Assembles a block mesh piece and appends the necessary data
 void buildThisBlock(
     ref float[] vertices,
@@ -346,6 +345,7 @@ void buildThisBlock(
 
             Vector2i currentTexture = textureDefinition[i];
 
+            // Replace this with light integration
             for (int q = 0; q < 12; q++) {
                 lights ~= 1.0;
             }
