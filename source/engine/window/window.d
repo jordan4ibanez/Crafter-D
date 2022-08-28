@@ -337,3 +337,8 @@ Vector2d centerMouse() {
 void stopMouseJolt(){
     Mouse.setOldPosition(Vector2d(size.x / 2.0, size.y / 2.0));
 }
+
+void setVsync(ubyte value) {
+    vsync = value;
+    glfwSwapInterval(vsync);
+}
