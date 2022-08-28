@@ -768,124 +768,120 @@ struct BlockGraphicDefinition {
 }
 
 // Internal graphics API and container for block graphics
-public static class BlockGraphics {
 
-    // Simple associative array with type uint
-    private static BlockGraphicDefinition[uint] definitions;
+// Simple associative array with type uint
+private static BlockGraphicDefinition[uint] definitions;
 
-    public static void registerBlockGraphic(uint ID, DrawType drawType, BlockTextures blockTextures, BlockBox blockBox){
-        this.definitions[ID] = BlockGraphicDefinition(
-            ID,
-            drawType,
-            blockTextures,
-            blockBox
-        );
-    }
-
-    public static void registerDefaultBlocksTest() {
-        // Air
-        registerBlockGraphic(
-            0,
-            AIR_DRAWTYPE,
-            BlockTextures(),
-            BlockBox()
-        );
-        // Grass block
-        registerBlockGraphic(
-            // ID
-            1,
-            // DrawType
-            NORMAL_DRAWTYPE,
-            // Block Textures Definition
-            BlockTextures(
-                // Back
-                Vector2I(0,0),
-                // Front
-                Vector2I(0,0),
-                // Left
-                Vector2I(0,0),
-                // Right
-                Vector2I(0,0),
-                // Bottom
-                Vector2I(2,0),
-                // Top
-                Vector2I(1,0)
-            ),
-            BlockBox()
-        );
-
-        // Debug cobble stairs
-        registerBlockGraphic(
-            // ID
-            2,
-            // DrawType
-            BLOCK_BOX_DRAWTYPE,
-            // Block Textures Definition
-            BlockTextures(
-                // Back
-                Vector2I(4,0),
-                // Front
-                Vector2I(5,0),
-                // Left
-                Vector2I(6,0),
-                // Right
-                Vector2I(7,0),
-                // Bottom
-                Vector2I(8,0),
-                // Top
-                Vector2I(9,0)
-            ),
-            BlockBox([
-                BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
-                BlockBoxDefinition(Vector3(0,0,0), Vector3(0.5,1,1)),
-            ])
-        );
-    }
-
-
-    public static Mesh testAPI(uint ID) {
-
-        BlockGraphicDefinition currentDefinition = this.definitions[ID];
-        // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
-        // BlockBox currentBlockBox = currentDefinition.blockBox;
-
-        Mesh myMesh = Mesh();
-
-        float[] vertices;
-        float[] normals;
-        float[] textureCoordinates;
-
-        int triangleCount = 0;
-
-        // For dispatching colors ubyte[]
-
-        // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
-        byte rotation = 3;
-
-        insertVertexPositions(
-            vertices,
-            textureCoordinates,
-            normals,
-            triangleCount,
-            currentDefinition,
-            PositionsBool(true, true, true, true, true,true),
-            Vector3I(0,0,0),
-            rotation
-        );
-
-        myMesh.triangleCount = triangleCount;
-        // 3 is the number of vertex points per triangle
-        myMesh.vertexCount = triangleCount * 3;
-
-        myMesh.vertices  = vertices.ptr;
-        myMesh.normals   = normals.ptr;
-        myMesh.texcoords = textureCoordinates.ptr;
-
-        UploadMesh(&myMesh, false);
-
-        return myMesh;
-    }
+public static void registerBlockGraphic(uint ID, DrawType drawType, BlockTextures blockTextures, BlockBox blockBox){
+    this.definitions[ID] = BlockGraphicDefinition(
+        ID,
+        drawType,
+        blockTextures,
+        blockBox
+    );
 }
 
-alias testRegister = BlockGraphics.registerDefaultBlocksTest;
-alias testAPI = BlockGraphics.testAPI;
+public static void registerDefaultBlocksTest() {
+    // Air
+    registerBlockGraphic(
+        0,
+        AIR_DRAWTYPE,
+        BlockTextures(),
+        BlockBox()
+    );
+    // Grass block
+    registerBlockGraphic(
+        // ID
+        1,
+        // DrawType
+        NORMAL_DRAWTYPE,
+        // Block Textures Definition
+        BlockTextures(
+            // Back
+            Vector2I(0,0),
+            // Front
+            Vector2I(0,0),
+            // Left
+            Vector2I(0,0),
+            // Right
+            Vector2I(0,0),
+            // Bottom
+            Vector2I(2,0),
+            // Top
+            Vector2I(1,0)
+        ),
+        BlockBox()
+    );
+
+    // Debug cobble stairs
+    registerBlockGraphic(
+        // ID
+        2,
+        // DrawType
+        BLOCK_BOX_DRAWTYPE,
+        // Block Textures Definition
+        BlockTextures(
+            // Back
+            Vector2I(4,0),
+            // Front
+            Vector2I(5,0),
+            // Left
+            Vector2I(6,0),
+            // Right
+            Vector2I(7,0),
+            // Bottom
+            Vector2I(8,0),
+            // Top
+            Vector2I(9,0)
+        ),
+        BlockBox([
+            BlockBoxDefinition(Vector3(0,0,0), Vector3(1,0.5,1)),
+            BlockBoxDefinition(Vector3(0,0,0), Vector3(0.5,1,1)),
+        ])
+    );
+}
+
+
+public static Mesh testAPI(uint ID) {
+
+    BlockGraphicDefinition currentDefinition = this.definitions[ID];
+    // BlockTextures currentBlockTextures = currentDefinition.blockTextures;
+    // BlockBox currentBlockBox = currentDefinition.blockBox;
+
+    Mesh myMesh = Mesh();
+
+    float[] vertices;
+    float[] normals;
+    float[] textureCoordinates;
+
+    int triangleCount = 0;
+
+    // For dispatching colors ubyte[]
+
+    // 0 0 degrees, 1 90 degrees, 2, 180 degrees, 3 270 degrees
+    byte rotation = 3;
+
+    insertVertexPositions(
+        vertices,
+        textureCoordinates,
+        normals,
+        triangleCount,
+        currentDefinition,
+        PositionsBool(true, true, true, true, true,true),
+        Vector3I(0,0,0),
+        rotation
+    );
+
+    myMesh.triangleCount = triangleCount;
+    // 3 is the number of vertex points per triangle
+    myMesh.vertexCount = triangleCount * 3;
+
+    myMesh.vertices  = vertices.ptr;
+    myMesh.normals   = normals.ptr;
+    myMesh.texcoords = textureCoordinates.ptr;
+
+    UploadMesh(&myMesh, false);
+
+    return myMesh;
+}
+
