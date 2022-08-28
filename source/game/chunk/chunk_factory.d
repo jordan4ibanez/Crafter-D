@@ -48,7 +48,7 @@ ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
         return container[position];
     }
-    assert(true == true, "WARNING HAVE HIT A NULL POSITION");
+    writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // This becomes garbage data
     return fakeChunk;
 }
