@@ -23,7 +23,7 @@ This is meant to be handled functionally
 private Chunk[Vector2i] container;
 
 // Generation stack
-private Vector2i[] stack;
+private Vector2i[] stack = new Vector2i[0];
 
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) {
