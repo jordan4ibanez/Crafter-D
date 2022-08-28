@@ -18,8 +18,10 @@ import Math     = math;
 private double FOV = Math.toRadians(60.0);
 
 // Never set this to 0 :P
-private immutable double Z_NEAR = 0.00001;
-private immutable double Z_FAR = 10_000.0;
+// ALSO never set this too low!! You get float errors!
+private immutable double Z_NEAR = 0.1;
+// Never set this too high or less than Z_NEAR!!!
+private immutable double Z_FAR = 100.0;
 
 private Vector3d clearColor = Vector3d(0,0,0);
 
