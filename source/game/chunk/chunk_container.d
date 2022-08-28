@@ -38,6 +38,7 @@ Chunk getChunk(Vector2i position) {
     if (position in container) {
         return container[position];
     }
+    // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // Return non-existent chunk
     return Chunk();
 }
@@ -48,7 +49,8 @@ ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
         return container[position];
     }
-    writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
+    // This is where serious problems could happen if existence is not checked
+    writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
     // This becomes garbage data
     return fakeChunk;
 }
