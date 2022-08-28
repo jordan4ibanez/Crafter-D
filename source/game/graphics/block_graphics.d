@@ -428,7 +428,7 @@ private void internalBlockBuilder(
     }
 }
 
-struct BlockGraphicDefinition {
+private struct BlockGraphicDefinition {
     float[6][] blockBox;
     Vector2i[6] blockTextures;
 
@@ -439,7 +439,7 @@ struct BlockGraphicDefinition {
 }
 
 
-private static BlockGraphicDefinition[uint] definitions;
+private BlockGraphicDefinition[uint] definitions;
 
 void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2i[6] blockTextures){
     definitions[id] = BlockGraphicDefinition(
