@@ -112,7 +112,11 @@ void generateChunkMesh(
                     Vector3i selectedPosition = checkPositions[w];
 
                     // Can add structs together like their base components
-                    Vector3i currentCheckPosition = position.add(selectedPosition);
+                    Vector3i currentCheckPosition = Vector3i(
+                        position.x + selectedPosition.x,
+                        position.y + selectedPosition.y,
+                        position.z + selectedPosition.z,
+                    );
 
                     // If it's not within the current chunk
                     if (!collide(currentCheckPosition)) {
