@@ -7,7 +7,7 @@ import std.array: insertInPlace;
 import vector_2i;
 import vector_3i;
 
-import game.chunk.chunk_factory;
+import game.chunk.chunk_container;
 import game.chunk.chunk;
 import game.graphics.chunk_mesh_generation;
 

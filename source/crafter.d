@@ -19,7 +19,7 @@ import game.entity.mob.mob_factory;
 import game.entity.player.player;
 import game.entity.player.player_factory;
 import game.chunk.chunk;
-import game.chunk.chunk_factory;
+import game.chunk.chunk_container;
 import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
