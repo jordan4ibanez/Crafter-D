@@ -63,21 +63,25 @@ bool collide(Vector3i position) {
 
 struct Chunk {
     private bool thisExists = false;
-    private uint[]  block = new uint[chunkArrayLength];
-    private ubyte[] light = new ubyte[chunkArrayLength];
-    private ubyte[] rotation = new ubyte[chunkArrayLength];
-    private Mesh[8] chunkMeshStack;
+    private uint[]  block;
+    private ubyte[] light;
+    private ubyte[] rotation;
+    private Mesh[] chunkMeshStack;
     // Height map needs to be added in
 
     private string biome;
-    private Vector2i chunkPosition = Vector2i(0,0);
+    private Vector2i chunkPosition;
     private bool positionLock = false;
 
     this(string biomeName, Vector2i position) {
         this.biome = biomeName;
-        this.chunkPosition = position;
+        this.chunkPosition = Vector2i(position.x, position.y);
         this.positionLock = true;
         this.thisExists = true;
+        this.block = new uint[chunkArrayLength];
+        this.light = new ubyte[chunkArrayLength];
+        this.rotation = new ubyte[chunkArrayLength];
+        this.chunkMeshStack = new Mesh[8];
     }
 
     bool exists() {
@@ -90,10 +94,11 @@ struct Chunk {
         this.chunkMeshStack[yStack].cleanUp();
         this.chunkMeshStack[yStack] = newMesh;
     }
+    /*
     void removeModel(int yStack) {
         this.chunkMeshStack[yStack].cleanUp();
     }
-    /* // This is disabled because it should just be called not manipulated
+     // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
         return this.chunkMeshStack[yStack];
     }
