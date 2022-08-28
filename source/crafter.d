@@ -110,7 +110,7 @@ void main(string[] args) {
         writeln("Loaded chunk texture atlas!");
         newTexture("textures/world_texture_map.png");
 
-        int debugSize = 2;
+        int debugSize = 10;
 
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
@@ -121,6 +121,9 @@ void main(string[] args) {
         // How low can we go before people start going through the floor?
         // Limboooooo
         setMaxDeltaFPS(3);
+
+        // Unlmited for now
+        Window.setVsync(0);
 
 
         // Testing the block graphics registration
