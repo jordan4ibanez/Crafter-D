@@ -56,7 +56,7 @@ get the position a lot easier.
 +X is the front
 
 */
-private enum Quad {
+private immutable enum Quad {
     BACK = Face(
         // Vertex
         [
@@ -213,12 +213,13 @@ private enum Quad {
         Vector3(0,1,0)
     ),
 }
-alias QUAD_BACK   = Quad.BACK;
-alias QUAD_FRONT  = Quad.FRONT;
-alias QUAD_LEFT   = Quad.LEFT;
-alias QUAD_RIGHT  = Quad.RIGHT;
-alias QUAD_BOTTOM = Quad.BOTTOM;
-alias QUAD_TOP    = Quad.TOP;
+
+private alias QUAD_BACK   = Quad.BACK;
+private alias QUAD_FRONT  = Quad.FRONT;
+private alias QUAD_LEFT   = Quad.LEFT;
+private alias QUAD_RIGHT  = Quad.RIGHT;
+private alias QUAD_BOTTOM = Quad.BOTTOM;
+private alias QUAD_TOP    = Quad.TOP;
 
 Face[] faceArray = [QUAD_BACK, QUAD_FRONT, QUAD_LEFT, QUAD_RIGHT, QUAD_BOTTOM, QUAD_TOP];
 
