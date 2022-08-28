@@ -1,4 +1,4 @@
-module game.chunk.chunk_factory;
+module game.chunk.chunk_container;
 
 
 import std.stdio;
@@ -42,7 +42,7 @@ Chunk getChunk(Vector2i position) {
     return Chunk();
 }
 
-Chunk fakeChunk = Chunk();
+private Chunk fakeChunk = Chunk();
 // Gets a mutable chunk from the container
 ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
