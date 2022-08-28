@@ -170,7 +170,8 @@ void main(string[] args) {
 
             glUseProgram(getShader("main").shaderProgram);
 
-            Camera.setClearColor(1,1,1);
+            // Sky blue translated into doubles
+            Camera.setClearColor(0,0.709803,0.88627);
             Camera.clear();
 
             Camera.clearDepthBuffer();
