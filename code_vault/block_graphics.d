@@ -16,11 +16,11 @@ with the defined pixel count size of the box. You must also do the same thing to
 
 
 // Defines how many textures are in the texture map
-const double textureMapTiles = 32;
+private const double textureMapTiles = 32;
 // Defines the width/height of each texture
-const double textureTileSize = 16;
+private const double textureTileSize = 16;
 // Defines the total width/height of the texture map in pixels
-const double textureMapSize = textureTileSize * textureMapTiles;
+private const double textureMapSize = textureTileSize * textureMapTiles;
 
 /*
 This is debug prototyping
@@ -30,7 +30,7 @@ In full version, the static class will simply get this info from --
 --> the BlockGraphicsDefinition based on ID of the block
 */
 
-struct Face {
+private struct Face {
     Vector3[6] vertex;
     TexturePosition[6] textureCoordinate;
     // Blocks are square in face, rigid, axis aligned. Only need one direction per face
