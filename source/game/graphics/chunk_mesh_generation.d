@@ -195,6 +195,12 @@ void generateChunkMesh(
                             renderingPositions[w] = true;
                         }
                     }
+
+                    // This is added on for a visualization
+                    // Possibly keep this, so players can see the bottom of world if they fall through
+                    if (currentCheckPosition.y == -1) {
+                        renderingPositions[w] = true;
+                    }
                 }
 
                 if (currentBlock != 0) {  // Replace 0 check with block graphics definition check
