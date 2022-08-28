@@ -76,15 +76,14 @@ void generateChunkMesh(
     Chunk neighborPositiveZ,
     ubyte yStack) {
 
-    float[] vertices;
-    int[] indices;
+    float[] vertices = new float[0];
+    int[] indices = new int[0];
     // float[] normals;
-    float[] textureCoordinates;
+    float[] textureCoordinates = new float[0];
     // translate lights from ubyte to float
     // writeln("you should probably implement the lighting eventually");
-    float[] lights;
+    float[] lights = new float[0];
     
-
     int triangleCount = 0;
     int vertexCount   = 0;
 
@@ -227,15 +226,17 @@ void generateChunkMesh(
 
     // writeln("length compare: ", lights.length, " ", vertices.length);
 
+    Mesh newMesh = Mesh(
+        vertices,
+        indices,
+        textureCoordinates,
+        lights,
+        "textures/world_texture_map.png"
+    );
+
     chunk.setMesh(
         yStack, 
-        Mesh(
-            vertices,
-            indices,
-            textureCoordinates,
-            lights,
-            "textures/world_texture_map.png"
-        )
+        newMesh
     );
 
 }
