@@ -55,18 +55,18 @@ void processChunkMeshUpdateStack(){
 
         Vector3i poppedValue = newStack[0];
         newStack.popFront();
-        // writeln("popped: ", poppedValue);
+        // writeln("New Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
         internalGenerateChunkMesh(poppedValue);
     }
-
+    
     // See if there are any existing chunk mesh updates
     if (updatingStack.length > 0) {
 
         Vector3i poppedValue = updatingStack[0];
         updatingStack.popFront();
-        // writeln("popped: ", poppedValue);
+        // writeln("Updating Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
         internalUpdateChunkMesh(poppedValue);
@@ -91,7 +91,6 @@ private void internalGenerateChunkMesh(Vector3i position) {
     );
 
     // Update neighbors
-    
     if (neighborNegativeX.exists()) {
         updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
     }
