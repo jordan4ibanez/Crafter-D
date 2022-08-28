@@ -75,7 +75,7 @@ void debugCreateBlockGraphics(){
 
 }
 
-immutable Vector3i[6] checkPositions = [
+private immutable Vector3i[6] checkPositions = [
     Vector3i(-1, 0, 0),
     Vector3i( 1, 0, 0),
     Vector3i( 0, 0,-1),
