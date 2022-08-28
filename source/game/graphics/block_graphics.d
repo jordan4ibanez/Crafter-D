@@ -310,8 +310,8 @@ private void internalBlockBuilder(
     bool[6] renderArray
 ){
 
-    float[6][] blockBox = graphicsDefiniton.blockBox;
-    Vector2i[6] textureDefinition = graphicsDefiniton.blockTextures;
+    float[][] blockBox = graphicsDefiniton.blockBox;
+    Vector2i[] textureDefinition = graphicsDefiniton.blockTextures;
 
     Vector3d max = Vector3d( 1,  1,  1 );
     Vector3d min = Vector3d( 0,  0,  0 );
@@ -429,19 +429,23 @@ private void internalBlockBuilder(
 }
 
 private struct BlockGraphicDefinition {
-    float[6][] blockBox;
-    Vector2i[6] blockTextures;
+    float[][] blockBox;
+    Vector2i[] blockTextures;
 
-    this(float[6][] blockBox, Vector2i[6] blockTextures) {
-        this.blockBox = blockBox;
-        this.blockTextures = blockTextures;
+    this(float[][] blockBox, Vector2i[] blockTextures) {
+        for (int i = 0; i < blockBox.length; i++){
+            assert(blockBox[i].length == 6, "wrong blockbox length");
+        }
+        assert(blockTextures.length == 6, "wrong blocktextures length");
+        this.blockBox = blockBox.dup;
+        this.blockTextures = blockTextures.dup;
     }
 }
 
 
 private BlockGraphicDefinition[uint] definitions;
 
-void registerBlockGraphicsDefinition(uint id, float[6][] blockBox, Vector2i[6] blockTextures){
+void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blockTextures){
     definitions[id] = BlockGraphicDefinition(
         blockBox,
         blockTextures
