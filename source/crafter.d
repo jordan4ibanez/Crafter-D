@@ -1,18 +1,26 @@
 module crafter;
 
+// External normal libraries
 import std.stdio;
-
 import delta_time;
 import vector_2i;
 import std.conv: to;
 import bindbc.opengl;
 
+// External concurrency libraries
+import std.concurrency;
+import std.algorithm.mutation: copy;
+import core.time: Duration;
+import asdf;
 
+// Internal engine libraries
 import engine.helpers.version_info;
 import engine.texture.texture;
 import engine.opengl.gl_interface;
 import engine.opengl.shaders;
 import engine.openal.al_interface;
+
+// Internal game libraries
 import game.entity.mob.mob;
 import game.entity.mob.mob_definitions.zombie;
 import game.entity.mob.mob_factory;
@@ -24,10 +32,12 @@ import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 
+// Libraries imported as objects
 import Math         = math;
 import Window       = engine.window.window;
 import Camera       = engine.camera.camera;
 import SoundManager = engine.openal.sound_manager;
+
 
 
 void main(string[] args) {
