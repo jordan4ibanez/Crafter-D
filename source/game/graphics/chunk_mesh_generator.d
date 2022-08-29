@@ -1,4 +1,4 @@
-module game.graphics.chunk_mesh_factory;
+module game.graphics.chunk_mesh_generator;
 
 import std.algorithm;
 import std.stdio;
