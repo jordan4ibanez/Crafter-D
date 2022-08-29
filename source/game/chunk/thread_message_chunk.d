@@ -19,14 +19,15 @@ struct ThreadMessageChunk {
     ubyte[] rotation;
     // Height map needs to be added in
 
-    private string biome;
-    private Vector2i chunkPosition;
+    string biome;
+    Vector2i chunkPosition;
 
-    this(string biomeName, Vector2i position) {
-        this.biome = biomeName;
-        this.chunkPosition = Vector2i(position.x, position.y);
-        this.block = new uint[chunkArrayLength];
-        this.light = new ubyte[chunkArrayLength];
-        this.rotation = new ubyte[chunkArrayLength];
+    // This data can only be created from a parent Chunk
+    this(Chunk parentChunk) {
+        this.biome = parentChunk.getBiome();
+        this.chunkPosition = Vector2i(parentChunk.getPosition());
+        this.block = new uint[chunkArrayLength].copy(parentChunk.getRawBlocks());
+        this.light = new ubyte[chunkArrayLength].copy(parentChunk.getRawLights());
+        this.rotation = new ubyte[chunkArrayLength].copy(parentChunk.getRawRotations());
     }
 }
