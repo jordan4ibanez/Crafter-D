@@ -45,6 +45,7 @@ void doWorldGeneration(Tid parentThread) {
         Vector2i poppedValue = generationStack[0];
         generationStack.popFront();
         writeln("Generating: ", poppedValue);
+        // This needs a special struct which holds biome data!
         return Chunk("default", poppedValue);
     }
 
