@@ -112,6 +112,7 @@ void startMeshGeneratorThread() {
 
     void internalUpdateChunkMesh(Vector3i position) {
 
+        // This will use a serialized package soon
         Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
         // Get chunk neighbors
         // These do not exist by default
