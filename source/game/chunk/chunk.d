@@ -5,6 +5,9 @@ import vector_2i;
 import vector_3i;
 import vector_3d;
 import engine.mesh.mesh;
+import game.chunk.thread_message_chunk;
+
+import std.algorithm.mutation: copy;
 
 /*
 Notes:
@@ -81,6 +84,21 @@ struct Chunk {
         this.block = new uint[chunkArrayLength];
         this.light = new ubyte[chunkArrayLength];
         this.rotation = new ubyte[chunkArrayLength];
+        this.chunkMeshStack = new Mesh[8];
+    }
+
+    // Inverse to ThreadMessageChunk's constructor, allows main thread to utilize new info
+    this(ThreadMessageChunk parentMessage) {
+        this.biome = parentMessage.biome;
+        this.chunkPosition = Vector2i(parentMessage.chunkPosition);
+        this.block = new uint[chunkArrayLength];
+        parentMessage.block.copy(this.block);
+        this.light = new ubyte[chunkArrayLength];
+        parentMessage.light.copy(this.light);
+        this.rotation = new ubyte[chunkArrayLength];
+        parentMessage.rotation.copy(this.rotation);
+        this.positionLock = true;
+        this.thisExists = true;
         this.chunkMeshStack = new Mesh[8];
     }
 
