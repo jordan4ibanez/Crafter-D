@@ -29,103 +29,106 @@ Updating stack does not update the neighbors. This avoids a recursion crash.
 That's about it really
 */
 
-// New meshes call this update to fully update neighbors
-Vector3i[] newStack;
+void startMeshGeneratorThread() {
 
-// Preexisting meshes call this update to only update necessary neighbors
-Vector3i[] updatingStack;
+    // New meshes call this update to fully update neighbors on heap
+    Vector3i[] newStack = new Vector3i[0];
 
-void newChunkMeshUpdate(Vector3i position) {
-    if (!newStack.canFind(position)) {
-        newStack.insertInPlace(0, position);
-        // newStack ~= position;
+    // Preexisting meshes call this update to only update necessary neighbors on heap
+    Vector3i[] updatingStack = new Vector3i[0];
+
+    void newChunkMeshUpdate(Vector3i position) {
+        if (!newStack.canFind(position)) {
+            newStack.insertInPlace(0, position);
+            // newStack ~= position;
+        }
     }
-}
 
-void updateChunkMesh(Vector3i position) {
-    if (!updatingStack.canFind(position)) {
-        // newStack.insertInPlace(0, position);
-        updatingStack ~= position;
+    void updateChunkMesh(Vector3i position) {
+        if (!updatingStack.canFind(position)) {
+            // newStack.insertInPlace(0, position);
+            updatingStack ~= position;
+        }
     }
-}
 
-void processChunkMeshUpdateStack(){
-    // See if there are any new chunk generations
-    if (newStack.length > 0) {
+    void processChunkMeshUpdateStack(){
+        // See if there are any new chunk generations
+        if (newStack.length > 0) {
 
-        Vector3i poppedValue = newStack[0];
-        newStack.popFront();
-        // writeln("New Chunk Mesh: ", poppedValue);
+            Vector3i poppedValue = newStack[0];
+            newStack.popFront();
+            // writeln("New Chunk Mesh: ", poppedValue);
 
-        // Ship them to the chunk generator process
-        internalGenerateChunkMesh(poppedValue);
+            // Ship them to the chunk generator process
+            internalGenerateChunkMesh(poppedValue);
+        }
+        
+        // See if there are any existing chunk mesh updates
+        if (updatingStack.length > 0) {
+
+            Vector3i poppedValue = updatingStack[0];
+            updatingStack.popFront();
+            // writeln("Updating Chunk Mesh: ", poppedValue);
+
+            // Ship them to the chunk generator process
+            internalUpdateChunkMesh(poppedValue);
+        }
     }
-    
-    // See if there are any existing chunk mesh updates
-    if (updatingStack.length > 0) {
 
-        Vector3i poppedValue = updatingStack[0];
-        updatingStack.popFront();
-        // writeln("Updating Chunk Mesh: ", poppedValue);
+    private void internalGenerateChunkMesh(Vector3i position) {
 
-        // Ship them to the chunk generator process
-        internalUpdateChunkMesh(poppedValue);
+        Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
+
+        // Get chunk neighbors
+        // These do not exist by default
+        Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
+        Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
+        Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
+        Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
+
+        generateChunkMesh(
+            thisChunk,
+            neighborNegativeX,
+            neighborPositiveX,
+            neighborNegativeZ,
+            neighborPositiveZ,
+            cast(ubyte)position.y
+        );
+
+        // Update neighbors
+        if (neighborNegativeX.exists()) {
+            updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
+        }
+        if (neighborPositiveX.exists()) {
+            updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
+        }
+        if (neighborNegativeZ.exists()) {
+            updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
+        }
+        if (neighborPositiveZ.exists()) {
+            updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
+        }
     }
-}
 
-private void internalGenerateChunkMesh(Vector3i position) {
+    private void internalUpdateChunkMesh(Vector3i position) {
 
-    Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
+        Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
+        // Get chunk neighbors
+        // These do not exist by default
+        Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
+        Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
+        Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
+        Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
-    // Get chunk neighbors
-    // These do not exist by default
-    Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
-    Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
-    Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
-    Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
-
-    generateChunkMesh(
-        thisChunk,
-        neighborNegativeX,
-        neighborPositiveX,
-        neighborNegativeZ,
-        neighborPositiveZ,
-        cast(ubyte)position.y
-    );
-
-    // Update neighbors
-    if (neighborNegativeX.exists()) {
-        updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
+        generateChunkMesh(
+            thisChunk,
+            neighborNegativeX,
+            neighborPositiveX,
+            neighborNegativeZ,
+            neighborPositiveZ,
+            cast(ubyte)position.y
+        );
+        // As you can see as listed above, this is the same function but without the recursive update.
+        // This could have intook a boolean, but it's easier to understand it as a separate function.
     }
-    if (neighborPositiveX.exists()) {
-        updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
-    }
-    if (neighborNegativeZ.exists()) {
-        updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
-    }
-    if (neighborPositiveZ.exists()) {
-        updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
-    }
-}
-
-private void internalUpdateChunkMesh(Vector3i position) {
-
-    Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
-    // Get chunk neighbors
-    // These do not exist by default
-    Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
-    Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
-    Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
-    Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
-
-    generateChunkMesh(
-        thisChunk,
-        neighborNegativeX,
-        neighborPositiveX,
-        neighborNegativeZ,
-        neighborPositiveZ,
-        cast(ubyte)position.y
-    );
-    // As you can see as listed above, this is the same function but without the recursive update.
-    // This could have intook a boolean, but it's easier to understand it as a separate function.
 }
