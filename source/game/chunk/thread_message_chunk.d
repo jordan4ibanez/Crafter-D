@@ -29,4 +29,20 @@ struct ThreadMessageChunk {
         this.light = new ubyte[chunkArrayLength];
         this.rotation = new ubyte[chunkArrayLength];
     }
+
+
+    uint getBlock(Vector3i position) {
+        if (collide(position)) {
+            return(this.block[positionToIndex(position)]);
+        } else {
+            // failed for some reason
+            writeln("Getblock FAILED!");
+            return 0;
+        }
+    }
+    void setBlock(Vector3i position, uint newBlock) {
+        if (collide(position)) {
+            this.block[positionToIndex(position)] = newBlock;
+        }
+    }
 }
