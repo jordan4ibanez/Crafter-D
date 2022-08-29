@@ -1,6 +1,16 @@
 module game.chunk.thread_message_chunk;
 
+// External normal libraries
 import vector_2i;
+
+// External concurrency libraries
+import std.concurrency;
+import std.algorithm.mutation: copy;
+import core.time: Duration;
+import asdf;
+
+// Internal game libraries
+import game.chunk.chunk;
 
 // This is only used for serialization and sending to things, like networking and thread messages
 struct ThreadMessageChunk {
