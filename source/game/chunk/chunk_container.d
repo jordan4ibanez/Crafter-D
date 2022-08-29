@@ -18,6 +18,7 @@ import ThreadLibrary = engine.thread.thread_library;
 
 // Internal game libraries
 import game.chunk.chunk;
+import game.chunk.thread_message_chunk;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 /*
@@ -32,14 +33,8 @@ private Chunk[Vector2i] container;
 
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) {
-    // Do not dispatch a new chunk generation into generation thread if it's already in main memory
-    // if (!stack.canFind(position)) {
-        // stack ~= position;
-    // }
-
     shared(string) serializedPosition = "Vector3i" ~ position.serializeToJson();
     send(ThreadLibrary.getWorldGeneratorThread(), serializedPosition);
-
 }
 
 // Gets a chunk from the container
@@ -66,8 +61,21 @@ ref Chunk getMutableChunk(Vector2i position) {
 
 // Internal chunk generation dispatch
 // This will be reused to receive chunks from the world generator
-/*
-private void internalGenerateChunk(Vector2i newPosition) {
+
+void receiveChunksFromWorldGenerator() {
+
+    receiveTimeout(
+        Duration(),
+        (string newData) {
+            if (newData[0..14] == "generatedChunk") {
+                ThreadMessageChunk newMessage = newData[14..newData.length].deserialize!(ThreadMessageChunk);
+                
+            }
+        }
+    );
+
+
+    /*
 
     // random debug for prototyping processes
     Chunk generatedChunk = Chunk("default", newPosition);
@@ -83,9 +91,9 @@ private void internalGenerateChunk(Vector2i newPosition) {
         newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
     }
 
+    */
     // The factory is now done processing the chunk
 }
-*/
 
 void renderWorld() {
     foreach (Chunk thisChunk; container) {
