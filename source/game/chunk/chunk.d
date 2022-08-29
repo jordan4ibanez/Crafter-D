@@ -118,6 +118,16 @@ struct Chunk {
         );
     }
 
+    uint[] getRawBlocks() {
+        return block;
+    }
+    ubyte[] getRawLights() {
+        return light;
+    }
+    ubyte[] getRawRotations() {
+        return rotation;
+    }
+
     // Complex boilerplate with boundary checks
     uint getBlock(Vector3i position) {
         if (collide(position)) {
