@@ -9,13 +9,28 @@ import engine.window.window;
 
 import game.chunk.chunk;
 
+// Polls the generation stack 
+void processTerrainGenerationStack() {
+
+    // See if there are any new chunk generations
+    if (stack.length > 0) {
+
+        Vector2i poppedValue = stack[0];
+        stack.popFront();
+        // writeln("Generating: ", poppedValue);
+
+        // Ship them to the chunk generator process
+        internalGenerateChunk(poppedValue);
+    }
+}
+
 
 void generateTerrain (ref Chunk thisChunk) {
 
-    private int SEED = 12_345_678;
+    int SEED = 12_345_678;
 
     // Generation stack
-    private Vector2i[] stack = new Vector2i[0];
+    Vector2i[] stack = new Vector2i[0];
 
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
