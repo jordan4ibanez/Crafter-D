@@ -86,7 +86,7 @@ private immutable Vector3i[6] checkPositions = [
 
 
 void generateChunkMesh(
-    ref Chunk chunk,
+    Chunk chunk,
     Chunk neighborNegativeX,
     Chunk neighborPositiveX,
     Chunk neighborNegativeZ,
