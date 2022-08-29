@@ -1,5 +1,7 @@
 module game.chunk.thread_message_chunk;
 
+import std.stdio;
+
 // External normal libraries
 import vector_2i;
 
@@ -27,10 +29,10 @@ struct ThreadMessageChunk {
         this.biome = parentChunk.getBiome();
         this.chunkPosition = Vector2i(parentChunk.getPosition());
         this.block = new uint[chunkArrayLength];
-        this.block.copy(parentChunk.getRawBlocks());
+        parentChunk.getRawBlocks().copy(this.block);
         this.light = new ubyte[chunkArrayLength];
-        this.light.copy(parentChunk.getRawLights());
+        parentChunk.getRawLights().copy(this.light);
         this.rotation = new ubyte[chunkArrayLength];
-        this.rotation.copy(parentChunk.getRawRotations());
+        parentChunk.getRawRotations().copy(this.rotation);
     }
 }
