@@ -33,10 +33,11 @@ import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 
 // Libraries imported as objects
-import Math         = math;
-import Window       = engine.window.window;
-import Camera       = engine.camera.camera;
-import SoundManager = engine.openal.sound_manager;
+import Math          = math;
+import Window        = engine.window.window;
+import Camera        = engine.camera.camera;
+import SoundManager  = engine.openal.sound_manager;
+import ThreadLibrary = engine.thread.thread_library;
 
 
 
