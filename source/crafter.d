@@ -212,7 +212,8 @@ void main(string[] args) {
             Window.pollEvents();
 
         }
-
+        
+        ThreadLibrary.killAllThreads();
         cleanUpAllTextures();
         deleteShaders();
         cleanUpOpenAL();
