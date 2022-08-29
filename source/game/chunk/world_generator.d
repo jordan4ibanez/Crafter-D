@@ -35,32 +35,16 @@ void doWorldGeneration(Tid parentThread) {
 
     int SEED = 12_345_678;
 
-    // Generation stack on heap
-    Vector2i[] generationStack = new Vector2i[0];
-    // Output to be passed back to main thread
-    ThreadMessageChunk[] outputStack = new ThreadMessageChunk[0];
-
     // Loaded biomes go here
     // Example: Biome[] biomes = new Biome[0];
     // Then send the biomes over in an array and decyper
 
-    // Polls the generation stack 
-    Chunk processTerrainGenerationStack() {
-        Vector2i poppedValue = generationStack[0];
-        generationStack.popFront();
-        if (debugNow) {
-            writeln("Generating: ", poppedValue);
-        }
-        // This needs a special struct which holds biome data!
-        return Chunk("default", poppedValue);
-    }
-
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
-    void generateChunk() {
+    void generateChunk(Vector2i position) {
 
-        Chunk thisChunk = processTerrainGenerationStack();
+        Chunk thisChunk = Chunk("default", position);
 
         Vector2i chunkPosition = thisChunk.getPosition();
 
@@ -137,12 +121,19 @@ void doWorldGeneration(Tid parentThread) {
         if (debugNow) {
             writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
         }
+
         ThreadMessageChunk newMessage = ThreadMessageChunk(thisChunk);
-        outputStack ~= newMessage;
 
-        // writeln("NEW CHUNK WAS THIS: ", thisChunk);
-        // writeln("THE OUTPUT IS NOW: ", outputStack);
+        shared(string) outputChunk = "generatedChunk" ~ newMessage.serializeToJson();
 
+        if (debugNow) {
+            writeln("sending this chunk back to the main thread: ", newMessage.chunkPosition);
+        }
+
+        send(mainThread, outputChunk);
+
+        // FILO
+        // thisMessage goes *poof*
         // thisChunk goes *poof*
     }
 
@@ -150,8 +141,8 @@ void doWorldGeneration(Tid parentThread) {
     while (!Window.externalShouldClose()) {
 
         // Listen for input from main thread
-        receiveTimeout(
-            Duration(),
+        receive(
+            // Duration(),
             (string stringData) {
                 if (debugNow) {
                     writeln("world generator got: ", stringData);
@@ -161,28 +152,13 @@ void doWorldGeneration(Tid parentThread) {
                     if (debugNow) {
                         writeln("was type of Vector3i");
                     }
-                    generationStack ~= stringData[8..stringData.length].deserialize!(Vector2i);
+                    generateChunk(stringData[8..stringData.length].deserialize!(Vector2i));
                 }
-            }
+            },
+            // If you send this thread a bool, it continues, then breaks
+            (bool kill) {}
         );
-        
-        // See if there are any new chunk generations
-        if (generationStack.length > 0) {
-            // Generate the new chunks and put them into the output stack
-            generateChunk();
-        } 
-
-        // See if there are any generated chunks ready to be sent out
-        if (outputStack.length > 0) {
-            shared(string) outputChunk = "generatedChunk" ~ outputStack[0].serializeToJson();
-            if (debugNow) {
-                writeln("sending this chunk back to the main thread: ", outputStack[0].chunkPosition);
-            }
-            outputStack.popFront();
-            send(mainThread, outputChunk);
-        }
     }
 
     writeln("World generator has closed!");
-
 }
