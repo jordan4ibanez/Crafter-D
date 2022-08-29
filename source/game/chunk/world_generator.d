@@ -45,10 +45,6 @@ void doWorldGeneration(Tid parentThread) {
         Vector2i poppedValue = generationStack[0];
         generationStack.popFront();
         writeln("Generating: ", poppedValue);
-
-        // Ship them to the chunk generator process
-        // internalGenerateChunk(poppedValue);
-
         return Chunk("default", poppedValue);
     }
 
@@ -130,6 +126,12 @@ void doWorldGeneration(Tid parentThread) {
             // writeln("noise at ", currentPosition.x, ",", currentPosition.y, ",", currentPosition.z, " is ", currentNoise);
         }
         */
+
+        writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
+
+        outputStack ~= ThreadMessageChunk(thisChunk);
+
+        // thisChunk goes *poof*
     }
 
     while (!Window.externalShouldClose()) {
@@ -150,7 +152,7 @@ void doWorldGeneration(Tid parentThread) {
         // See if there are any new chunk generations
         if (generationStack.length > 0) {
             // Generate the new chunks and put them into the output stack
-            
+            generateChunk();
         }        
     }
 
