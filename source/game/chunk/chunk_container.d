@@ -1,12 +1,19 @@
 module game.chunk.chunk_container;
 
-
+// External normal libraries
 import std.stdio;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
 import vector_2i;
 import vector_3i;
 
+// External concurrency libraries
+import std.concurrency;
+import std.algorithm.mutation: copy;
+import core.time: Duration;
+import asdf;
+
+// Internal game libraries
 import game.chunk.chunk;
 import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
@@ -18,19 +25,16 @@ properties to treat the entire file as a static class
 This is meant to be handled functionally
 */
 
-
 // Hashmap container for generated chunks
 private Chunk[Vector2i] container;
 
-// Generation stack
-private Vector2i[] stack = new Vector2i[0];
-
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) {
-    // Do not dispatch a new chunk generation into stack if it's already there
-    if (!stack.canFind(position)) {
-        stack ~= position;
-    }
+    // Do not dispatch a new chunk generation into generation thread if it's already in main memory
+    // if (!stack.canFind(position)) {
+        // stack ~= position;
+    // }
+
 }
 
 // Gets a chunk from the container
@@ -53,21 +57,6 @@ ref Chunk getMutableChunk(Vector2i position) {
     writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
     // This becomes garbage data
     return fakeChunk;
-}
-
-// Polls the generation stack 
-void processTerrainGenerationStack() {
-
-    // See if there are any new chunk generations
-    if (stack.length > 0) {
-
-        Vector2i poppedValue = stack[0];
-        stack.popFront();
-        // writeln("Generating: ", poppedValue);
-
-        // Ship them to the chunk generator process
-        internalGenerateChunk(poppedValue);
-    }
 }
 
 // Internal chunk generation dispatch
