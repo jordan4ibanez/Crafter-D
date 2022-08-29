@@ -26,8 +26,11 @@ struct ThreadMessageChunk {
     this(Chunk parentChunk) {
         this.biome = parentChunk.getBiome();
         this.chunkPosition = Vector2i(parentChunk.getPosition());
-        this.block = new uint[chunkArrayLength].copy(parentChunk.getRawBlocks());
-        this.light = new ubyte[chunkArrayLength].copy(parentChunk.getRawLights());
-        this.rotation = new ubyte[chunkArrayLength].copy(parentChunk.getRawRotations());
+        this.block = new uint[chunkArrayLength];
+        this.block.copy(parentChunk.getRawBlocks());
+        this.light = new ubyte[chunkArrayLength];
+        this.light.copy(parentChunk.getRawLights());
+        this.rotation = new ubyte[chunkArrayLength];
+        this.rotation.copy(parentChunk.getRawRotations());
     }
 }
