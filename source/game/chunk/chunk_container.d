@@ -13,6 +13,9 @@ import std.algorithm.mutation: copy;
 import core.time: Duration;
 import asdf;
 
+// Internal engine libraries
+import ThreadLibrary = engine.thread.thread_library;
+
 // Internal game libraries
 import game.chunk.chunk;
 import game.graphics.chunk_mesh_generation;
@@ -33,6 +36,9 @@ void generateChunk(Vector2i position) {
     // if (!stack.canFind(position)) {
         // stack ~= position;
     // }
+
+    shared(string) serializedPosition = "Vector3i" ~ position.serializeToJson();
+    send(ThreadLibrary.getWorldGeneratorThread(), serializedPosition);
 
 }
 
