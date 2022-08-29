@@ -23,7 +23,7 @@ import game.chunk.chunk;
 // This function is a thread
 void doWorldGeneration(Tid parentThread) {
 
-    writeln("blah");
+    writeln("World generator has started");
 
     // Uses this to talk back to the main thread
     Tid mainThread = parentThread;
@@ -51,8 +51,6 @@ void doWorldGeneration(Tid parentThread) {
 
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
-
-    writeln("blah2");
 
     void generateChunk() {
 
@@ -131,16 +129,12 @@ void doWorldGeneration(Tid parentThread) {
         */
     }
 
-    writeln("blah3");
-
     // This is causing an access violation in the C GLFW library
     while (!Window.externalShouldClose()) {
 
-        writeln("world generator is running!");
-
 
         // Listener goes here
-
+        
 
         // See if there are any new chunk generations
         if (stack.length > 0) {
@@ -150,6 +144,6 @@ void doWorldGeneration(Tid parentThread) {
         // Sender goes here
     }
 
-    writeln("world generator has closed!");
+    writeln("World generator has closed!");
 
 }
