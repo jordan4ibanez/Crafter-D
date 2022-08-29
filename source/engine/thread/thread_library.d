@@ -21,3 +21,7 @@ void setWorldGeneratorThread(Tid worldGenThread) {
 Tid getWorldGeneratorThread() {
     return worldGenerator;
 }
+
+void killAllThreads() {
+    send(worldGenerator, true);
+}
