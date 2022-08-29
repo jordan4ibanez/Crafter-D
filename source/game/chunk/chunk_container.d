@@ -60,6 +60,8 @@ ref Chunk getMutableChunk(Vector2i position) {
 }
 
 // Internal chunk generation dispatch
+// This will be reused to receive chunks from the world generator
+/*
 private void internalGenerateChunk(Vector2i newPosition) {
 
     // random debug for prototyping processes
@@ -78,6 +80,7 @@ private void internalGenerateChunk(Vector2i newPosition) {
 
     // The factory is now done processing the chunk
 }
+*/
 
 void renderWorld() {
     foreach (Chunk thisChunk; container) {
