@@ -135,6 +135,7 @@ void doWorldGeneration(Tid parentThread) {
         // thisChunk goes *poof*
     }
 
+    // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
     while (!Window.externalShouldClose()) {
 
         // Listen for input from main thread
@@ -154,7 +155,15 @@ void doWorldGeneration(Tid parentThread) {
         if (generationStack.length > 0) {
             // Generate the new chunks and put them into the output stack
             generateChunk();
-        }        
+        } 
+
+        // See if there are any generated chunks ready to be sent out
+        if (outputStack.length > 0) {
+            shared(string) outputChunk = "generatedChunk" ~ outputStack[0].serializeToJson();
+            writeln("sending this chunk back to the main thread: ", outputStack[0].chunkPosition);
+            outputStack.popFront();
+            send(mainThread, outputChunk);
+        }
     }
 
     writeln("World generator has closed!");
