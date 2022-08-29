@@ -24,7 +24,11 @@ import game.chunk.thread_message_chunk;
 // This function is a thread
 void doWorldGeneration(Tid parentThread) {
 
-    writeln("World generator has started");
+    immutable bool debugNow = false;
+
+    if (debugNow) {
+        writeln("World generator has started");
+    }
 
     // Uses this to talk back to the main thread
     Tid mainThread = parentThread;
@@ -44,7 +48,9 @@ void doWorldGeneration(Tid parentThread) {
     Chunk processTerrainGenerationStack() {
         Vector2i poppedValue = generationStack[0];
         generationStack.popFront();
-        writeln("Generating: ", poppedValue);
+        if (debugNow) {
+            writeln("Generating: ", poppedValue);
+        }
         // This needs a special struct which holds biome data!
         return Chunk("default", poppedValue);
     }
@@ -128,9 +134,15 @@ void doWorldGeneration(Tid parentThread) {
         }
         */
 
-        writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
+        if (debugNow) {
+            writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
+        }
 
-        outputStack ~= ThreadMessageChunk(thisChunk);
+        ThreadMessageChunk newMessage = ThreadMessageChunk(thisChunk);
+        outputStack ~= newMessage;
+
+        // writeln("NEW CHUNK WAS THIS: ", thisChunk);
+        // writeln("THE OUTPUT IS NOW: ", outputStack);
 
         // thisChunk goes *poof*
     }
@@ -142,10 +154,14 @@ void doWorldGeneration(Tid parentThread) {
         receiveTimeout(
             Duration(),
             (string stringData) {
-                writeln("world generator got: ", stringData);
+                if (debugNow) {
+                    writeln("world generator got: ", stringData);
+                }
                 // Got data of Vector3i
                 if (stringData[0..8] == "Vector3i") {
-                    writeln("was type of Vector3i");
+                    if (debugNow) {
+                        writeln("was type of Vector3i");
+                    }
                     generationStack ~= stringData[8..stringData.length].deserialize!(Vector2i);
                 }
             }
@@ -160,7 +176,9 @@ void doWorldGeneration(Tid parentThread) {
         // See if there are any generated chunks ready to be sent out
         if (outputStack.length > 0) {
             shared(string) outputChunk = "generatedChunk" ~ outputStack[0].serializeToJson();
-            writeln("sending this chunk back to the main thread: ", outputStack[0].chunkPosition);
+            if (debugNow) {
+                writeln("sending this chunk back to the main thread: ", outputStack[0].chunkPosition);
+            }
             outputStack.popFront();
             send(mainThread, outputChunk);
         }
