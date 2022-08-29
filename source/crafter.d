@@ -28,7 +28,7 @@ import game.entity.player.player;
 import game.entity.player.player_factory;
 import game.chunk.chunk;
 import game.chunk.chunk_container;
-import game.chunk.world_generation;
+import game.chunk.world_generator;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 
@@ -108,7 +108,7 @@ void main(string[] args) {
 
         writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
         writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
-    
+
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
         // Maybe make a version of this somehow

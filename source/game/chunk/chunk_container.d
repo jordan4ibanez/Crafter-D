@@ -15,7 +15,6 @@ import asdf;
 
 // Internal game libraries
 import game.chunk.chunk;
-import game.chunk.world_generation;
 import game.graphics.chunk_mesh_generation;
 import game.graphics.chunk_mesh_factory;
 /*
