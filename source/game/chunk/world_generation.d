@@ -5,13 +5,17 @@ import fast_noise;
 import std.math.rounding;
 import vector_2i;
 import vector_3i;
+import engine.window.window;
 
 import game.chunk.chunk;
 
 
-private int SEED = 12_345_678;
-
 void generateTerrain (ref Chunk thisChunk) {
+
+    private int SEED = 12_345_678;
+
+    // Generation stack
+    private Vector2i[] stack = new Vector2i[0];
 
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
