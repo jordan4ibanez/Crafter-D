@@ -15,7 +15,7 @@ import Window = engine.window.window;
 import game.chunk.chunk;
 
 // This function is a thread
-void generateTerrain () {
+void doWorldGeneration() {
 
     int SEED = 12_345_678;
 
