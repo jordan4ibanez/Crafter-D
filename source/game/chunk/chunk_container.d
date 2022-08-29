@@ -64,35 +64,29 @@ ref Chunk getMutableChunk(Vector2i position) {
 
 void receiveChunksFromWorldGenerator() {
 
-    receiveTimeout(
-        Duration(),
-        (string newData) {
-            if (newData[0..14] == "generatedChunk") {
-                ThreadMessageChunk newMessage = newData[14..newData.length].deserialize!(ThreadMessageChunk);
-                
+    // Make this adjustable in the settings
+    immutable int maxChunkReceives = 10;
+
+    for (int i = 0; i < maxChunkReceives; i++){
+        receiveTimeout(
+            Duration(),
+            (string newData) {
+                // Received a chunk from world generator
+                if (newData[0..14] == "generatedChunk") {
+                    // Recompile into a Chunk
+                    ThreadMessageChunk newMessage = newData[14..newData.length].deserialize!(ThreadMessageChunk);
+                    Chunk receivedChunk = Chunk(newMessage);                
+                    Vector2i newPosition = newMessage.chunkPosition;
+                    // Shove it into the container
+                    container[newPosition] = receivedChunk;
+                    // Finally add a new chunk mesh update
+                    for (ubyte y = 0; y < 8; y++) {
+                        newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
+                    }
+                }
             }
-        }
-    );
-
-
-    /*
-
-    // random debug for prototyping processes
-    Chunk generatedChunk = Chunk("default", newPosition);
-
-    // World generator processes new chunk
-    generateTerrain(generatedChunk);
-
-    // Insert the chunk into the container
-    container[newPosition] = generatedChunk;
-
-    // Finally add a new chunk mesh update
-    for (ubyte y = 0; y < 8; y++) {
-        newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
+        );
     }
-
-    */
-    // The factory is now done processing the chunk
 }
 
 void renderWorld() {
