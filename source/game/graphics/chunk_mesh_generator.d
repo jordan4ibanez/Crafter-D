@@ -75,7 +75,7 @@ void startMeshGeneratorThread() {
         }
     }
 
-    private void internalGenerateChunkMesh(Vector3i position) {
+    void internalGenerateChunkMesh(Vector3i position) {
 
         Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
 
@@ -110,7 +110,7 @@ void startMeshGeneratorThread() {
         }
     }
 
-    private void internalUpdateChunkMesh(Vector3i position) {
+    void internalUpdateChunkMesh(Vector3i position) {
 
         Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
         // Get chunk neighbors
