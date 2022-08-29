@@ -10,9 +10,9 @@ import asdf;
 // The locks are important in case anyone starts modding the game, DO NOT want these getting changed
 
 private Tid worldGenerator;
-private Tid meshGenerator;
+private Tid chunkMeshGenerator;
 private bool worldGeneratorLock = false;
-private bool meshGeneratorLock = false;
+private bool chunkMeshGeneratorLock = false;
 
 void setWorldGeneratorThread(Tid worldGenThread) {
     if (!worldGeneratorLock) {
@@ -24,17 +24,17 @@ Tid getWorldGeneratorThread() {
     return worldGenerator;
 }
 
-void setMeshGeneratorThread(Tid meshGenThread) {
-    if (!meshGeneratorLock) {
-        meshGeneratorLock = true;
-        meshGenerator = meshGenThread;
+void setChunkMeshGeneratorThread(Tid chunkMeshGenThread) {
+    if (!chunkMeshGeneratorLock) {
+        chunkMeshGeneratorLock = true;
+        ChunkMeshGenerator = chunkMeshGenThread;
     }
 }
-Tid getMeshGeneratorThread() {
+Tid getChunkMeshGeneratorThread() {
     return meshGenerator;
 }
 
 void killAllThreads() {
     send(worldGenerator, true);
-    send(meshGenerator, true);
+    send(chunkMeshGenerator, true);
 }
