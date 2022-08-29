@@ -129,19 +129,26 @@ void doWorldGeneration(Tid parentThread) {
         */
     }
 
-    // This is causing an access violation in the C GLFW library
     while (!Window.externalShouldClose()) {
 
-
-        // Listener goes here
+        // Listen for input from main thread
+        receiveTimeout(
+            Duration(),
+            (string stringData) {
+                writeln("world generator got: ", stringData);
+                // Got data of Vector3i
+                if (stringData[0..8] == "Vector3i") {
+                    writeln("was type of Vector3i");
+                    stack ~= stringData[8..stringData.length].deserialize!(Vector2i);
+                }
+            }
+        );
         
-
         // See if there are any new chunk generations
         if (stack.length > 0) {
-
-        }
-
-        // Sender goes here
+            // Send out newly generated chunks
+            
+        }        
     }
 
     writeln("World generator has closed!");
