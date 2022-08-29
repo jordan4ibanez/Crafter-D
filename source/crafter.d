@@ -112,6 +112,7 @@ void main(string[] args) {
 
         int debugSize = 10;
 
+        // This is the initial payload
         for (int x = -debugSize; x <= debugSize; x++) {
             for (int z = -debugSize; z <= debugSize; z++) {
                 generateChunk(Vector2i(x,z));
@@ -156,7 +157,7 @@ void main(string[] args) {
 
             // These two functions literally build the environent
             processTerrainGenerationStack();
-            processChunkMeshUpdateStack();
+            // processChunkMeshUpdateStack();
 
             Camera.testCameraHackRemoveThis();
 
