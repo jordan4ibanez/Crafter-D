@@ -1,17 +1,19 @@
 module game.chunk.world_generation;
 
+// External normal libraries
 import std.stdio;
 import fast_noise;
-import std.math.rounding;
 import vector_2i;
 import vector_3i;
+
+// Internal engine libraries
 import engine.window.window;
 
+// Internal game libraries
 import game.chunk.chunk;
 
 // Polls the generation stack 
 void processTerrainGenerationStack() {
-
     // See if there are any new chunk generations
     if (stack.length > 0) {
 
