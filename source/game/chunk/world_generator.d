@@ -8,6 +8,12 @@ import vector_3i;
 import std.math.rounding;
 import std.range;
 
+// External concurrency libraries
+import std.concurrency;
+import std.algorithm.mutation: copy;
+import core.time: Duration;
+import asdf;
+
 // Internal engine libraries
 import Window = engine.window.window;
 
@@ -15,7 +21,12 @@ import Window = engine.window.window;
 import game.chunk.chunk;
 
 // This function is a thread
-void doWorldGeneration() {
+void doWorldGeneration(Tid parentThread) {
+
+    writeln("blah");
+
+    // Uses this to talk back to the main thread
+    Tid mainThread = parentThread;
 
     int SEED = 12_345_678;
 
@@ -40,6 +51,8 @@ void doWorldGeneration() {
 
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
+
+    writeln("blah2");
 
     void generateChunk() {
 
@@ -108,7 +121,6 @@ void doWorldGeneration() {
             }
         }
 
-
         // This is the cavegen prototype, this is going to take a lot of tuning
         /*
         for (int i = 0; i < chunkArrayLength; i++) {
@@ -119,7 +131,13 @@ void doWorldGeneration() {
         */
     }
 
+    writeln("blah3");
+
+    // This is causing an access violation in the C GLFW library
     while (!Window.shouldClose()) {
+
+        writeln("world generator is running!");
+
 
         // Listener goes here
 
