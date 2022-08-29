@@ -166,7 +166,7 @@ void main(string[] args) {
             calculateDelta();
 
             // These two functions literally build the environent
-            processTerrainGenerationStack();
+            // processTerrainGenerationStack();
             // processChunkMeshUpdateStack();
 
             Camera.testCameraHackRemoveThis();
