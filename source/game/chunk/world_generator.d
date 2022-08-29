@@ -31,7 +31,7 @@ void doWorldGeneration(Tid parentThread) {
     int SEED = 12_345_678;
 
     // Generation stack on heap
-    Vector2i[] stack = new Vector2i[0];
+    Vector2i[] generationStack = new Vector2i[0];
 
     // Loaded biomes go here
     // Example: Biome[] biomes = new Biome[0];
@@ -39,8 +39,8 @@ void doWorldGeneration(Tid parentThread) {
 
     // Polls the generation stack 
     Chunk processTerrainGenerationStack() {
-        Vector2i poppedValue = stack[0];
-        stack.popFront();
+        Vector2i poppedValue = generationStack[0];
+        generationStack.popFront();
         writeln("Generating: ", poppedValue);
 
         // Ship them to the chunk generator process
@@ -139,14 +139,14 @@ void doWorldGeneration(Tid parentThread) {
                 // Got data of Vector3i
                 if (stringData[0..8] == "Vector3i") {
                     writeln("was type of Vector3i");
-                    stack ~= stringData[8..stringData.length].deserialize!(Vector2i);
+                    generationStack ~= stringData[8..stringData.length].deserialize!(Vector2i);
                 }
             }
         );
         
         // See if there are any new chunk generations
-        if (stack.length > 0) {
-            // Send out newly generated chunks
+        if (generationStack.length > 0) {
+            // Generate the new chunks and put them into the output stack
             
         }        
     }
