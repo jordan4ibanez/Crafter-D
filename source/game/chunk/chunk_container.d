@@ -40,7 +40,7 @@ void generateChunk(Vector2i position) {
 // Gets a chunk from the container
 Chunk getChunk(Vector2i position) {
     if (position in container) {
-        return container[position];
+        return container[position].clone();
     }
     // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // Return non-existent chunk
