@@ -43,6 +43,8 @@ void generateTerrain () {
 
     void generateChunk() {
 
+        Chunk thisChunk = processTerrainGenerationStack();
+
         Vector2i chunkPosition = thisChunk.getPosition();
 
         // Get the real position of the chunk
