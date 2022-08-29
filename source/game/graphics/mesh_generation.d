@@ -1,4 +1,4 @@
-module game.graphics.chunk_mesh_generation;
+module game.graphics.mesh_generation;
 
 import std.stdio;
 import vector_2d;
