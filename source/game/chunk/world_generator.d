@@ -137,7 +137,6 @@ void doWorldGeneration(Tid parentThread) {
         if (debugNow) {
             writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
         }
-
         ThreadMessageChunk newMessage = ThreadMessageChunk(thisChunk);
         outputStack ~= newMessage;
 
