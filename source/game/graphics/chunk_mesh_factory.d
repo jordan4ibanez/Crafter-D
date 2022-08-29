@@ -74,6 +74,9 @@ void processChunkMeshUpdateStack(){
 }
 
 private void internalGenerateChunkMesh(Vector3i position) {
+
+    Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
+
     // Get chunk neighbors
     // These do not exist by default
     Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
@@ -82,7 +85,7 @@ private void internalGenerateChunkMesh(Vector3i position) {
     Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
-        getMutableChunk(Vector2i(position.x, position.z)),
+        thisChunk,
         neighborNegativeX,
         neighborPositiveX,
         neighborNegativeZ,
@@ -106,6 +109,8 @@ private void internalGenerateChunkMesh(Vector3i position) {
 }
 
 private void internalUpdateChunkMesh(Vector3i position) {
+
+    Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
     // Get chunk neighbors
     // These do not exist by default
     Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
@@ -114,7 +119,7 @@ private void internalUpdateChunkMesh(Vector3i position) {
     Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
-        getMutableChunk(Vector2i(position.x, position.z)),
+        thisChunk,
         neighborNegativeX,
         neighborPositiveX,
         neighborNegativeZ,
