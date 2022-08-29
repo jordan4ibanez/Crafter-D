@@ -19,6 +19,7 @@ import Window = engine.window.window;
 
 // Internal game libraries
 import game.chunk.chunk;
+import game.chunk.thread_message_chunk;
 
 // This function is a thread
 void doWorldGeneration(Tid parentThread) {
@@ -32,6 +33,8 @@ void doWorldGeneration(Tid parentThread) {
 
     // Generation stack on heap
     Vector2i[] generationStack = new Vector2i[0];
+    // Output to be passed back to main thread
+    ThreadMessageChunk[] outputStack = new ThreadMessageChunk[0];
 
     // Loaded biomes go here
     // Example: Biome[] biomes = new Biome[0];
