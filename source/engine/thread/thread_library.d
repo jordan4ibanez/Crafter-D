@@ -30,6 +30,9 @@ void setMeshGeneratorThread(Tid meshGenThread) {
         meshGenerator = meshGenThread;
     }
 }
+Tid getMeshGeneratorThread() {
+    return meshGenerator;
+}
 
 void killAllThreads() {
     send(worldGenerator, true);
