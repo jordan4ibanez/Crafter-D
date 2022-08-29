@@ -18,3 +18,6 @@ void setWorldGeneratorThread(Tid worldGenThread) {
         worldGenerator = worldGenThread;
     }
 }
+Tid getWorldGeneratorThread() {
+    return worldGenerator;
+}
