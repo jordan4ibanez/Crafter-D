@@ -110,6 +110,13 @@ void main(string[] args) {
         writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
         writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
+        // Dispatch needed threads for game prototyping, handle these when a player enters a world instead of this mess!
+        // Scoped so NOTHING else here can touch them and they go off the stack
+        {
+            Tid worldGenThread = spawn(&doWorldGeneration, thisTid);
+            ThreadLibrary.setWorldGeneratorThread(worldGenThread);
+        }
+
 
         // Uncomment this to get a cleaner terminal - Disables raylib logging
         // Maybe make a version of this somehow
