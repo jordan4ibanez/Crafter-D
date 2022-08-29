@@ -134,7 +134,7 @@ void doWorldGeneration(Tid parentThread) {
     writeln("blah3");
 
     // This is causing an access violation in the C GLFW library
-    while (!Window.shouldClose()) {
+    while (!Window.externalShouldClose()) {
 
         writeln("world generator is running!");
 
@@ -149,5 +149,7 @@ void doWorldGeneration(Tid parentThread) {
 
         // Sender goes here
     }
+
+    writeln("world generator has closed!");
 
 }
