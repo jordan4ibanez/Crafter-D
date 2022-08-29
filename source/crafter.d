@@ -128,7 +128,7 @@ void main(string[] args) {
         writeln("Loaded chunk texture atlas!");
         newTexture("textures/world_texture_map.png");
 
-        int debugSize = 10;
+        int debugSize = 3;
 
         // This is the initial payload
         for (int x = -debugSize; x <= debugSize; x++) {
