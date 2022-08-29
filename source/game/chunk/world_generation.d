@@ -6,9 +6,10 @@ import fast_noise;
 import vector_2i;
 import vector_3i;
 import std.math.rounding;
+import std.range;
 
 // Internal engine libraries
-import engine.window.window;
+import Window = engine.window.window;
 
 // Internal game libraries
 import game.chunk.chunk;
@@ -21,24 +22,27 @@ void generateTerrain () {
     // Generation stack on heap
     Vector2i[] stack = new Vector2i[0];
 
+    // Loaded biomes go here
+    // Example: Biome[] biomes = new Biome[0];
+    // Then send the biomes over in an array and decyper
+
     // Polls the generation stack 
-    void processTerrainGenerationStack() {
-        // See if there are any new chunk generations
-        if (stack.length > 0) {
+    Chunk processTerrainGenerationStack() {
+        Vector2i poppedValue = stack[0];
+        stack.popFront();
+        writeln("Generating: ", poppedValue);
 
-            Vector2i poppedValue = stack[0];
-            stack.popFront();
-            // writeln("Generating: ", poppedValue);
+        // Ship them to the chunk generator process
+        // internalGenerateChunk(poppedValue);
 
-            // Ship them to the chunk generator process
-            internalGenerateChunk(poppedValue);
-        }
+        return Chunk("default", poppedValue);
     }
 
     FNLState noise = fnlCreateState(SEED);
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
     void generateChunk() {
+
         Vector2i chunkPosition = thisChunk.getPosition();
 
         // Get the real position of the chunk
@@ -112,5 +116,18 @@ void generateTerrain () {
         }
         */
     }
-    
+
+    while (!Window.shouldClose()) {
+
+        // Listener goes here
+
+
+        // See if there are any new chunk generations
+        if (stack.length > 0) {
+
+        }
+
+        // Sender goes here
+    }
+
 }
