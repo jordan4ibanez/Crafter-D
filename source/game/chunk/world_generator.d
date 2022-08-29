@@ -1,4 +1,4 @@
-module game.chunk.world_generation;
+module game.chunk.world_generator;
 
 // External normal libraries
 import std.stdio;
