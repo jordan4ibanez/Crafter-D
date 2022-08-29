@@ -253,6 +253,10 @@ void generateChunkMesh(
 
     // writeln("length compare: ", lights.length, " ", vertices.length);
 
+
+    writeln("Now send the data to the main thread");
+    /*
+
     Mesh newMesh = Mesh(
         vertices,
         indices,
@@ -261,9 +265,11 @@ void generateChunkMesh(
         "textures/world_texture_map.png"
     );
 
+    
     chunk.setMesh(
         yStack, 
         newMesh
     );
+    */
 
 }
