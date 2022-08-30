@@ -15,7 +15,7 @@ import asdf;
 import game.chunk.chunk;
 
 // This is only used for serialization and sending to things, like networking and thread messages
-struct ThreadMessageChunk {
+shared struct ThreadMessageChunk {
     bool exists = false;
     uint[]  block;
     ubyte[] light;
@@ -27,14 +27,26 @@ struct ThreadMessageChunk {
 
     // This data can only be created from a parent Chunk
     this(Chunk parentChunk) {
+        if (!parentChunk.exists()) {
+            return;
+        }
         this.biome = parentChunk.getBiome();
         this.chunkPosition = Vector2i(parentChunk.getPosition());
         this.block = new uint[chunkArrayLength];
-        parentChunk.getRawBlocks().copy(this.block);
+        uint[] parentBlocks = parentChunk.getRawBlocks();
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.block[i] = parentBlocks[i];
+        }
         this.light = new ubyte[chunkArrayLength];
-        parentChunk.getRawLights().copy(this.light);
+        ubyte[] parentLights = parentChunk.getRawLights();
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.light[i] = parentLights[i];
+        }
         this.rotation = new ubyte[chunkArrayLength];
-        parentChunk.getRawRotations().copy(this.rotation);
+        ubyte[] parentRotations = parentChunk.getRawRotations();
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.rotation[i] = parentRotations[i];
+        }
         this.exists = true;
     }
 }
