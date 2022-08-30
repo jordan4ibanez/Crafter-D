@@ -16,6 +16,7 @@ import game.chunk.chunk;
 
 // This is only used for serialization and sending to things, like networking and thread messages
 struct ThreadMessageChunk {
+    bool exists = false;
     uint[]  block;
     ubyte[] light;
     ubyte[] rotation;
@@ -34,5 +35,6 @@ struct ThreadMessageChunk {
         parentChunk.getRawLights().copy(this.light);
         this.rotation = new ubyte[chunkArrayLength];
         parentChunk.getRawRotations().copy(this.rotation);
+        this.exists = true;
     }
 }
