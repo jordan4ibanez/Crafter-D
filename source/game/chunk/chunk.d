@@ -89,6 +89,11 @@ struct Chunk {
 
     // Inverse to ThreadMessageChunk's constructor, allows main thread to utilize new info
     this(ThreadMessageChunk parentMessage) {
+
+        if (!parentMessage.exists) {
+            return;
+        }
+
         this.biome = parentMessage.biome;
         this.chunkPosition = Vector2i(parentMessage.chunkPosition);
 
