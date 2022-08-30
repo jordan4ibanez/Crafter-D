@@ -145,7 +145,7 @@ void main(string[] args) {
         setMaxDeltaFPS(3);
 
         // Unlmited for now
-        Window.setVsync(0);
+        Window.setVsync(2);
 
 
         // Testing the block graphics registration
