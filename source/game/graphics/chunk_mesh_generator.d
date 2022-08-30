@@ -25,6 +25,7 @@ import game.chunk.chunk_container;
 import game.chunk.chunk;
 import game.chunk.thread_chunk_package;
 import game.graphics.block_graphics_definition;
+import game.graphics.thread_mesh_message;
 
 import ThreadLibrary = engine.thread.thread_library;
 
@@ -174,6 +175,9 @@ void startMeshGeneratorThread(Tid parentThread) {
 |  `----.|  | |  |_)  | |  |\  \----./  _____  \  |  |\  \----.   |  |     
 |_______||__| |______/  | _| `._____/__/     \__\ | _| `._____|   |__|     
 */
+
+// Gotta tell the main thread what has been created
+Tid mainThread = parentThread;
 
 // Defines how many textures are in the texture map
 immutable double TEXTURE_MAP_TILES = 32;
@@ -742,23 +746,30 @@ void generateChunkMesh(
 
 
     writeln("Now send the data to the main thread");
-    /*
+    
+    Vector2i chunkPosition = chunk.getPosition();
 
-    Mesh newMesh = Mesh(
+    ThreadMeshMessage newMesh = ThreadMeshMessage(
         vertices,
         indices,
         textureCoordinates,
         lights,
-        "textures/world_texture_map.png"
+        "textures/world_texture_map.png",
+        Vector3i(
+            chunkPosition.x,
+            yStack,
+            chunkPosition.y
+        )
     );
 
-    
+    send(mainThread, newMesh);
+
+    /*
     chunk.setMesh(
         yStack, 
         newMesh
     );
     */
-
 }
 
 
@@ -775,9 +786,6 @@ void generateChunkMesh(
 */
 
 
-
-// Gotta tell the main thread what has been created
-Tid mainThread = parentThread;
 
 writeln("Starting thread mesh generator");
 
