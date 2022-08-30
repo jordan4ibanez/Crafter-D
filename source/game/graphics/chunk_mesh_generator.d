@@ -149,8 +149,10 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 
 struct MeshUpdate{
     Vector3i position;
-    this(Vector3i position){
+    bool updating;
+    this(Vector3i position, bool updating){
         this.position = position;
+        this.updating = updating;
     }
 }
 
@@ -788,29 +790,28 @@ writeln("Starting thread mesh generator");
 
 // New meshes call this update to fully update neighbors on heap
 // This needs to be a package of current and neighbors
-ThreadChunkPackage[] newStack = new ThreadChunkPackage[0];
+MeshUpdate[] newStack = new MeshUpdate[0];
 
 // Preexisting meshes call this update to only update necessary neighbors on heap
 // This needs to be a package of current and neighbors
-ThreadChunkPackage[] updatingStack = new ThreadChunkPackage[0];
+MeshUpdate[] updatingStack = new MeshUpdate[0];
 
-void internalGenerateChunkMesh(ThreadChunkPackage thePackage, bool updateNeighbors) {
-
-    Chunk thisChunk = thePackage.thisChunk;
+void internalGenerateChunkMesh(MeshUpdate thePackage) {
 
     Vector3i position = Vector3i(
-        thisChunk.getPosition().x,
-        thePackage.yStack,
-        thisChunk.getPosition().y
+        thePackage.position.x,
+        thePackage.position.y,
+        thePackage.position.z
     );
 
+    Chunk thisChunk = getChunk(Vector2i(position.x, position.z));
     
     // Get chunk neighbors
     // These do not exist by default
-    Chunk neighborNegativeX = thePackage.neighborNegativeX;
-    Chunk neighborPositiveX = thePackage.neighborPositiveX;
-    Chunk neighborNegativeZ = thePackage.neighborNegativeZ;
-    Chunk neighborPositiveZ = thePackage.neighborPositiveZ;
+    Chunk neighborNegativeX = getChunk(Vector2i(position.x - 1, position.z));
+    Chunk neighborPositiveX = getChunk(Vector2i(position.x + 1, position.z));
+    Chunk neighborNegativeZ = getChunk(Vector2i(position.x, position.z - 1));
+    Chunk neighborPositiveZ = getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
         thisChunk,
@@ -822,55 +823,51 @@ void internalGenerateChunkMesh(ThreadChunkPackage thePackage, bool updateNeighbo
     );
 
     // Update neighbors
-    if (updateNeighbors) {
+    if (thePackage.updating) {
         if (neighborNegativeX.exists()) {
             // updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
-            // writeln("send out request for update!");
-            send(mainThread,
-                cast(shared(MeshUpdate))MeshUpdate(
-                    Vector3i(
-                        position.x - 1,
-                        position.y,
-                        position.z
-                    )
-                )
+            // writeln("send out request for update!");            
+            updatingStack ~= MeshUpdate(
+                Vector3i(
+                    position.x - 1,
+                    position.y,
+                    position.z
+                ),
+                false
             );
                     
         }
         if (neighborPositiveX.exists()) {
             // updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
-            send(mainThread,
-                cast(shared(MeshUpdate))MeshUpdate(
-                    Vector3i(
-                        position.x + 1,
-                        position.y,
-                        position.z
-                    )
-                )
+            updatingStack ~= MeshUpdate(
+                Vector3i(
+                    position.x + 1,
+                    position.y,
+                    position.z
+                ),
+                false
             );
         }
         if (neighborNegativeZ.exists()) {
             // updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
-            send(mainThread,
-                cast(shared(MeshUpdate))MeshUpdate(
-                        Vector3i(
-                        position.x,
-                        position.y,
-                        position.z - 1
-                    )
-                )
+            updatingStack ~= MeshUpdate(
+                    Vector3i(
+                    position.x,
+                    position.y,
+                    position.z - 1
+                ),
+                false
             );
         }
         if (neighborPositiveZ.exists()) {
             // updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
-            send(mainThread,
-                cast(shared(MeshUpdate))MeshUpdate(
-                    Vector3i(
-                        position.x,
-                        position.y,
-                        position.z + 1
-                    )
-                )
+            updatingStack ~= MeshUpdate(
+                Vector3i(
+                    position.x,
+                    position.y,
+                    position.z + 1
+                ),
+                false
             );
         }
     }
@@ -880,27 +877,27 @@ void processChunkMeshUpdateStack(){
     // See if there are any new chunk generations
     if (newStack.length > 0) {
 
-        ThreadChunkPackage newPackage = newStack[0];
+        MeshUpdate newPackage = newStack[0];
         newStack.popFront();
         // writeln("New Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
-        internalGenerateChunkMesh(newPackage, true);
+        internalGenerateChunkMesh(newPackage);
     }
     
     // See if there are any existing chunk mesh updates
     if (updatingStack.length > 0) {
 
-        ThreadChunkPackage updatingPackage = updatingStack[0];
+        MeshUpdate updatingPackage = updatingStack[0];
         updatingStack.popFront();
         // writeln("Updating Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
-        internalGenerateChunkMesh(updatingPackage, false);
+        internalGenerateChunkMesh(updatingPackage);
     }
 }
 
-void receiveChunkTransfer(ThreadChunkPackage packageData) {
+void receiveChunkTransfer(MeshUpdate packageData) {
     if (packageData.updating) {
         // insertInPlace(0, packageData);
         updatingStack ~= packageData;
@@ -916,8 +913,8 @@ while(!Window.externalShouldClose()) {
     if (!didGenLastLoop) {
         didGenLastLoop = false;
         receive(
-            (shared(ThreadChunkPackage) packageData) {
-                receiveChunkTransfer(cast(ThreadChunkPackage)packageData);
+            (MeshUpdate newUpdate) {
+                receiveChunkTransfer(newUpdate);
             },
             // This will always reactivate so no need to duplicate
             (shared(BlockGraphicDefinition) newDefinition) {
@@ -932,8 +929,8 @@ while(!Window.externalShouldClose()) {
         didGenLastLoop = false;
         receiveTimeout(
             Duration(),
-            (shared(ThreadChunkPackage) packageData) {
-                receiveChunkTransfer(cast(ThreadChunkPackage)packageData);
+            (MeshUpdate newUpdate) {
+                receiveChunkTransfer(newUpdate);
             },
             // If you send this thread a bool, it continues, then breaks
             (bool kill) {}
