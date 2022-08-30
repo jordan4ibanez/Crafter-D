@@ -3,7 +3,7 @@ module game.chunk.thread_chunk_package;
 import game.chunk.chunk;
 import game.chunk.thread_message_chunk;
 
-struct ThreadChunkPackage {
+shared struct ThreadChunkPackage {
     bool exists = false;
     ubyte yStack = 0;
     ThreadMessageChunk thisChunk;
@@ -27,5 +27,5 @@ struct ThreadChunkPackage {
             this.neighborPositiveZ = ThreadMessageChunk(neighborPositiveZ);
             this.exists = true;
             this.yStack = yStack;
-        }
+    }
 }
