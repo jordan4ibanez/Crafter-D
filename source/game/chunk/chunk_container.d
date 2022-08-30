@@ -66,13 +66,15 @@ ref Chunk getMutableChunk(Vector2i position) {
 
 void receiveChunksFromWorldGenerator() {
 
-    // Make this adjustable in the settings
-    immutable int maxChunkReceives = 10;
+    bool receieved = true;
 
-    for (int i = 0; i < maxChunkReceives; i++){
+    while(receieved) {
+        receieved = false;
         receiveTimeout(
             Duration(),
             (shared(Chunk) sharedGeneratedChunk) {
+                
+                receieved = true;
 
                 Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
                 Chunk clonedChunk = generatedChunk.clone();
@@ -97,11 +99,15 @@ void receiveChunksFromWorldGenerator() {
 }
 
 void receiveMeshesFromChunkMeshGenerator() {
-    immutable int updates = 10;
-    for (int i = 0; i < updates; i++) {
+    
+    bool received = true;
+    while(received) {
+        received = false;
         receiveTimeout(
             Duration(),
-            (ThreadMeshMessage newMesh) {                
+            (ThreadMeshMessage newMesh) {               
+                received = true;
+
                 ThreadMeshMessage thisNewMesh = newMesh;
 
                 Vector3i position = thisNewMesh.position;
