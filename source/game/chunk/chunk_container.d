@@ -83,7 +83,6 @@ void receiveChunksFromWorldGenerator() {
                 for (ubyte y = 0; y < 8; y++) {
                     // This creates A LOT of data, but hopefully it will not be too much for D
                     // Dump it right into the chunk mesh generator thread
-                    // send(ThreadLibrary.getChunkMeshGeneratorThread(), packageData);
                     Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
                     send(cmg, "startingTransfer");
                     send(cmg, cast(shared(Chunk))generatedChunk.clone());
@@ -123,10 +122,16 @@ void receiveMeshesFromChunkMeshGenerator() {
                 );
 
                 mutableChunk.setMesh(position.y, newChunkMesh);
-
             }
         );
     }
+}
+
+void receiveMeshUpdatesFromChunkMeshGenerator() {
+    receiveTimeout(
+        Duration(),
+        
+    );
 }
 
 void renderWorld() {
