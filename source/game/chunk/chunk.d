@@ -91,12 +91,25 @@ struct Chunk {
     this(ThreadMessageChunk parentMessage) {
         this.biome = parentMessage.biome;
         this.chunkPosition = Vector2i(parentMessage.chunkPosition);
+
         this.block = new uint[chunkArrayLength];
-        parentMessage.block.copy(this.block);
+        uint[] parentBlocks = cast(uint[])parentMessage.block;
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.block[i] = parentBlocks[i];
+        }
+
         this.light = new ubyte[chunkArrayLength];
-        parentMessage.light.copy(this.light);
+        ubyte[] parentLights = cast(ubyte[])parentMessage.light;
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.light[i] = parentLights[i];
+        }
+
         this.rotation = new ubyte[chunkArrayLength];
-        parentMessage.rotation.copy(this.rotation);
+        ubyte[] parentRotations = cast(ubyte[])parentMessage.rotation;
+        for (int i = 0; i < chunkArrayLength; i++) {
+            this.rotation[i] = parentRotations[i];
+        }
+
         this.positionLock = true;
         this.thisExists = true;
         this.chunkMeshStack = new Mesh[8];
