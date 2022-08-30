@@ -5,7 +5,6 @@ import vector_2i;
 import vector_3i;
 import vector_3d;
 import engine.mesh.mesh;
-import game.chunk.thread_message_chunk;
 
 import std.algorithm.mutation: copy;
 
@@ -84,39 +83,6 @@ struct Chunk {
         this.block = new uint[chunkArrayLength];
         this.light = new ubyte[chunkArrayLength];
         this.rotation = new ubyte[chunkArrayLength];
-        this.chunkMeshStack = new Mesh[8];
-    }
-
-    // Inverse to ThreadMessageChunk's constructor, allows main thread to utilize new info
-    this(ThreadMessageChunk parentMessage) {
-
-        if (!parentMessage.exists) {
-            return;
-        }
-
-        this.biome = parentMessage.biome;
-        this.chunkPosition = Vector2i(parentMessage.chunkPosition);
-
-        this.block = new uint[chunkArrayLength];
-        uint[] parentBlocks = cast(uint[])parentMessage.block;
-        for (int i = 0; i < chunkArrayLength; i++) {
-            this.block[i] = parentBlocks[i];
-        }
-
-        this.light = new ubyte[chunkArrayLength];
-        ubyte[] parentLights = cast(ubyte[])parentMessage.light;
-        for (int i = 0; i < chunkArrayLength; i++) {
-            this.light[i] = parentLights[i];
-        }
-
-        this.rotation = new ubyte[chunkArrayLength];
-        ubyte[] parentRotations = cast(ubyte[])parentMessage.rotation;
-        for (int i = 0; i < chunkArrayLength; i++) {
-            this.rotation[i] = parentRotations[i];
-        }
-
-        this.positionLock = true;
-        this.thisExists = parentMessage.exists;
         this.chunkMeshStack = new Mesh[8];
     }
 
