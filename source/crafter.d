@@ -193,7 +193,7 @@ void main(string[] args) {
         writeln("Loaded chunk texture atlas!");
         newTexture("textures/world_texture_map.png");
 
-        int debugSize = 2;
+        int debugSize = 10;
 
         // This is the initial payload
         for (int x = -debugSize; x <= debugSize; x++) {
@@ -241,7 +241,6 @@ void main(string[] args) {
             // These two functions literally build the environent
             receiveChunksFromWorldGenerator();
             receiveMeshesFromChunkMeshGenerator();
-            receiveMeshUpdatesFromChunkMeshGenerator();
 
             Camera.testCameraHackRemoveThis();
 
