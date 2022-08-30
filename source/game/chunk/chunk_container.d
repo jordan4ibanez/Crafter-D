@@ -15,12 +15,14 @@ import asdf;
 
 // Internal engine libraries
 import ThreadLibrary = engine.thread.thread_library;
+import engine.mesh.mesh;
 
 // Internal game libraries
 import game.chunk.chunk;
 import game.chunk.thread_message_chunk;
 import game.graphics.chunk_mesh_generator;
 import game.chunk.thread_chunk_package;
+import game.graphics.thread_mesh_message;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
 properties to treat the entire file as a static class
@@ -95,6 +97,34 @@ void receiveChunksFromWorldGenerator() {
                     // Hopefully
                 }
             },
+        );
+    }
+}
+
+void receiveMeshesFromChunkMeshGenerator() {
+    immutable int updates = 10;
+    for (int i = 0; i < updates; i++) {
+        receiveTimeout(
+            Duration(),
+            (ThreadMeshMessage newMesh) {
+                writeln("got a new mesh-------------_-_-_");
+                ThreadMeshMessage thisNewMesh = newMesh;
+
+                Vector3i position = thisNewMesh.position;
+
+                Chunk mutableChunk = getMutableChunk(Vector2i(position.x, position.z));
+
+                Mesh newChunkMesh = Mesh(
+                    cast(float[])thisNewMesh.vertices,
+                    cast(int[])thisNewMesh.indices,
+                    cast(float[])thisNewMesh.textureCoordinates,
+                    cast(float[])thisNewMesh.colors,
+                    thisNewMesh.textureName
+                );
+
+                mutableChunk.setMesh(position.y, newChunkMesh);
+
+            }
         );
     }
 }
