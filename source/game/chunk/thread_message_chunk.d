@@ -14,7 +14,7 @@ import asdf;
 // Internal game libraries
 import game.chunk.chunk;
 
-// This is only used for serialization and sending to things, like networking and thread messages
+// This is only used for sending to things, like networking and thread messages
 shared struct ThreadMessageChunk {
     bool exists = false;
     uint[]  block;
