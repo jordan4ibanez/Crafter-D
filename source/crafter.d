@@ -30,7 +30,6 @@ import game.chunk.chunk;
 import game.chunk.chunk_container;
 import game.chunk.world_generator;
 import game.graphics.chunk_mesh_generator;
-import game.graphics.mesh_generation;
 
 // Libraries imported as objects
 import Math          = math;
@@ -39,6 +38,69 @@ import Camera        = engine.camera.camera;
 import SoundManager  = engine.openal.sound_manager;
 import ThreadLibrary = engine.thread.thread_library;
 
+
+void debugCreateBlockGraphics(){
+    // Stone
+    registerBlockGraphicsDefinition(
+        1,
+        [
+            // [0,0,0,1,0.5,1],
+            // [0,0,0,0.5,1,0.5]
+        ],
+        [
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0),
+            Vector2i(0,0)
+        ]
+    );
+
+    // Grass
+    registerBlockGraphicsDefinition(
+        2,
+        [],
+        [
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(1,0),
+            Vector2i(3,0),
+            Vector2i(2,0)
+        ]
+    );
+
+    // Dirt
+    registerBlockGraphicsDefinition(
+        3,
+        [],
+        [
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0),
+            Vector2i(3,0)
+        ]
+    );
+
+    /*
+    // Water?
+    registerBlockGraphicsDefinition(
+        4,
+        [],
+        [
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0),
+            Vector2i(9,0)
+        ]
+    );
+    */
+}
 
 
 void main(string[] args) {
