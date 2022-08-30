@@ -47,6 +47,6 @@ shared struct ThreadMessageChunk {
         for (int i = 0; i < chunkArrayLength; i++) {
             this.rotation[i] = parentRotations[i];
         }
-        this.exists = true;
+        this.exists = parentChunk.exists();
     }
 }
