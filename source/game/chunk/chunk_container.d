@@ -30,18 +30,19 @@ This is meant to be handled functionally
 */
 
 // Hashmap container for generated chunks
-private Chunk[Vector2i] container;
+private shared(Chunk[Vector2i]) container;
 
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) {
     send(ThreadLibrary.getWorldGeneratorThread(), position);
-    writeln("sending ", position, " to world generator");
 }
 
 // Gets a chunk from the container
 Chunk getChunk(Vector2i position) {
     if (position in container) {
-        return container[position].clone();
+        Chunk original = cast(Chunk)container[position];
+        Chunk clone = original.clone();
+        return clone;
     }
     // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // Return non-existent chunk
@@ -52,7 +53,7 @@ private Chunk fakeChunk = Chunk();
 // Gets a mutable chunk from the container
 ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
-        return container[position];
+        return cast(Chunk)container[position];
     }
     // This is where serious problems could happen if existence is not checked
     writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
@@ -74,9 +75,11 @@ void receiveChunksFromWorldGenerator() {
             (shared(Chunk) sharedGeneratedChunk) {
 
                 Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
+                Chunk clonedChunk = generatedChunk.clone();
 
-                Vector2i newPosition = generatedChunk.getPosition();
-                container[newPosition] = generatedChunk;
+
+                Vector2i newPosition = clonedChunk.getPosition();
+                container[newPosition] = cast(shared(Chunk))clonedChunk;
 
                 // Finally add a new chunk mesh update into the chunk mesh generator
                 
@@ -84,17 +87,7 @@ void receiveChunksFromWorldGenerator() {
                     // This creates A LOT of data, but hopefully it will not be too much for D
                     // Dump it right into the chunk mesh generator thread
                     Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
-                    
-                    send(cmg, cast(shared(ThreadChunkPackage))ThreadChunkPackage(
-                        cast(Chunk)sharedGeneratedChunk,
-                        getChunk(Vector2i(newPosition.x - 1, newPosition.y)),
-                        getChunk(Vector2i(newPosition.x + 1, newPosition.y)),
-                        getChunk(Vector2i(newPosition.x, newPosition.y - 1)),
-                        getChunk(Vector2i(newPosition.x, newPosition.y + 1)),
-                        y,
-                        false // Is it an update? : true. if new mesh: false
-                    ));             
-
+                    send(cmg, MeshUpdate(Vector3i(newPosition.x, y, newPosition.y), true));
                     // All that cloned chunk data goes into the other thread and we won't worry about it
                     // Hopefully
                 }
@@ -129,35 +122,11 @@ void receiveMeshesFromChunkMeshGenerator() {
     }
 }
 
-void receiveMeshUpdatesFromChunkMeshGenerator() {
-    immutable int updates = 10;
-    for (int i = 0; i < updates; i++) {
-        receiveTimeout(
-            Duration(),
-            (shared(MeshUpdate) newSharedMeshUpdate) {
-                MeshUpdate newMeshUpdate = cast(MeshUpdate) newSharedMeshUpdate;
-                Vector3i newPosition = newMeshUpdate.position;
-
-                Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
-
-                send(cmg, cast(shared(ThreadChunkPackage))ThreadChunkPackage(
-                    getChunk(Vector2i(newPosition.x, newPosition.z)),
-                    getChunk(Vector2i(newPosition.x - 1, newPosition.z)),
-                    getChunk(Vector2i(newPosition.x + 1, newPosition.z)),
-                    getChunk(Vector2i(newPosition.x, newPosition.z - 1)),
-                    getChunk(Vector2i(newPosition.x, newPosition.z + 1)),
-                    cast(ubyte)newPosition.y,
-                    true // Is it an update? : true. if new mesh: false
-                )); 
-            }
-        );
-    }
-}
-
 void renderWorld() {
-    foreach (Chunk thisChunk; container) {
+    foreach (shared(Chunk) thisChunk; container) {
+        Chunk castedChunk = cast(Chunk) thisChunk;
         for (ubyte i = 0; i < 8; i++) {
-            thisChunk.drawMesh(i);
+            castedChunk.drawMesh(i);
         }
     }
 }
