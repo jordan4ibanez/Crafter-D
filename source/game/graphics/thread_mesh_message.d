@@ -1,12 +1,21 @@
 module game.graphics.thread_mesh_message;
 
+import vector_3i;
+
 shared struct ThreadMeshMessage {
     float[] vertices;
     int[] indices;
     float[] textureCoordinates;
     float[] colors;
     string textureName;
-    this(float[] vertices, int[] indices, float[] textureCoordinates, float[] colors, string textureName) {
+    Vector3i position;
+    this(
+        float[] vertices,
+        int[] indices,
+        float[] textureCoordinates,
+        float[] colors,
+        string textureName,
+        Vector3i position) {
         this.vertices = new float[vertices.length];
         for (int i = 0; i < vertices.length; i++) {
             this.vertices[i] = vertices[i];
@@ -24,5 +33,6 @@ shared struct ThreadMeshMessage {
             this.colors[i] = colors[i];
         }
         this.textureName = textureName;
+        this.position = position;
     }
 }
