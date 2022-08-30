@@ -910,20 +910,21 @@ while(!Window.externalShouldClose()) {
         didGenLastLoop = false;
         receive(
             (ThreadChunkPackage newPackage) {
-                if (newPackage.updating) {
+                ThreadChunkPackage packageClone = newPackage;
+                if (packageClone.updating) {
                     writeln("this is an update!");
-                    updateChunkMesh(newPackage);
+                    updateChunkMesh(packageClone);
                     didGenLastLoop = true;
                 } else {
                     writeln("this is a new generation!");
-                    newChunkMeshUpdate(newPackage);
+                    newChunkMeshUpdate(packageClone);
                     didGenLastLoop = true;
                 }
             
             },
             // This will always reactivate so no need to duplicate
             (BlockGraphicDefinition newDefinition) {
-                writeln("GOT NEW GRAPHICS DEFINITION! ID:", newDefinition.id);
+                // writeln("GOT NEW GRAPHICS DEFINITION! ID:", newDefinition.id);
                 definitions[newDefinition.id] = cast(BlockGraphicDefinition)newDefinition;
                 didGenLastLoop = true;
             },
@@ -935,13 +936,14 @@ while(!Window.externalShouldClose()) {
         receiveTimeout(
             Duration(),
             (ThreadChunkPackage newPackage) {
-                if (newPackage.updating) {
+                ThreadChunkPackage packageClone = newPackage;
+                if (packageClone.updating) {
                     // writeln("this is an update!");
-                    updateChunkMesh(newPackage);
+                    updateChunkMesh(packageClone);
                     didGenLastLoop = true;
                 } else {
                     // writeln("this is a new generation!");
-                    newChunkMeshUpdate(newPackage);
+                    newChunkMeshUpdate(packageClone);
                     didGenLastLoop = true;
                 }
             
