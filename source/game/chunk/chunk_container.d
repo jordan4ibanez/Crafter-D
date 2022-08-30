@@ -49,6 +49,18 @@ Chunk getChunk(Vector2i position) {
     return Chunk();
 }
 
+// Gets a shared chunk from the container
+shared(Chunk) getSharedChunk(Vector2i position) {
+    if (position in container) {
+        Chunk original = cast(Chunk)container[position];
+        Chunk clone = original.clone();
+        return cast(shared(Chunk))clone;
+    }
+    // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
+    // Return non-existent chunk
+    return cast(shared(Chunk))Chunk();
+}
+
 private Chunk fakeChunk = Chunk();
 // Gets a mutable chunk from the container
 ref Chunk getMutableChunk(Vector2i position) {
@@ -73,7 +85,7 @@ void receiveChunksFromWorldGenerator() {
         receiveTimeout(
             Duration(),
             (shared(Chunk) sharedGeneratedChunk) {
-                
+
                 receieved = true;
 
                 Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
