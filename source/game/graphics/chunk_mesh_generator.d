@@ -743,9 +743,6 @@ void generateChunkMesh(
     // thisChunkMesh.vertexCount = vertexCount;    
 
     // writeln("length compare: ", lights.length, " ", vertices.length);
-
-
-    writeln("Now send the data to the main thread");
     
     Vector2i chunkPosition = chunk.getPosition();
 
@@ -763,13 +760,6 @@ void generateChunkMesh(
     );
 
     send(mainThread, newMesh);
-
-    /*
-    chunk.setMesh(
-        yStack, 
-        newMesh
-    );
-    */
 }
 
 
