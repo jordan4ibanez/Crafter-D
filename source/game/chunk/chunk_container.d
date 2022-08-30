@@ -106,8 +106,7 @@ void receiveMeshesFromChunkMeshGenerator() {
     for (int i = 0; i < updates; i++) {
         receiveTimeout(
             Duration(),
-            (ThreadMeshMessage newMesh) {
-                writeln("got a new mesh-------------_-_-_");
+            (ThreadMeshMessage newMesh) {                
                 ThreadMeshMessage thisNewMesh = newMesh;
 
                 Vector3i position = thisNewMesh.position;
