@@ -111,11 +111,11 @@ struct Chunk {
         }
 
         this.positionLock = true;
-        this.thisExists = true;
+        this.thisExists = parentMessage.exists;
         this.chunkMeshStack = new Mesh[8];
     }
 
-    // Inverse to ThreadMessageChunk's constructor, allows main thread to utilize new info
+    // Creates an entirely new chunk in memory
     Chunk clone() {
         Chunk cloningChunk = Chunk();
         cloningChunk.biome = this.biome;
