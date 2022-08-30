@@ -1,26 +1,31 @@
 module game.chunk.thread_chunk_package;
 
 import game.chunk.chunk;
+import game.chunk.thread_message_chunk;
 
 struct ThreadChunkPackage {
     bool exists = false;
-    Chunk thisChunk;
+    ubyte yStack = 0;
+    ThreadMessageChunk thisChunk;
 
-    Chunk neighborNegativeX;
-    Chunk neighborPositiveX;
-    Chunk neighborNegativeZ;
-    Chunk neighborPositiveZ;
+    ThreadMessageChunk neighborNegativeX;
+    ThreadMessageChunk neighborPositiveX;
+    ThreadMessageChunk neighborNegativeZ;
+    ThreadMessageChunk neighborPositiveZ;
 
+    // This accumulates converted chunks into one huge package
     this(Chunk thisChunk,
          Chunk neighborNegativeX,
          Chunk neighborPositiveX,
          Chunk neighborNegativeZ,
-         Chunk neighborPositiveZ) {
-            this.thisChunk = thisChunk;
-            this.neighborNegativeX = neighborNegativeX;
-            this.neighborPositiveX = neighborPositiveX;
-            this.neighborNegativeZ = neighborNegativeZ;
-            this.neighborPositiveZ = neighborPositiveZ;
+         Chunk neighborPositiveZ,
+         ubyte yStack) {
+            this.thisChunk = ThreadMessageChunk(thisChunk);
+            this.neighborNegativeX = ThreadMessageChunk(neighborNegativeX);
+            this.neighborPositiveX = ThreadMessageChunk(neighborPositiveX);
+            this.neighborNegativeZ = ThreadMessageChunk(neighborNegativeZ);
+            this.neighborPositiveZ = ThreadMessageChunk(neighborPositiveZ);
             this.exists = true;
+            this.yStack = yStack;
         }
 }
