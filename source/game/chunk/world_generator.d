@@ -19,7 +19,6 @@ import Window = engine.window.window;
 
 // Internal game libraries
 import game.chunk.chunk;
-import game.chunk.thread_message_chunk;
 
 // This function is a thread
 void startWorldGeneratorThread(Tid parentThread) {
@@ -122,13 +121,11 @@ void startWorldGeneratorThread(Tid parentThread) {
             writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
         }
 
-        ThreadMessageChunk outputChunk = ThreadMessageChunk(thisChunk);
-
         if (debugNow) {
-            writeln("sending this chunk back to the main thread: ", outputChunk.chunkPosition);
+            writeln("sending this chunk back to the main thread: ", thisChunk.getPosition());
         }
 
-        send(mainThread, outputChunk);        
+        send(mainThread, cast(shared(Chunk))thisChunk);
     }
 
     // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
