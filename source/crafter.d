@@ -29,8 +29,8 @@ import game.entity.player.player_factory;
 import game.chunk.chunk;
 import game.chunk.chunk_container;
 import game.chunk.world_generator;
-import game.graphics.chunk_mesh_generation;
-import game.graphics.chunk_mesh_factory;
+import game.graphics.chunk_mesh_generator;
+import game.graphics.mesh_generation;
 
 // Libraries imported as objects
 import Math          = math;
@@ -115,6 +115,9 @@ void main(string[] args) {
         {
             Tid worldGenThread = spawn(&doWorldGeneration, thisTid);
             ThreadLibrary.setWorldGeneratorThread(worldGenThread);
+
+            Tid chunkMeshGenThread = spawn(&startMeshGeneratorThread, thisTid);
+            ThreadLibrary.setChunkMeshGeneratorThread(chunkMeshGenThread);
         }
 
 
@@ -175,7 +178,7 @@ void main(string[] args) {
 
             // These two functions literally build the environent
             receiveChunksFromWorldGenerator();
-            processChunkMeshUpdateStack();
+            // processChunkMeshUpdateStack();
 
             Camera.testCameraHackRemoveThis();
 
