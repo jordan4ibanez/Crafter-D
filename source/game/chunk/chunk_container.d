@@ -19,8 +19,7 @@ import ThreadLibrary = engine.thread.thread_library;
 // Internal game libraries
 import game.chunk.chunk;
 import game.chunk.thread_message_chunk;
-import game.graphics.chunk_mesh_generation;
-import game.graphics.chunk_mesh_factory;
+import game.graphics.chunk_mesh_generator;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
 properties to treat the entire file as a static class
@@ -81,7 +80,8 @@ void receiveChunksFromWorldGenerator() {
                     container[newPosition] = receivedChunk;
                     // Finally add a new chunk mesh update
                     for (ubyte y = 0; y < 8; y++) {
-                        newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
+                        writeln("send the chunk mesh generator this with it's neighbors");
+                        // newChunkMeshUpdate(Vector3i(newPosition.x, y, newPosition.y));
                     }
                 }
             }
