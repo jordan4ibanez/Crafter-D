@@ -19,7 +19,6 @@ import engine.mesh.mesh;
 
 // Internal game libraries
 import game.chunk.chunk;
-import game.chunk.thread_message_chunk;
 import game.graphics.chunk_mesh_generator;
 import game.chunk.thread_chunk_package;
 import game.graphics.thread_mesh_message;
@@ -35,8 +34,7 @@ private Chunk[Vector2i] container;
 
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) {
-    Vector2i newPosition = Vector2i(position);
-    send(ThreadLibrary.getWorldGeneratorThread(), newPosition);
+    send(ThreadLibrary.getWorldGeneratorThread(), position);
     writeln("sending ", position, " to world generator");
 }
 
@@ -73,25 +71,28 @@ void receiveChunksFromWorldGenerator() {
     for (int i = 0; i < maxChunkReceives; i++){
         receiveTimeout(
             Duration(),
-            (ThreadMessageChunk generatedChunkMessage) {
-                Chunk receivedChunk = Chunk(generatedChunkMessage);   
-                Vector2i newPosition = generatedChunkMessage.chunkPosition;
-                container[newPosition] = receivedChunk;
+            (shared(Chunk) sharedGeneratedChunk) {
+
+                Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
+
+                Vector2i newPosition = generatedChunk.getPosition();
+                container[newPosition] = generatedChunk;
+
                 // Finally add a new chunk mesh update into the chunk mesh generator
+                
                 for (ubyte y = 0; y < 8; y++) {
                     // This creates A LOT of data, but hopefully it will not be too much for D
-                    ThreadChunkPackage packageData = ThreadChunkPackage(
-                        receivedChunk,
-                        getChunk(Vector2i(newPosition.x - 1, newPosition.y)),
-                        getChunk(Vector2i(newPosition.x + 1, newPosition.y)),
-                        getChunk(Vector2i(newPosition.x, newPosition.y - 1)),
-                        getChunk(Vector2i(newPosition.x, newPosition.y + 1)),
-                        y, // yStack
-                        false // Is it updating?
-                    );
-
                     // Dump it right into the chunk mesh generator thread
-                    send(ThreadLibrary.getChunkMeshGeneratorThread(), packageData);
+                    // send(ThreadLibrary.getChunkMeshGeneratorThread(), packageData);
+                    Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
+                    send(cmg, "startingTransfer");
+                    send(cmg, cast(shared(Chunk))generatedChunk.clone());
+                    send(cmg, cast(shared(Chunk))getChunk(Vector2i(newPosition.x - 1, newPosition.y)));
+                    send(cmg, cast(shared(Chunk))getChunk(Vector2i(newPosition.x + 1, newPosition.y)));
+                    send(cmg, cast(shared(Chunk))getChunk(Vector2i(newPosition.x, newPosition.y - 1)));
+                    send(cmg, cast(shared(Chunk))getChunk(Vector2i(newPosition.x, newPosition.y + 1)));
+                    send(cmg, y);
+                    send(cmg, false);
 
                     // All that cloned chunk data goes into the other thread and we won't worry about it
                     // Hopefully
