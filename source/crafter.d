@@ -175,7 +175,7 @@ void main(string[] args) {
         // Dispatch needed threads for game prototyping, handle these when a player enters a world instead of this mess!
         // Scoped so NOTHING else here can touch them and they go off the stack
         {
-            Tid worldGenThread = spawn(&doWorldGeneration, thisTid);
+            Tid worldGenThread = spawn(&startWorldGeneratorThread, thisTid);
             ThreadLibrary.setWorldGeneratorThread(worldGenThread);
 
             Tid chunkMeshGenThread = spawn(&startMeshGeneratorThread, thisTid);

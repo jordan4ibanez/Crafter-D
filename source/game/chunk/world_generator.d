@@ -22,7 +22,7 @@ import game.chunk.chunk;
 import game.chunk.thread_message_chunk;
 
 // This function is a thread
-void doWorldGeneration(Tid parentThread) {
+void startWorldGeneratorThread(Tid parentThread) {
 
     immutable bool debugNow = false;
 
