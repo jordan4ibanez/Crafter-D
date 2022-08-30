@@ -147,6 +147,12 @@ of the texture map pixel perfect and putting it on the face of the block, no mat
 
 */
 
+struct MeshUpdate{
+    Vector3i position;
+    this(Vector3i position){
+        this.position = position;
+    }
+}
 
 
 // Allow main thread to register new blocks into this one
