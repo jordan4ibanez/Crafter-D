@@ -45,7 +45,7 @@ That's about it really
 void startMeshGeneratorThread(Tid parentThread) {
 
 
-
+writeln("Starting thread mesh generator");
 
 
 // Gotta tell the main thread what has been created
