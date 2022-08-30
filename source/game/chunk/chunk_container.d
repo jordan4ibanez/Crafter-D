@@ -84,7 +84,8 @@ void receiveChunksFromWorldGenerator() {
                         getChunk(Vector2i(newPosition.x + 1, newPosition.y)),
                         getChunk(Vector2i(newPosition.x, newPosition.y - 1)),
                         getChunk(Vector2i(newPosition.x, newPosition.y + 1)),
-                        y // yStack
+                        y, // yStack
+                        false // Is it updating?
                     );
 
                     // Dump it right into the chunk mesh generator thread
