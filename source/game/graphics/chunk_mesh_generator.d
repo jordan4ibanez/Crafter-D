@@ -159,11 +159,12 @@ void processChunkMeshUpdateStack(){
 
 while(!Window.externalShouldClose()) {
     receive(
-        (string receivedData) {
-            // writeln("I GOT SOME DATA BOI");
-            if (receivedData[0..12]) {
-                // writeln("GOT ME A CHUNK PACKAGE");
-                writeln(receivedData[12..receivedData.length]);
+        (ThreadChunkPackage newPackage) {
+            writeln("I GOT SOME DATA BOI");
+            // This does not block the main thread
+            int x = 0;
+            for (int i = 0; i < 1_000_000_000; i++) {
+                x = x + i * 2;
             }
         },
         // If you send this thread a bool, it continues, then breaks
@@ -171,7 +172,7 @@ while(!Window.externalShouldClose()) {
     );
 }
 
-
+writeln("thread mesh generator closed!");
 
 
 }// Thread spawner ends here
