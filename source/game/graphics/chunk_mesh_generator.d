@@ -164,7 +164,7 @@ void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blo
             blockBox,
             blockTextures
         );
-    send(ThreadLibrary.getChunkMeshGeneratorThread(), newDefinition);
+    send(ThreadLibrary.getChunkMeshGeneratorThread(), cast(shared(BlockGraphicDefinition))newDefinition);
 }
 
 
@@ -794,21 +794,7 @@ ThreadChunkPackage[] newStack = new ThreadChunkPackage[0];
 // This needs to be a package of current and neighbors
 ThreadChunkPackage[] updatingStack = new ThreadChunkPackage[0];
 
-// This 
-void newChunkMeshUpdate(ThreadChunkPackage thisPackage) {
-    if (!newStack.canFind(thisPackage)) {
-        // newStack.insertInPlace(0, thisPackage);
-        newStack ~= thisPackage;
-    }
-}
-
-void updateChunkMesh(ThreadChunkPackage thisPackage) {
-    if (!updatingStack.canFind(thisPackage)) {
-        updatingStack ~= thisPackage;
-    }
-}
-
-void internalGenerateChunkMesh(ThreadChunkPackage thePackage) {
+void internalGenerateChunkMesh(ThreadChunkPackage thePackage, bool updateNeighbors) {
 
     Chunk thisChunk = thePackage.thisChunk;
 
@@ -836,51 +822,58 @@ void internalGenerateChunkMesh(ThreadChunkPackage thePackage) {
     );
 
     // Update neighbors
-    if (neighborNegativeX.exists()) {
-        // updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
-        writeln("send out request for update!");
+    if (updateNeighbors) {
+        if (neighborNegativeX.exists()) {
+            // updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
+            // writeln("send out request for update!");
+            send(mainThread,
+                cast(shared(MeshUpdate))MeshUpdate(
+                    Vector3i(
+                        position.x - 1,
+                        position.y,
+                        position.z
+                    )
+                )
+            );
+                    
+        }
+        if (neighborPositiveX.exists()) {
+            // updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
+            send(mainThread,
+                cast(shared(MeshUpdate))MeshUpdate(
+                    Vector3i(
+                        position.x + 1,
+                        position.y,
+                        position.z
+                    )
+                )
+            );
+        }
+        if (neighborNegativeZ.exists()) {
+            // updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
+            send(mainThread,
+                cast(shared(MeshUpdate))MeshUpdate(
+                        Vector3i(
+                        position.x,
+                        position.y,
+                        position.z - 1
+                    )
+                )
+            );
+        }
+        if (neighborPositiveZ.exists()) {
+            // updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
+            send(mainThread,
+                cast(shared(MeshUpdate))MeshUpdate(
+                    Vector3i(
+                        position.x,
+                        position.y,
+                        position.z + 1
+                    )
+                )
+            );
+        }
     }
-    if (neighborPositiveX.exists()) {
-        // updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
-        writeln("send out request for update!");
-    }
-    if (neighborNegativeZ.exists()) {
-        // updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
-        writeln("send out request for update!");
-    }
-    if (neighborPositiveZ.exists()) {
-        // updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
-        writeln("send out request for update!");
-    }
-}
-
-void internalUpdateChunkMesh(ThreadChunkPackage thePackage) {
-
-    Chunk thisChunk = thePackage.thisChunk;
-
-    Vector3i position = Vector3i(
-        thisChunk.getPosition().x,
-        thePackage.yStack,
-        thisChunk.getPosition().y
-    );
-
-    // Get chunk neighbors
-    // These do not exist by default
-    Chunk neighborNegativeX = thePackage.neighborNegativeX;
-    Chunk neighborPositiveX = thePackage.neighborPositiveX;
-    Chunk neighborNegativeZ = thePackage.neighborNegativeZ;
-    Chunk neighborPositiveZ = thePackage.neighborPositiveZ;
-
-    generateChunkMesh(
-        thisChunk,
-        neighborNegativeX,
-        neighborPositiveX,
-        neighborNegativeZ,
-        neighborPositiveZ,
-        cast(ubyte)position.y
-    );
-    // As you can see as listed above, this is the same function but without the recursive update.
-    // This could have intook a boolean, but it's easier to understand it as a separate function.
 }
 
 void processChunkMeshUpdateStack(){
@@ -892,7 +885,7 @@ void processChunkMeshUpdateStack(){
         // writeln("New Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
-        internalGenerateChunkMesh(newPackage);
+        internalGenerateChunkMesh(newPackage, true);
     }
     
     // See if there are any existing chunk mesh updates
@@ -903,98 +896,31 @@ void processChunkMeshUpdateStack(){
         // writeln("Updating Chunk Mesh: ", poppedValue);
 
         // Ship them to the chunk generator process
-        internalUpdateChunkMesh(updatingPackage);
+        internalGenerateChunkMesh(updatingPackage, false);
     }
 }
 
-void receiveChunkTransfer(string initializer) {
-     if (initializer[0..16] == "startingTransfer") {
-        // writeln("GOT THE TRANSFER! " ~ initializer[17..initializer.length]);
-
-        Chunk thisChunk;
-        Chunk neighborNegativeX;
-        Chunk neighborPositiveX;
-        Chunk neighborNegativeZ;
-        Chunk neighborPositiveZ;
-        ubyte yStack;
-        bool updating;
-
-        receive(
-            (shared(Chunk) aChunk) {
-                // writeln("GOT THIS CHUNK!");
-                thisChunk = cast(Chunk)aChunk;
-            }
-        );
-
-        receive(
-            (shared(Chunk) aChunk) {
-                // writeln("GOT THIS neighborNegativeX!");
-                neighborNegativeX = cast(Chunk)aChunk;
-            }
-        );
-        receive(
-            (shared(Chunk) aChunk) {
-                // writeln("GOT THIS neighborPositiveX!");
-                neighborPositiveX =cast(Chunk)aChunk;
-            }
-        );
-        receive(
-            (shared(Chunk) aChunk) {
-                // writeln("GOT THIS neighborNegativeZ!");
-                neighborNegativeZ = cast(Chunk)aChunk;
-            }
-        );
-        receive(
-            (shared(Chunk) aChunk) {
-                // writeln("GOT THIS neighborPositiveZ!");
-                neighborPositiveZ = cast(Chunk)aChunk;
-            }
-        );
-        receive(
-            (ubyte y) {
-                // writeln("got ystack!");
-                yStack = y;
-            }
-        );
-        receive(
-            (bool update) {
-                // writeln("got update!");
-                updating = update;
-            }
-        );
-
-        // writeln("transfer complete! Assembling!");
-
-        ThreadChunkPackage packageData = ThreadChunkPackage(
-            thisChunk,
-            neighborNegativeX,
-            neighborPositiveX,
-            neighborNegativeZ,
-            neighborPositiveZ,
-            yStack,
-            updating
-        );
-
-        if (updating) {
-            updateChunkMesh(packageData);
-        } else {
-            newChunkMeshUpdate(packageData);
-        }
+void receiveChunkTransfer(ThreadChunkPackage packageData) {
+    if (packageData.updating) {
+        // insertInPlace(0, packageData);
+        updatingStack ~= packageData;
+    } else {
+        newStack ~= packageData;
     }
 }
 
 bool didGenLastLoop = false;
-while(!Window.externalShouldClose()) {   
+while(!Window.externalShouldClose()) {
 
     // A cpu saver routine
     if (!didGenLastLoop) {
         didGenLastLoop = false;
         receive(
-            (string initializer) {
-                receiveChunkTransfer(initializer);
+            (shared(ThreadChunkPackage) packageData) {
+                receiveChunkTransfer(cast(ThreadChunkPackage)packageData);
             },
             // This will always reactivate so no need to duplicate
-            (BlockGraphicDefinition newDefinition) {
+            (shared(BlockGraphicDefinition) newDefinition) {
                 // writeln("GOT NEW GRAPHICS DEFINITION! ID:", newDefinition.id);
                 definitions[newDefinition.id] = cast(BlockGraphicDefinition)newDefinition;
                 didGenLastLoop = true;
@@ -1006,8 +932,8 @@ while(!Window.externalShouldClose()) {
         didGenLastLoop = false;
         receiveTimeout(
             Duration(),
-            (string initializer) {
-                receiveChunkTransfer(initializer);
+            (shared(ThreadChunkPackage) packageData) {
+                receiveChunkTransfer(cast(ThreadChunkPackage)packageData);
             },
             // If you send this thread a bool, it continues, then breaks
             (bool kill) {}

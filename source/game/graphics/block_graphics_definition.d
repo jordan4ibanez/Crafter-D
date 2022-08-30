@@ -3,7 +3,7 @@ module game.graphics.block_graphics_definition;
 import vector_2i;
 import std.stdio;
 
-shared struct BlockGraphicDefinition {
+struct BlockGraphicDefinition {
     uint id = 0;
     float[][] blockBox;
     Vector2i[] blockTextures;
@@ -15,7 +15,7 @@ shared struct BlockGraphicDefinition {
             assert(blockBox[i].length == 6, "wrong blockbox length");
         }
         assert(blockTextures.length == 6, "wrong blocktextures length");
-        this.blockBox = cast(shared(float[][]))blockBox;
-        this.blockTextures = cast(shared(Vector2i[]))blockTextures;
+        this.blockBox = blockBox;
+        this.blockTextures = blockTextures;
     }
 }
