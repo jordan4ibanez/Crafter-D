@@ -240,7 +240,7 @@ void main(string[] args) {
 
             // These two functions literally build the environent
             receiveChunksFromWorldGenerator();
-            // processChunkMeshUpdateStack();
+            receiveMeshesFromChunkMeshGenerator();
 
             Camera.testCameraHackRemoveThis();
 
