@@ -161,7 +161,7 @@ void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blo
 }
 
 
-
+// This is a super function that acts like a separate main() function
 // Thread spawner starts here
 void startMeshGeneratorThread(Tid parentThread) {
 
