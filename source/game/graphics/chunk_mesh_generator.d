@@ -20,6 +20,7 @@ import Window = engine.window.window;
 // Normal internal game libraries
 import game.chunk.chunk_container;
 import game.chunk.chunk;
+import game.chunk.thread_chunk_package;
 import game.graphics.mesh_generation;
 
 
@@ -157,9 +158,14 @@ void processChunkMeshUpdateStack(){
 }
 
 while(!Window.externalShouldClose()) {
-    writeln("I'm alive!");
-
     receive(
+        (string receivedData) {
+            // writeln("I GOT SOME DATA BOI");
+            if (receivedData[0..12]) {
+                // writeln("GOT ME A CHUNK PACKAGE");
+                writeln(receivedData[12..receivedData.length]);
+            }
+        },
         // If you send this thread a bool, it continues, then breaks
         (bool kill) {}
     );
