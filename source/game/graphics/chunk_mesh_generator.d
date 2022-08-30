@@ -20,7 +20,7 @@ import Window = engine.window.window;
 // Normal internal game libraries
 import game.chunk.chunk_container;
 import game.chunk.chunk;
-import game.graphics.chunk_mesh_generator;
+import game.graphics.mesh_generation;
 
 
 // Mesh Generation Factory
@@ -43,6 +43,10 @@ That's about it really
 
 // Thread spawner starts here
 void startMeshGeneratorThread(Tid parentThread) {
+
+
+
+
 
 // Gotta tell the main thread what has been created
 Tid mainThread = parentThread;
@@ -69,29 +73,6 @@ void updateChunkMesh(Vector3i position) {
     }
 }
 
-void processChunkMeshUpdateStack(){
-    // See if there are any new chunk generations
-    if (newStack.length > 0) {
-
-        Vector3i poppedValue = newStack[0];
-        newStack.popFront();
-        // writeln("New Chunk Mesh: ", poppedValue);
-
-        // Ship them to the chunk generator process
-        internalGenerateChunkMesh(poppedValue);
-    }
-    
-    // See if there are any existing chunk mesh updates
-    if (updatingStack.length > 0) {
-
-        Vector3i poppedValue = updatingStack[0];
-        updatingStack.popFront();
-        // writeln("Updating Chunk Mesh: ", poppedValue);
-
-        // Ship them to the chunk generator process
-        internalUpdateChunkMesh(poppedValue);
-    }
-}
 
 void internalGenerateChunkMesh(Vector3i position) {
 
@@ -151,6 +132,30 @@ void internalUpdateChunkMesh(Vector3i position) {
     // This could have intook a boolean, but it's easier to understand it as a separate function.
 }
 
+void processChunkMeshUpdateStack(){
+    // See if there are any new chunk generations
+    if (newStack.length > 0) {
+
+        Vector3i poppedValue = newStack[0];
+        newStack.popFront();
+        // writeln("New Chunk Mesh: ", poppedValue);
+
+        // Ship them to the chunk generator process
+        internalGenerateChunkMesh(poppedValue);
+    }
+    
+    // See if there are any existing chunk mesh updates
+    if (updatingStack.length > 0) {
+
+        Vector3i poppedValue = updatingStack[0];
+        updatingStack.popFront();
+        // writeln("Updating Chunk Mesh: ", poppedValue);
+
+        // Ship them to the chunk generator process
+        internalUpdateChunkMesh(poppedValue);
+    }
+}
+
 while(!Window.externalShouldClose()) {
     writeln("I'm alive!");
 
@@ -159,6 +164,8 @@ while(!Window.externalShouldClose()) {
         (bool kill) {}
     );
 }
+
+
 
 
 }// Thread spawner ends here
