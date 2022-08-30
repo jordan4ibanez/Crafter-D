@@ -122,19 +122,13 @@ void doWorldGeneration(Tid parentThread) {
             writeln("generated chunk: ", thisChunk.getPosition(), ", adding to output stack!");
         }
 
-        ThreadMessageChunk newMessage = ThreadMessageChunk(thisChunk);
-
-        shared(string) outputChunk = "generatedChunk" ~ newMessage.serializeToJson();
+        ThreadMessageChunk outputChunk = ThreadMessageChunk(thisChunk);
 
         if (debugNow) {
-            writeln("sending this chunk back to the main thread: ", newMessage.chunkPosition);
+            writeln("sending this chunk back to the main thread: ", outputChunk.chunkPosition);
         }
 
-        send(mainThread, outputChunk);
-
-        // FILO
-        // thisMessage goes *poof*
-        // thisChunk goes *poof*
+        send(mainThread, outputChunk);        
     }
 
     // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
@@ -143,17 +137,13 @@ void doWorldGeneration(Tid parentThread) {
         // Listen for input from main thread
         receive(
             // Duration(),
-            (string stringData) {
+            (Vector2i newData) {
                 if (debugNow) {
-                    writeln("world generator got: ", stringData);
+                    writeln("world generator got: ", newData);
                 }
-                // Got data of Vector3i
-                if (stringData[0..8] == "Vector3i") {
-                    if (debugNow) {
-                        writeln("was type of Vector3i");
-                    }
-                    generateChunk(stringData[8..stringData.length].deserialize!(Vector2i));
-                }
+                // Separate the thread data
+                Vector2i newPosition = Vector2i(newData);
+                generateChunk(newPosition);
             },
             // If you send this thread a bool, it continues, then breaks
             (bool kill) {}
