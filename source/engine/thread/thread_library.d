@@ -27,11 +27,11 @@ Tid getWorldGeneratorThread() {
 void setChunkMeshGeneratorThread(Tid chunkMeshGenThread) {
     if (!chunkMeshGeneratorLock) {
         chunkMeshGeneratorLock = true;
-        ChunkMeshGenerator = chunkMeshGenThread;
+        chunkMeshGenerator = chunkMeshGenThread;
     }
 }
 Tid getChunkMeshGeneratorThread() {
-    return meshGenerator;
+    return chunkMeshGenerator;
 }
 
 void killAllThreads() {
