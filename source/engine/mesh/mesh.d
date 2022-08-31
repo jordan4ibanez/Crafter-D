@@ -225,4 +225,36 @@ struct Mesh {
             writeln("Mesh ", this.vao, " has rendered successfully ");
         }
     }
+
+    void batchRender(Vector3d offset, Vector3d rotation, float scale, float light) {
+
+        // Don't bother the gpu with garbage data
+        if (!this.exists) {
+            if (debugNow) {
+                writeln("sorry, I cannot render, I don't exist in gpu memory");
+            }
+            return;
+        }
+
+        // getShader("main").setUniformI("textureSampler", 0);
+        // getShader("main").setUniformF("light", light);
+
+        // glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_2D, this.textureID);
+
+        Camera.setObjectMatrix(offset, rotation, scale);
+
+        glBindVertexArray(this.vao);
+        // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
+        glDrawElements(GL_TRIANGLES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
+        
+        GLenum glErrorInfo = getAndClearGLErrors();
+        if (glErrorInfo != GL_NO_ERROR) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR IN A MESH RENDER");
+        }
+        if (debugNow) {
+            writeln("Mesh ", this.vao, " has rendered successfully ");
+        }
+    }
 }
