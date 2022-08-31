@@ -113,10 +113,14 @@ struct Chunk {
         this.chunkMeshStack[yStack].cleanUp();
         this.chunkMeshStack[yStack] = newMesh;
     }
-    /*
-    void removeModel(int yStack) {
+    
+    void removeMesh(int yStack) {
+        // It's nothing, clean it up
         this.chunkMeshStack[yStack].cleanUp();
+        // Remove it's old values!
+        this.chunkMeshStack[yStack] = Mesh();
     }
+    /*
      // This is disabled because it should just be called not manipulated
     Model getModel(int yStack) {
         return this.chunkMeshStack[yStack];

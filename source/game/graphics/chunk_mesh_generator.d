@@ -5,6 +5,7 @@ import std.algorithm;
 import std.stdio;
 import std.range: popFront;
 import std.array: insertInPlace;
+import std.algorithm: canFind;
 import vector_2i;
 import vector_2d;
 import vector_3i;
@@ -739,14 +740,8 @@ void generateChunkMesh(
     }
 
     // writeln("vertex: ", vertexCount, " | triangle: ", triangleCount);
-    // chunk.removeModel(yStack);
+    // chunk.removeModel(yStack);    
 
-    // No more processing is required, it's nothing
-    if (vertexCount <= 0) {
-        return;
-    }
-
-    
     // maybe reuse this calculation in an overload?
     // thisChunkMesh.triangleCount = triangleCount;
     // thisChunkMesh.vertexCount = vertexCount;    
@@ -824,8 +819,8 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
     if (thePackage.updating) {
         if (neighborNegativeX.exists()) {
             // updateChunkMesh(Vector3i(position.x - 1, position.y, position.z));
-            // writeln("send out request for update!");            
-            updatingStack ~= MeshUpdate(
+            // writeln("send out request for update!");
+            MeshUpdate newUpdate = MeshUpdate(
                 Vector3i(
                     position.x - 1,
                     position.y,
@@ -833,11 +828,15 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
                 ),
                 false
             );
+            if (!updatingStack.canFind(newUpdate)) {
+                //updatingStack.insertInPlace(0, newUpdate);
+                updatingStack ~= newUpdate;
+            }
                     
         }
         if (neighborPositiveX.exists()) {
             // updateChunkMesh(Vector3i(position.x + 1, position.y, position.z));
-            updatingStack ~= MeshUpdate(
+            MeshUpdate newUpdate = MeshUpdate(
                 Vector3i(
                     position.x + 1,
                     position.y,
@@ -845,10 +844,13 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
                 ),
                 false
             );
+            if (!updatingStack.canFind(newUpdate)) {
+                updatingStack ~= newUpdate;
+            }
         }
         if (neighborNegativeZ.exists()) {
             // updateChunkMesh(Vector3i(position.x, position.y, position.z - 1));
-            updatingStack ~= MeshUpdate(
+            MeshUpdate newUpdate = MeshUpdate(
                     Vector3i(
                     position.x,
                     position.y,
@@ -856,10 +858,13 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
                 ),
                 false
             );
+            if (!updatingStack.canFind(newUpdate)) {
+                updatingStack ~= newUpdate;
+            }
         }
         if (neighborPositiveZ.exists()) {
             // updateChunkMesh(Vector3i(position.x, position.y, position.z + 1));
-            updatingStack ~= MeshUpdate(
+            MeshUpdate newUpdate = MeshUpdate(
                 Vector3i(
                     position.x,
                     position.y,
@@ -867,6 +872,9 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
                 ),
                 false
             );
+            if (!updatingStack.canFind(newUpdate)) {
+                updatingStack ~= newUpdate;
+            }
         }
     }
 }

@@ -129,13 +129,18 @@ void receiveMeshesFromChunkMeshGenerator() {
 
                 Chunk mutableChunk = getMutableChunk(Vector2i(position.x, position.z));
 
-                mutableChunk.setMesh(position.y, Mesh(
-                    thisNewMesh.vertices,
-                    thisNewMesh.indices,
-                    thisNewMesh.textureCoordinates,
-                    thisNewMesh.colors,
-                    thisNewMesh.textureName
-                ));
+                // New mesh is blank! Remove
+                if (thisNewMesh.vertices.length == 0) {        
+                    mutableChunk.removeMesh(position.y);
+                } else {
+                    mutableChunk.setMesh(position.y, Mesh(
+                        thisNewMesh.vertices,
+                        thisNewMesh.indices,
+                        thisNewMesh.textureCoordinates,
+                        thisNewMesh.colors,
+                        thisNewMesh.textureName
+                    ));
+                }
             }
         );
     }
