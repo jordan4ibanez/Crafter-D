@@ -246,7 +246,11 @@ struct Mesh {
         Camera.setObjectMatrix(offset, rotation, scale);
 
         if (culling) {
-            updateFrustum(Camera.getCameraMatrix(), Camer);
+            updateFrustum(Camera.getCameraMatrix(), Camera.getObjectMatrix());
+            bool inside = insideFrustumSphere(offset.x, offset.y, offset.z, 10);
+            if (!inside) {
+                return;
+            }
         }
 
         glBindVertexArray(this.vao);

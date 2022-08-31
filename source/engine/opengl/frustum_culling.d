@@ -12,12 +12,16 @@ private Matrix4d prjViewMatrix = Matrix4d();
 
 void updateFrustum(Matrix4d cameraMatrix, Matrix4d objectMatrix) {
     // Calculate projection view matrix
-    prjViewMatrix.set(objectMatrix);
-    prjViewMatrix.mul(cameraMatrix);
+    prjViewMatrix.set(cameraMatrix);
+    prjViewMatrix.mul(objectMatrix);
     // Update frustum intersection class
     frustumIntersect.set(prjViewMatrix);
 }
 
 bool insideFrustumSphere(float x0, float y0, float z0, float boundingRadius) {
     return frustumIntersect.testSphere(x0, y0, z0, boundingRadius);
+}
+
+bool insideFrustumAABB( ){ 
+
 }
