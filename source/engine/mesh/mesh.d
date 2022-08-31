@@ -245,9 +245,7 @@ struct Mesh {
 
         Camera.setObjectMatrix(offset, rotation, scale);
 
-        if (culling) {
-            updateFrustum(Camera.getCameraMatrix(), Camera.getObjectMatrix());
-            
+        if (culling) {            
             bool inside = insideFrustumAABB(min, max);
             //bool inside = insideFrustumSphere(offset.x, offset.y, offset.z, 10);
             if (!inside) {
