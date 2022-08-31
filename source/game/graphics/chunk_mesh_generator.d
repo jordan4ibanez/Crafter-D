@@ -406,18 +406,22 @@ void buildIndices(Appender!(int[]) indices, ref int vertexCount) {
 }
 
 // Assembles a block mesh piece and appends the necessary data
-void internalBlockBuilder(
+void buildBlock(
+    uint ID,
     Appender!(float[]) vertices,
     Appender!(float[]) textureCoordinates,
     Appender!(int[]) indices,
     Appender!(float[]) lights,
     ref int triangleCount,
     ref int vertexCount,
-    BlockGraphicDefinition graphicsDefiniton,
     Vector3i position,
     ubyte rotation,
     bool[6] renderArray
 ){
+    if (ID == 0) {  // Replace 0 check with block graphics definition check                
+        return;
+    }
+    BlockGraphicDefinition graphicsDefiniton = definitions[ID];
 
     float[][] blockBox = cast(float[][])graphicsDefiniton.blockBox;
     Vector2i[] textureDefinition = cast(Vector2i[])graphicsDefiniton.blockTextures;
@@ -536,39 +540,6 @@ void internalBlockBuilder(
         }
     }
 }
-
-// This is redundant
-void buildBlock(
-    uint ID,
-    Appender!(float[]) vertices,
-    Appender!(float[]) textureCoordinates,
-    Appender!(int[]) indices,
-    Appender!(float[]) lights,
-    ref int triangleCount,
-    ref int vertexCount,
-    Vector3i position,
-    ubyte rotation,
-    bool[6] renderArray
-    ) {
-        if (ID == 0) {  // Replace 0 check with block graphics definition check                
-            return;
-        }
-        BlockGraphicDefinition definition = definitions[ID];
-
-        internalBlockBuilder(
-            vertices,
-            textureCoordinates,
-            indices,
-            lights,
-            triangleCount,
-            vertexCount,
-            definition,
-            position,
-            rotation,
-            renderArray
-        );
-}
-
 
 
 /*
