@@ -3,23 +3,23 @@ module engine.opengl.frustum_culling;
 import vector_3d;
 import matrix_4d;
 import frustum_intersection;
-
-private immutable int NUMBER_OF_PLANES = 6;
-
-private FrustumIntersection frustumIntersect = FrustumIntersection();
+import Camera = engine.camera.camera;
 
 
-void updateFrustum(Matrix4d cameraMatrix, Matrix4d objectMatrix) {
-    Matrix4d prjViewMatrix = Matrix4d();
-    prjViewMatrix.set(cameraMatrix);
-    prjViewMatrix.mul(objectMatrix);
-    frustumIntersect.set(prjViewMatrix);
-}
+// These functions are a rollercoaster of one-linedness
 
-bool insideFrustumSphere(float x0, float y0, float z0, float boundingRadius) {
-    return frustumIntersect.testSphere(x0, y0, z0, boundingRadius);
+bool insideFrustumSphere(float boundingRadius) {
+    return FrustumIntersection(
+            Matrix4d()
+            .set(Camera.getCameraMatrix())
+            .mul(Camera.getObjectMatrix())
+    ).testSphere(0, 0, 0, boundingRadius);
 }
 
 bool insideFrustumAABB(Vector3d min, Vector3d max){
-    return frustumIntersect.testAab(min,max);
+    return FrustumIntersection(
+            Matrix4d()
+            .set(Camera.getCameraMatrix())
+            .mul(Camera.getObjectMatrix())
+    ).testAab(min,max);
 }
