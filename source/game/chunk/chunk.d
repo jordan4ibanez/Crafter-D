@@ -132,7 +132,7 @@ struct Chunk {
         this.chunkMeshStack[yStack].batchRender(
             Vector3d(
                 this.chunkPosition.x * chunkSizeX,
-                0,
+                cast(float)yStack * chunkStackSizeY,
                 this.chunkPosition.y * chunkSizeZ
             ),
             Vector3d(0,0,0),

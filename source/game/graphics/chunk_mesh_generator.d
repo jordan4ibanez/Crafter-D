@@ -703,6 +703,12 @@ void generateChunkMesh(
 
                 if (currentBlock != 0) {  // Replace 0 check with block graphics definition check
 
+                    Vector3i adjustedPosition = Vector3i(
+                        position.x,
+                        position.y - yMin,
+                        position.z
+                    );
+
                     buildBlock(
                         currentBlock,
                         vertices,
@@ -711,7 +717,7 @@ void generateChunkMesh(
                         lights,
                         triangleCount,
                         vertexCount,
-                        position,
+                        adjustedPosition,
                         currentRotation,
                         renderingPositions
                     );
