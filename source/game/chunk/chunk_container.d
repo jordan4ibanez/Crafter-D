@@ -126,15 +126,13 @@ void receiveMeshesFromChunkMeshGenerator() {
 
                 Chunk mutableChunk = getMutableChunk(Vector2i(position.x, position.z));
 
-                Mesh newChunkMesh = Mesh(
-                    cast(float[])thisNewMesh.vertices,
-                    cast(int[])thisNewMesh.indices,
-                    cast(float[])thisNewMesh.textureCoordinates,
-                    cast(float[])thisNewMesh.colors,
+                mutableChunk.setMesh(position.y, Mesh(
+                    thisNewMesh.vertices,
+                    thisNewMesh.indices,
+                    thisNewMesh.textureCoordinates,
+                    thisNewMesh.colors,
                     thisNewMesh.textureName
-                );
-
-                mutableChunk.setMesh(position.y, newChunkMesh);
+                ));
             }
         );
     }
