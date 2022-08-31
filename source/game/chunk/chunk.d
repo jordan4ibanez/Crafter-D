@@ -128,7 +128,18 @@ struct Chunk {
     */
     // DO NOT USE THIS - needs to sort by distance
     void drawMesh(int yStack) {
-        // writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!");
+
+        Vector3d min = Vector3d(
+            0,
+            0,
+            0
+        );
+        Vector3d max = Vector3d(
+            cast(float)chunkSizeX,
+            cast(float)chunkStackSizeY,
+            cast(float)chunkSizeZ
+        );
+
         this.chunkMeshStack[yStack].batchRender(
             Vector3d(
                 this.chunkPosition.x * chunkSizeX,
@@ -137,7 +148,9 @@ struct Chunk {
             ),
             Vector3d(0,0,0),
             1,
-            1
+            true,
+            min,
+            max
         );
     }
 

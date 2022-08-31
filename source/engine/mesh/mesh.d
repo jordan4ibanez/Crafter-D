@@ -227,7 +227,7 @@ struct Mesh {
         }
     }
 
-    void batchRender(Vector3d offset, Vector3d rotation, float scale, bool culling) {
+    void batchRender(Vector3d offset, Vector3d rotation, float scale, bool culling, Vector3d min, Vector3d max) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -247,7 +247,9 @@ struct Mesh {
 
         if (culling) {
             updateFrustum(Camera.getCameraMatrix(), Camera.getObjectMatrix());
-            bool inside = insideFrustumSphere(offset.x, offset.y, offset.z, 10);
+            
+            bool inside = insideFrustumAABB(min, max);
+            //bool inside = insideFrustumSphere(offset.x, offset.y, offset.z, 10);
             if (!inside) {
                 return;
             }
