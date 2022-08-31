@@ -245,9 +245,10 @@ struct Mesh {
 
         Camera.setObjectMatrix(offset, rotation, scale);
 
-        if (culling) {            
+        if (culling) {
+            // Let's get some weird behavior to show it
             bool inside = insideFrustumAABB(min, max);
-            //bool inside = insideFrustumSphere(offset.x, offset.y, offset.z, 10);
+            // bool inside = insideFrustumSphere(10);
             if (!inside) {
                 return;
             }
