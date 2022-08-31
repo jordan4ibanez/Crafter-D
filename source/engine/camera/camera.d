@@ -38,6 +38,10 @@ Matrix4d getCameraMatrix() {
     return cameraMatrix;
 }
 
+Matrix4d getObjectMatrix() {
+    return objectMatrix;
+}
+
 void testCameraHackRemoveThis() {
 
     double speed = 100;

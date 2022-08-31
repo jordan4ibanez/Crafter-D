@@ -1,14 +1,23 @@
 module engine.opengl.frustum_culling;
 
-import vector_4d;
+import matrix_4d;
 import frustum_intersection;
 
 private immutable int NUMBER_OF_PLANES = 6;
 
-private Vector4d[] frustumPlanes = {
-    Vector4d[] temp;
-    for (int i = 0; i < NUMBER_OF_PLANES; i++) {
-        temp ~= Vector4d();
-    }
-    return temp;
-}();
+private FrustumIntersection frustumIntersect = FrustumIntersection();
+
+private Matrix4d prjViewMatrix = Matrix4d();
+
+
+void updateFrustum(Matrix4d cameraMatrix, Matrix4d objectMatrix) {
+    // Calculate projection view matrix
+    prjViewMatrix.set(objectMatrix);
+    prjViewMatrix.mul(cameraMatrix);
+    // Update frustum intersection class
+    frustumIntersect.set(prjViewMatrix);
+}
+
+bool insideFrustumSphere(float x0, float y0, float z0, float boundingRadius) {
+    return frustumIntersect.testSphere(x0, y0, z0, boundingRadius);
+}

@@ -7,6 +7,7 @@ import vector_3d;
 import engine.texture.texture;
 import engine.opengl.shaders;
 import engine.opengl.gl_interface;
+import engine.opengl.frustum_culling;
 
 import Camera = engine.camera.camera;
 
@@ -226,7 +227,7 @@ struct Mesh {
         }
     }
 
-    void batchRender(Vector3d offset, Vector3d rotation, float scale, float light) {
+    void batchRender(Vector3d offset, Vector3d rotation, float scale, bool culling) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -243,6 +244,10 @@ struct Mesh {
         // glBindTexture(GL_TEXTURE_2D, this.textureID);
 
         Camera.setObjectMatrix(offset, rotation, scale);
+
+        if (culling) {
+            updateFrustum(Camera.getCameraMatrix(), Camer);
+        }
 
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
