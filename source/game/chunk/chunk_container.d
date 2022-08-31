@@ -6,6 +6,7 @@ import std.range : popFront, popBack;
 import std.algorithm : canFind;
 import vector_2i;
 import vector_3i;
+import bindbc.opengl;
 
 // External concurrency libraries
 import std.concurrency;
@@ -16,6 +17,8 @@ import asdf;
 // Internal engine libraries
 import ThreadLibrary = engine.thread.thread_library;
 import engine.mesh.mesh;
+import engine.opengl.shaders;
+import engine.texture.texture;
 
 // Internal game libraries
 import game.chunk.chunk;
@@ -139,6 +142,12 @@ void receiveMeshesFromChunkMeshGenerator() {
 }
 
 void renderWorld() {
+    getShader("main").setUniformI("textureSampler", 0);
+    getShader("main").setUniformF("light", 1);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, getTexture("textures/world_texture_map.png"));
+
     foreach (shared(Chunk) thisChunk; container) {
         Chunk castedChunk = cast(Chunk) thisChunk;
         for (ubyte i = 0; i < 8; i++) {
