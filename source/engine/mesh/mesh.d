@@ -139,7 +139,7 @@ struct Mesh {
 
         if (debugNow) {
             writeln("Mesh ", this.vao, " has been successfully created");
-        }       
+        }
     }
 
     void cleanUp() {
