@@ -235,6 +235,14 @@ void main(string[] args) {
         // Client loop
         while(!Window.shouldClose()) {
 
+            // This is a lag test for the physics/weird bugs
+            /*
+            int w = 0;
+            for (int i = 0; i < 100_000_000; i++) {
+                w += 1 * i;
+            }
+            */
+
             // Delta calculation must come first
             calculateDelta();
 
