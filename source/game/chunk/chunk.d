@@ -122,10 +122,10 @@ struct Chunk {
         return this.chunkMeshStack[yStack];
     }
     */
-    // DO NOT USE THIS
+    // DO NOT USE THIS - needs to sort by distance
     void drawMesh(int yStack) {
         // writeln("DO NOT USE DRAW MODEL INTERNALLY! IT NEEDS TO BATCH!");
-        this.chunkMeshStack[yStack].render(
+        this.chunkMeshStack[yStack].batchRender(
             Vector3d(
                 this.chunkPosition.x * chunkSizeX,
                 0,
