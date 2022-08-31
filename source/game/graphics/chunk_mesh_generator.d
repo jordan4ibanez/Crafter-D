@@ -729,6 +729,8 @@ void generateChunkMesh(
 
     // writeln("length compare: ", lights.length, " ", vertices.length);
     
+
+    // If there's a crash in the future, this horrific mess is why
     Vector2i chunkPosition = chunk.getPosition();
     send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
         cast(float[])cast(shared(float[]))vertices[],
