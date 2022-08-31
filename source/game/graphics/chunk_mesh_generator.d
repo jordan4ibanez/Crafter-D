@@ -4,7 +4,7 @@ module game.graphics.chunk_mesh_generator;
 import std.algorithm;
 import std.stdio;
 import std.range: popFront;
-import std.array: insertInPlace;
+import std.array: insertInPlace, appender, Appender;
 import std.algorithm: canFind;
 import vector_2i;
 import vector_2d;
@@ -398,19 +398,19 @@ int translateRotationRender(int currentFace, ubyte currentRotation){
 
 
 // An automatic index builder
-void buildIndices(ref int[] indices, ref int vertexCount) {
+void buildIndices(Appender!(int[]) indices, ref int vertexCount) {
     for (int i = 0; i < 6; i++) {
-        indices ~= INDICES[i] + vertexCount;
+        indices.put(INDICES[i] + vertexCount);
     }
     vertexCount += 4;
 }
 
 // Assembles a block mesh piece and appends the necessary data
 void internalBlockBuilder(
-    ref float[] vertices,
-    ref float[] textureCoordinates,
-    ref int[] indices,
-    ref float[] lights,
+    Appender!(float[]) vertices,
+    Appender!(float[]) textureCoordinates,
+    Appender!(int[]) indices,
+    Appender!(float[]) lights,
     ref int triangleCount,
     ref int vertexCount,
     BlockGraphicDefinition graphicsDefiniton,
@@ -456,7 +456,7 @@ void internalBlockBuilder(
 
             // Replace this with light integration
             for (int q = 0; q < 12; q++) {
-                lights ~= 1.0;
+                lights.put(1.0);
             }
 
             // Assign the indices
@@ -466,29 +466,29 @@ void internalBlockBuilder(
                 // Assign the vertex positions with rotation
                 final switch (rotation) {
                     case 0: {
-                        vertices ~= (FACE[i][f].x == 0 ? min.x : max.x) + position.x;
-                        vertices ~= (FACE[i][f].y == 0 ? min.y : max.y) + position.y;
-                        vertices ~= (FACE[i][f].z == 0 ? min.z : max.z) + position.z;
+                        vertices.put((FACE[i][f].x == 0 ? min.x : max.x) + position.x);
+                        vertices.put((FACE[i][f].y == 0 ? min.y : max.y) + position.y);
+                        vertices.put((FACE[i][f].z == 0 ? min.z : max.z) + position.z);
                         break;
                     }
                     case 1: {
                         // Notice: Axis order X and Z are swapped
-                        vertices ~= abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.x;
-                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
-                        vertices ~=     (FACE[i][f].x == 0 ? min.x : max.x)      + position.z;
+                        vertices.put(abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.x);
+                        vertices.put(    (FACE[i][f].y == 0 ? min.y : max.y)      + position.y);
+                        vertices.put(    (FACE[i][f].x == 0 ? min.x : max.x)      + position.z);
                         break;
                     }
                     case 2: {
-                        vertices ~= abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.x;
-                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
-                        vertices ~= abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.z;
+                        vertices.put(abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.x);
+                        vertices.put(    (FACE[i][f].y == 0 ? min.y : max.y)      + position.y);
+                        vertices.put(abs((FACE[i][f].z == 0 ? min.z : max.z) - 1) + position.z);
                         break;
                     }
                     case 3: {
                         // Notice: Axis order X and Z are swapped
-                        vertices ~=     (FACE[i][f].z == 0 ? min.z : max.z)      + position.x;
-                        vertices ~=     (FACE[i][f].y == 0 ? min.y : max.y)      + position.y;
-                        vertices ~= abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.z;
+                        vertices.put(    (FACE[i][f].z == 0 ? min.z : max.z)      + position.x);
+                        vertices.put(    (FACE[i][f].y == 0 ? min.y : max.y)      + position.y);
+                        vertices.put(abs((FACE[i][f].x == 0 ? min.x : max.x) - 1) + position.z);
                         break;
                     }
                 }
@@ -498,8 +498,8 @@ void internalBlockBuilder(
                 final switch (isBlockBox) {
                     case false: {
                         // Normal drawtype
-                        textureCoordinates ~= ((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
-                        textureCoordinates ~= ((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                        textureCoordinates.put(((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
+                        textureCoordinates.put(((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                         break;
                     }
                     case true: {
@@ -509,21 +509,21 @@ void internalBlockBuilder(
                         // This can be written as a ternary, but easier to understand like this
                         final switch (textureCull.x > 5) {
                             case true: {
-                                textureCoordinates ~= ((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                textureCoordinates.put(((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                                 break;
                             }
                             case false: {
-                                textureCoordinates ~= ((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                textureCoordinates.put(((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                                 break;
                             }
                         }
                         final switch (textureCull.y > 5) {
                             case true: {
-                                textureCoordinates ~= ((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                textureCoordinates.put(((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                                 break;
                             }
                             case false: {
-                                textureCoordinates ~= ((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE;
+                                textureCoordinates.put(((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                                 break;
                             }
                         }
@@ -537,12 +537,13 @@ void internalBlockBuilder(
     }
 }
 
+// This is redundant
 void buildBlock(
     uint ID,
-    ref float[] vertices,
-    ref float[] textureCoordinates,
-    ref int[] indices,
-    ref float[] lights,
+    Appender!(float[]) vertices,
+    Appender!(float[]) textureCoordinates,
+    Appender!(int[]) indices,
+    Appender!(float[]) lights,
     ref int triangleCount,
     ref int vertexCount,
     Vector3i position,
@@ -601,13 +602,13 @@ void generateChunkMesh(
 
 
     
-    float[] vertices = new float[0];
-    int[] indices = new int[0];
+    Appender!(float[]) vertices = appender!(float[]);
+    Appender!(int[]) indices = appender!(int[]);
     // float[] normals;
-    float[] textureCoordinates = new float[0];
+    Appender!(float[]) textureCoordinates = appender!(float[]);
     // translate lights from ubyte to float
     // writeln("you should probably implement the lighting eventually");
-    float[] lights = new float[0];
+    Appender!(float[]) lights = appender!(float[]);
     
     int triangleCount = 0;
     int vertexCount   = 0;
@@ -760,10 +761,10 @@ void generateChunkMesh(
     Vector2i chunkPosition = chunk.getPosition();
 
     send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
-        vertices,
-        indices,
-        textureCoordinates,
-        lights,
+        vertices[],
+        indices[],
+        textureCoordinates[],
+        lights[],
         "textures/world_texture_map.png",
         Vector3i(
             chunkPosition.x,
