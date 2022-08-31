@@ -134,9 +134,7 @@ struct Mesh {
             writeln("ERROR IN A MESH CONSTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(true) {
-                
-            }
+            assert(true == false);
         }
 
         if (debugNow) {
