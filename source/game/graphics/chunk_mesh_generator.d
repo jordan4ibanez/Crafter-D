@@ -146,6 +146,15 @@ So if you had a half height, or half width block, it would automatically show ex
 the pixels without stretching or squishing. Basically like you are cutting the texture out
 of the texture map pixel perfect and putting it on the face of the block, no matter the rotation.
 
+The meshes are built using D's built in appender which is more efficient than individual
+insertions, ie, "~=". This was shown to me originally by Mayonix, and explained further 
+by brianush1 and Schveiguy. Taken from the documentation:
+
+" Implements an output range that appends data to an array. This is recommended over 
+array ~= data when appending many elements because it is more efficient. Appender maintains 
+its own array metadata locally, so it can avoid global locking for each append where capacity
+is non-zero. "
+
 */
 
 struct MeshUpdate{
