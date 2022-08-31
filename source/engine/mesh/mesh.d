@@ -132,9 +132,7 @@ struct Mesh {
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH CONSTRUCTOR");
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
-            assert(true == false);
+            // assert(true == false);
         }
 
         if (debugNow) {
