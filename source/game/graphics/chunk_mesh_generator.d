@@ -732,10 +732,10 @@ void generateChunkMesh(
     Vector2i chunkPosition = chunk.getPosition();
 
     send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
-        vertices[],
-        indices[],
-        textureCoordinates[],
-        lights[],
+        cast(float[])vertices[],
+        cast(int[])indices[],
+        cast(float[])textureCoordinates[],
+        cast(float[])lights[],
         "textures/world_texture_map.png",
         Vector3i(
             chunkPosition.x,
