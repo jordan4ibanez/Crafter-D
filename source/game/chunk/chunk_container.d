@@ -117,10 +117,10 @@ void receiveMeshesFromChunkMeshGenerator() {
         received = false;
         receiveTimeout(
             Duration(),
-            (ThreadMeshMessage newMesh) {               
+            (shared(ThreadMeshMessage) newMesh) {               
                 received = true;
 
-                ThreadMeshMessage thisNewMesh = newMesh;
+                ThreadMeshMessage thisNewMesh = cast(ThreadMeshMessage) newMesh;
 
                 Vector3i position = thisNewMesh.position;
 

@@ -742,7 +742,7 @@ void generateChunkMesh(
     // chunk.removeModel(yStack);
 
     // No more processing is required, it's nothing
-    if (vertexCount == 0) {
+    if (vertexCount <= 0) {
         return;
     }
 
@@ -755,7 +755,7 @@ void generateChunkMesh(
     
     Vector2i chunkPosition = chunk.getPosition();
 
-    ThreadMeshMessage newMesh = ThreadMeshMessage(
+    send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
         vertices,
         indices,
         textureCoordinates,
@@ -766,9 +766,7 @@ void generateChunkMesh(
             yStack,
             chunkPosition.y
         )
-    );
-
-    send(mainThread, newMesh);
+    ));
 }
 
 
