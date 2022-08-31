@@ -6,6 +6,7 @@ import vector_3d;
 
 import engine.texture.texture;
 import engine.opengl.shaders;
+import engine.opengl.gl_interface;
 
 import Camera = engine.camera.camera;
 
@@ -127,12 +128,10 @@ struct Mesh {
         // Unbind vao just in case
         glBindVertexArray(0);
 
-        GLuint glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH CONSTRUCTOR");
-            // assert(true == false);
         }
 
         if (debugNow) {
@@ -184,16 +183,10 @@ struct Mesh {
 
         
 
-        GLenum glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH DESTRUCTOR");
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
-            while(true) {
-                
-            }
         }
 
         if (debugNow) {
@@ -223,16 +216,10 @@ struct Mesh {
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
         glDrawElements(GL_TRIANGLES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
         
-        GLuint glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH RENDER");
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
-            while(true) {
-                
-            }
         }
         if (debugNow) {
             writeln("Mesh ", this.vao, " has rendered successfully ");

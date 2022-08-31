@@ -1,5 +1,6 @@
 module engine.opengl.shaders;
 
+import engine.opengl.gl_interface;
 import bindbc.opengl;
 import std.stdio;
 import std.file: read;
@@ -26,13 +27,12 @@ struct GameShader {
     void setUniformI(string uniformName, GLuint value) {
         glUniform1i(uniforms[uniformName], value);
         
-        GLenum glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
+            // This absolutely needs to crash, there's no way
+            // the game can continue without shaders
             assert(true == false);
         }
     }
@@ -40,13 +40,11 @@ struct GameShader {
     void setUniformF(string uniformName, GLfloat value) {
         glUniform1f(uniforms[uniformName], value);
         
-        GLenum glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
+            // This needs to crash too! Game needs shaders!
             assert(true == false);
         }
     }
@@ -162,13 +160,11 @@ void createShaderProgram(
 
     foreach (string uniformName; uniforms) {
         thisShader.createUniform(uniformName);
-        GLenum glErrorInfo = glGetError();
-
+        GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR CREATING UNIFORM: ", uniformName);
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
+            // More needed crashes!
             assert(true == false);
         }
     }

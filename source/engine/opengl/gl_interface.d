@@ -56,6 +56,9 @@ bool initializeOpenGL() {
         return true;
     }
 
+    // Wipe the error buffer completely
+    getAndClearGLErrors();
+    
     Vector2i windowSize = Window.getSize();
 
     glViewport(0, 0, windowSize.x, windowSize.y);
@@ -71,19 +74,22 @@ bool initializeOpenGL() {
     glDepthFunc(GL_LESS);
 
 
-    GLenum glErrorInfo = glGetError();
-
-
-    if (glErrorInfo != 0) {
+    GLenum glErrorInfo = getAndClearGLErrors();
+    if (glErrorInfo != GL_NO_ERROR) {
         writeln("GL ERROR: ", glErrorInfo);
         writeln("ERROR IN GL INIT");
-        writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
-        while(true) {
-            
-        }
     }
+
     return false;
+}
+
+GLenum getAndClearGLErrors(){
+    GLenum error = glGetError();
+    // Clear OpenGL errors
+    while (glGetError() != GL_NO_ERROR) {
+        glGetError();
+    }
+    return error;
 }
 
 string getInitialOpenGLVersion() {

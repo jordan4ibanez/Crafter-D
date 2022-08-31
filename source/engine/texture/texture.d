@@ -1,5 +1,6 @@
 module engine.texture.texture;
 
+import engine.opengl.gl_interface;
 import std.stdio;
 import bindbc.opengl;
 import image;
@@ -56,16 +57,10 @@ struct Texture {
 
         // glGenerateMipmap(GL_TEXTURE_2D);
 
-        GLenum glErrorInfo = glGetError();
-
-        if (glErrorInfo != 0) {
+        GLenum glErrorInfo = getAndClearGLErrors();
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN TEXTURE");
-            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
-
-            while(true) {
-                    
-            }
         }
     }
 
