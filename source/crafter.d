@@ -194,11 +194,15 @@ void main(string[] args) {
         newTexture("textures/world_texture_map.png");
 
         int debugSize = 10;
-
         // This is the initial payload
-        for (int x = -debugSize; x <= debugSize; x++) {
-            for (int z = -debugSize; z <= debugSize; z++) {
-                generateChunk(Vector2i(x,z));
+        // Generates from the center outward
+        for (int i = 0; i <= debugSize; i++){
+            for (int x = -i; x <= i; x++) {
+                for (int z = -i; z <= i; z++) {
+                    if (Math.abs(z) == i || Math.abs(x) == i) {
+                        generateChunk(Vector2i(x,z));
+                    }
+                }
             }
         }
 
