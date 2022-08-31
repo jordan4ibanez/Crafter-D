@@ -730,12 +730,11 @@ void generateChunkMesh(
     // writeln("length compare: ", lights.length, " ", vertices.length);
     
     Vector2i chunkPosition = chunk.getPosition();
-
     send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
-        cast(float[])vertices[],
-        cast(int[])indices[],
-        cast(float[])textureCoordinates[],
-        cast(float[])lights[],
+        cast(float[])cast(shared(float[]))vertices[],
+        cast(int[])cast(shared(int[]))indices[],
+        cast(float[])cast(shared(float[]))textureCoordinates[],
+        cast(float[])cast(shared(float[]))lights[],
         "textures/world_texture_map.png",
         Vector3i(
             chunkPosition.x,
