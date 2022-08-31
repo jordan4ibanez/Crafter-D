@@ -423,8 +423,8 @@ void buildBlock(
     }
     BlockGraphicDefinition graphicsDefiniton = definitions[ID];
 
-    float[][] blockBox = cast(float[][])graphicsDefiniton.blockBox;
-    Vector2i[] textureDefinition = cast(Vector2i[])graphicsDefiniton.blockTextures;
+    float[][] blockBox = graphicsDefiniton.blockBox;
+    Vector2i[] textureDefinition = graphicsDefiniton.blockTextures;
 
     Vector3d max = Vector3d( 1,  1,  1 );
     Vector3d min = Vector3d( 0,  0,  0 );
@@ -622,31 +622,29 @@ void generateChunkMesh(
                         // Gets X neighbor block values, if they exist
                         switch (currentCheckPosition.x) {
                             case 16: {
-                                if (
-                                    (neighborPositiveXExists &&
+                                if (neighborPositiveXExists &&
                                     neighborPositiveX.getBlock(
                                         Vector3i(
                                             currentCheckPosition.x - chunkSizeX,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z
                                         )
-                                    ) == 0) || // Replace 0 check with block graphics definition check
-                                    !neighborPositiveXExists) {
+                                    ) == 0  // Replace 0 check with block graphics definition check
+                                    ) {
                                     renderingPositions[w] = true;
                                 }
                                 break;
                             }
                             case -1: {
-                                if (
-                                    (neighborNegativeXExists &&
+                                if (neighborNegativeXExists &&
                                     neighborNegativeX.getBlock(
                                         Vector3i(
                                             currentCheckPosition.x + chunkSizeX,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z
                                         )
-                                    ) == 0) ||  // Replace 0 check with block graphics definition check
-                                    !neighborNegativeXExists) {
+                                    ) == 0 // Replace 0 check with block graphics definition check
+                                    ) {
                                     renderingPositions[w] = true;
                                 }
                                 break;
@@ -657,37 +655,36 @@ void generateChunkMesh(
                         // Gets Z neighbor block values, if they exist
                         switch (currentCheckPosition.z) {
                             case 16: {
-                                if (
-                                    (neighborPositiveZExists &&
+                                if (neighborPositiveZExists &&
                                     neighborPositiveZ.getBlock(
                                         Vector3i(
                                             currentCheckPosition.x,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z - chunkSizeZ
                                         )
-                                    ) == 0) || // Replace 0 check with block graphics definition check
-                                    !neighborPositiveZExists) {
+                                    ) == 0 // Replace 0 check with block graphics definition check
+                                    ) {
                                     renderingPositions[w] = true;
                                 }
                                 break;
                             }
                             case -1: {
-                                if (
-                                    (neighborNegativeZExists &&
+                                if (neighborNegativeZExists &&
                                     neighborNegativeZ.getBlock(
                                         Vector3i(
                                             currentCheckPosition.x,
                                             currentCheckPosition.y,
                                             currentCheckPosition.z + chunkSizeZ
                                         )
-                                    ) == 0) ||  // Replace 0 check with block graphics definition check
-                                    !neighborNegativeZExists) {
+                                    ) == 0 // Replace 0 check with block graphics definition check
+                                    ) {
                                     renderingPositions[w] = true;
                                 }
                                 break;
                             }
                             default: {}
                         }
+                    // If it is within the current chunk
                     } else {
                         if (chunk.getBlock(currentCheckPosition) == 0) {  // Replace 0 check with block graphics definition check
                             renderingPositions[w] = true;
