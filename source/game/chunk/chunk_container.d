@@ -64,7 +64,6 @@ shared(Chunk) getSharedChunk(Vector2i position) {
     return cast(shared(Chunk))Chunk();
 }
 
-private Chunk fakeChunk = Chunk();
 // Gets a mutable chunk from the container
 ref Chunk getMutableChunk(Vector2i position) {
     if (position in container) {
@@ -73,7 +72,7 @@ ref Chunk getMutableChunk(Vector2i position) {
     // This is where serious problems could happen if existence is not checked
     writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
     // This becomes garbage data
-    return fakeChunk;
+    return *new Chunk();
 }
 
 // Internal chunk generation dispatch
