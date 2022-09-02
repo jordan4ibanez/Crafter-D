@@ -19,6 +19,7 @@
 		"raylib-d": "4.0.1",
 		"silly": "1.1.1",
 		"stb_vorbis": "1.0.0",
-		"stdx-allocator": "2.77.5"
+		"stdx-allocator": "2.77.5",
+		"vibe-d": "0.9.5"
 	}
 }
