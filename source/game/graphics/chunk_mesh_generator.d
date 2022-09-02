@@ -782,14 +782,14 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
         thePackage.position.z
     );
 
-    Chunk thisChunk = cast(Chunk)getSharedChunk(Vector2i(position.x, position.z));
+    Chunk thisChunk = cast(Chunk)getChunk(Vector2i(position.x, position.z));
     
     // Get chunk neighbors
     // These do not exist by default
-    Chunk neighborNegativeX = cast(Chunk)getSharedChunk(Vector2i(position.x - 1, position.z));
-    Chunk neighborPositiveX = cast(Chunk)getSharedChunk(Vector2i(position.x + 1, position.z));
-    Chunk neighborNegativeZ = cast(Chunk)getSharedChunk(Vector2i(position.x, position.z - 1));
-    Chunk neighborPositiveZ = cast(Chunk)getSharedChunk(Vector2i(position.x, position.z + 1));
+    Chunk neighborNegativeX = cast(Chunk)getChunk(Vector2i(position.x - 1, position.z));
+    Chunk neighborPositiveX = cast(Chunk)getChunk(Vector2i(position.x + 1, position.z));
+    Chunk neighborNegativeZ = cast(Chunk)getChunk(Vector2i(position.x, position.z - 1));
+    Chunk neighborPositiveZ = cast(Chunk)getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
         thisChunk,
