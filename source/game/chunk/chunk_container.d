@@ -41,18 +41,19 @@ void generateChunk(Vector2i position) {
 }
 
 // Gets a chunk from the container
-Chunk getChunk(Vector2i position) {
+immutable(Chunk) getChunk(Vector2i position) {
     if (position in container) {
         Chunk original = cast(Chunk)container[position];
-        Chunk clone = original.clone();
+        immutable Chunk clone = cast(immutable)original.clone();
         return clone;
     }
     // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // Return non-existent chunk
-    return Chunk();
+    return immutable Chunk();
 }
 
 // Gets a shared chunk from the container
+/*
 shared(Chunk) getSharedChunk(Vector2i position) {
     if (position in container) {
         Chunk original = cast(Chunk)container[position];
@@ -63,6 +64,7 @@ shared(Chunk) getSharedChunk(Vector2i position) {
     // Return non-existent chunk
     return cast(shared(Chunk))Chunk();
 }
+*/
 
 // Gets a mutable chunk from the container
 ref Chunk getMutableChunk(Vector2i position) {
