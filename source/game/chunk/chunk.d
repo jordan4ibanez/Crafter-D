@@ -86,23 +86,6 @@ struct Chunk {
         this.chunkMeshStack = new Mesh[8];
     }
 
-    // Creates an entirely new chunk in memory
-    Chunk clone() {
-        Chunk cloningChunk = Chunk();
-        cloningChunk.biome = this.biome;
-        cloningChunk.chunkPosition = Vector2i(this.chunkPosition);
-        cloningChunk.block = new uint[chunkArrayLength];
-        this.block.copy(cloningChunk.block);
-        cloningChunk.light = new ubyte[chunkArrayLength];
-        this.light.copy(cloningChunk.light);
-        cloningChunk.rotation = new ubyte[chunkArrayLength];
-        this.rotation.copy(cloningChunk.rotation);
-        cloningChunk.positionLock = true;
-        cloningChunk.thisExists = true;
-        cloningChunk.chunkMeshStack = new Mesh[8];
-        return cloningChunk;
-    }
-
     bool exists() {
         return this.thisExists;
     }
