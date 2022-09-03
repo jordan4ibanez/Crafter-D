@@ -77,7 +77,7 @@ struct Chunk {
 
     this(string biomeName, Vector2i position) {
         this.biome = biomeName;
-        this.chunkPosition = Vector2i(position.x, position.y);
+        this.chunkPosition = *new Vector2i(position.x, position.y);
         this.positionLock = true;
         this.thisExists = true;
         this.block = new uint[chunkArrayLength];
