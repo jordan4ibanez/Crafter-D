@@ -10,7 +10,7 @@ abstract class Entity {
 
     // Entities must have spatial fields
     private Vector3d position = *new Vector3d(0,0,0);
-    private Vector3d inertia  = *new Vector3d(0,0,0);
+    private Vector3d velocity = *new Vector3d(0,0,0);
     private Vector3d rotation = *new Vector3d(0,0,0);
 
     // Entities have a width/depth (x) and a height (y)
@@ -41,11 +41,11 @@ abstract class Entity {
     void setPosition(Vector3d newPosition) {
         this.position = newPosition;
     }
-    Vector3d getIneritia() {
-        return this.inertia;
+    Vector3d getVelocity() {
+        return this.velocity;
     }
-    void setInertia(Vector3d newInertia) {
-        this.inertia = newInertia;
+    void setVelocity(Vector3d newVelocity) {
+        this.velocity = newVelocity;
     }
     Vector3d getRotation() {
         return this.rotation;
