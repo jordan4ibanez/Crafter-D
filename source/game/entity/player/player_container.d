@@ -4,7 +4,12 @@ import std.stdio;
 
 import game.entity.player.player;
 
-// A static factory/container class, allowing functional programming inside of OOP
+/*
+A static factory/container class, allowing functional programming inside of OOP.
+This is reserved for other players in multiplayer!
+For single player and client access (your player in game) go to client_player.d!
+*/
+
 private Player[string] container;
 
 void spawnPlayer(Player player) {
