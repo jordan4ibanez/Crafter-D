@@ -7,6 +7,7 @@ import std.algorithm : canFind;
 import vector_2i;
 import vector_3i;
 import bindbc.opengl;
+import Math = math;
 
 // External concurrency libraries
 import std.concurrency;
@@ -42,6 +43,7 @@ void generateChunk(Vector2i position) {
 
 // Gets a chunk from the container
 immutable(Chunk) getChunk(Vector2i position) {
+    synchronized {
     if (position in container) {
         Chunk original = cast(Chunk)container[position];
         immutable Chunk clone = cast(immutable)original.clone();
@@ -50,6 +52,7 @@ immutable(Chunk) getChunk(Vector2i position) {
     // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
     // Return non-existent chunk
     return immutable Chunk();
+    }
 }
 
 // Gets a shared chunk from the container
@@ -81,16 +84,15 @@ ref Chunk getMutableChunk(Vector2i position) {
 // This will be reused to receive chunks from the world generator
 
 void receiveChunksFromWorldGenerator() {
-
-    bool receieved = true;
-
-    while(receieved) {
-        receieved = false;
+    synchronized{
+    bool received = true;
+    while(received) {
+        received = false;
         receiveTimeout(
             Duration(),
             (shared(Chunk) sharedGeneratedChunk) {
-
-                receieved = true;
+                
+                received = true;
 
                 Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
                 Chunk clonedChunk = generatedChunk.clone();
@@ -101,10 +103,12 @@ void receiveChunksFromWorldGenerator() {
 
                 // Finally add a new chunk mesh update into the chunk mesh generator
                 
+                
+                Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
+
                 for (ubyte y = 0; y < 8; y++) {
                     // This creates A LOT of data, but hopefully it will not be too much for D
                     // Dump it right into the chunk mesh generator thread
-                    Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
                     send(cmg, MeshUpdate(Vector3i(newPosition.x, y, newPosition.y), true));
                     // All that cloned chunk data goes into the other thread and we won't worry about it
                     // Hopefully
@@ -112,12 +116,13 @@ void receiveChunksFromWorldGenerator() {
             },
         );
     }
+    }
 }
 
 void receiveMeshesFromChunkMeshGenerator() {
-    
+    synchronized{
     bool received = true;
-    while(received) {
+    while (received){
         received = false;
         receiveTimeout(
             Duration(),
@@ -144,6 +149,7 @@ void receiveMeshesFromChunkMeshGenerator() {
                 }
             }
         );
+    }
     }
 }
 
