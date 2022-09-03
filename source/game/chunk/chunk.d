@@ -112,12 +112,12 @@ struct Chunk {
     // DO NOT USE THIS - needs to sort by distance
     void drawMesh(int yStack) {
 
-        Vector3d min = Vector3d(
+        immutable Vector3d min = Vector3d(
             0,
             0,
             0
         );
-        Vector3d max = Vector3d(
+        immutable Vector3d max = Vector3d(
             cast(float)chunkSizeX,
             cast(float)chunkStackSizeY,
             cast(float)chunkSizeZ
