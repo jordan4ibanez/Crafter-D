@@ -33,7 +33,6 @@ shared static this() {
     ];
 }
 
-
 private void playerClientIntakeKeyInputs() {
 
     double deltaMultiplier = 100;
@@ -71,6 +70,10 @@ private void addVelocity(Vector3d moreVelocity) {
     velocity.z += moreVelocity.z;
 
     if (velocity.length() > speed["walk"]) {
-        velocity.normalize().mul(3);
+        velocity.normalize().mul(speed["walk"]);
     }
+}
+
+void onTick() {
+    playerClientIntakeKeyInputs();
 }
