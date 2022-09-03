@@ -7,7 +7,7 @@ import game.entity.player.player;
 /*
 A static factory/container class, allowing functional programming inside of OOP.
 This is reserved for other players in multiplayer!
-For single player and client access (your player in game) go to client_player.d!
+For single player and client access (your player in game) go to /game/client/player.d!
 */
 
 private Player[string] container;
