@@ -3,6 +3,7 @@ module game.client.player_client;
 import vector_3d;
 import vector_2d;
 import vector_2i;
+import delta_time;
 
 import Math = math;
 import Camera = engine.camera.camera;
@@ -17,12 +18,13 @@ This is the player that is playing the game.
 */
 
 private Vector3d position = *new Vector3d(0,0,0);
+private Vector3d velocity = *new Vector3d(0,0,0);
 private Vector3d rotation = *new Vector3d(0,0,0);
 private Vector2d size = *new Vector2d(0.35, 1.8);
 private double height = 1.5;
 private bool inGame = true;
 
-void testCameraHackRemoveThis() {
+private void playerClientIntakeKeyInputs() {
 
     double speed = 100;
 
