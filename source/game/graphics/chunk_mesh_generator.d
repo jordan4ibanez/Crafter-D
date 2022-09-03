@@ -157,7 +157,7 @@ is non-zero. "
 
 */
 
-struct MeshUpdate{
+immutable struct MeshUpdate{
     Vector3i position;
     bool updating;
     this(Vector3i position, bool updating){
@@ -735,6 +735,7 @@ void generateChunkMesh(
 
     // If there's a crash in the future, this horrific mess is why
     Vector2i chunkPosition = chunk.getPosition();
+    synchronized {
     send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
         cast(float[])cast(shared(float[]))vertices[],
         cast(int[])cast(shared(int[]))indices[],
@@ -747,6 +748,7 @@ void generateChunkMesh(
             chunkPosition.y
         )
     ));
+    }
 }
 
 
