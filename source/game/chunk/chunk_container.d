@@ -46,7 +46,7 @@ immutable(Chunk) getChunk(Vector2i position) {
     synchronized {
     if (position in container) {
         Chunk original = cast(Chunk)container[position];
-        immutable Chunk clone = cast(immutable)original.clone();
+        immutable Chunk clone = cast(immutable)original;
         return clone;
     }
     // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
@@ -90,20 +90,17 @@ void receiveChunksFromWorldGenerator() {
         received = false;
         receiveTimeout(
             Duration(),
-            (shared(Chunk) sharedGeneratedChunk) {
+            (immutable Chunk immutableGeneratedChunk) {
                 
                 received = true;
 
-                Chunk generatedChunk = cast(Chunk)sharedGeneratedChunk;
-                Chunk clonedChunk = generatedChunk.clone();
+                Chunk generatedChunk = cast(Chunk)immutableGeneratedChunk;
 
 
-                Vector2i newPosition = clonedChunk.getPosition();
-                container[newPosition] = cast(shared(Chunk))clonedChunk;
+                Vector2i newPosition = generatedChunk.getPosition();
+                container[newPosition] = cast(shared(Chunk))generatedChunk;
 
                 // Finally add a new chunk mesh update into the chunk mesh generator
-                
-                
                 Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
 
                 for (ubyte y = 0; y < 8; y++) {
