@@ -37,6 +37,7 @@ import Window        = engine.window.window;
 import Camera        = engine.camera.camera;
 import SoundManager  = engine.openal.sound_manager;
 import ThreadLibrary = engine.thread.thread_library;
+import PlayerClient  = game.client.player_client;
 
 
 void debugCreateBlockGraphics(){
@@ -253,6 +254,8 @@ void main(string[] args) {
             // These two functions literally build the environent
             receiveChunksFromWorldGenerator();
             receiveMeshesFromChunkMeshGenerator();
+
+            PlayerClient.onTick();
 
             // Automatically plops the FPS and delta time onto the window title
             Window.setTitle((
