@@ -6,7 +6,7 @@ import game.entity.mob.mob;
 
 // A player. This is not a static object because: Multiplayer
 // Inherits from mob to allow full compatibility between them
-// For single player and client access (your player in game) go to /game/client/client_player.d!
+// For single player and client access (your player in game) go to /game/client/player_client.d!
 public class Player : Mob {
 
     // Players have a UUID (uninitialized), but their name is how they're identified
