@@ -196,16 +196,15 @@ void main(string[] args) {
         int debugSize = 10;
         // This is the initial payload
         // Generates from the center outward
-        int i = debugSize;
-        // for (int i = 0; i <= debugSize; i++){
+        for (int i = 0; i <= debugSize; i++){
             for (int x = -i; x <= i; x++) {
                 for (int z = -i; z <= i; z++) {
-                    // if (Math.abs(z) == i || Math.abs(x) == i) {
+                    if (Math.abs(z) == i || Math.abs(x) == i) {
                         generateChunk(Vector2i(x,z));
-                    // }
+                    }
                 }
             }
-        // }
+        }
 
         // How low can we go before people start going through the floor?
         // Limboooooo
