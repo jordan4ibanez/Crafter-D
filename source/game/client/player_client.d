@@ -1,4 +1,4 @@
-module game.client.client_player;
+module game.client.player_client;
 
 import vector_3d;
 import vector_2i;
