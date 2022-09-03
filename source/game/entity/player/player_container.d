@@ -1,4 +1,4 @@
-module game.entity.player.player_factory;
+module game.entity.player.player_container;
 
 import std.stdio;
 
