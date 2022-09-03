@@ -24,30 +24,53 @@ private Vector2d size = *new Vector2d(0.35, 1.8);
 private double height = 1.5;
 private bool inGame = true;
 
+private static const double[string] speed;
+shared static this() {
+    speed = [
+        "run"   : 5.0,
+        "walk"  : 2.5,
+        "sneak" : 1.0
+    ];
+}
+
+
 private void playerClientIntakeKeyInputs() {
 
-    double speed = 100;
+    double deltaMultiplier = 100;
 
     // This is an extreme hack for testing remove this garbage
     Vector3d modifier = Vector3d(0,0,0);
 
     if(Keyboard.getForward()){
-        modifier.z -= getDelta() * speed;
+        modifier.z -= getDelta() * deltaMultiplier;
     } else if (Keyboard.getBack()) {
-        modifier.z += getDelta() * speed;
+        modifier.z += getDelta() * deltaMultiplier;
     }
 
     if(Keyboard.getLeft()){
-        modifier.x += getDelta() * speed;
+        modifier.x += getDelta() * deltaMultiplier;
     } else if (Keyboard.getRight()) {
-        modifier.x -= getDelta() * speed;
+        modifier.x -= getDelta() * deltaMultiplier;
     }
 
+    // Reserve this for jump and sneak
+    /*
     if (Keyboard.getUp()){
-        modifier.y += getDelta() * speed;
+        modifier.y += getDelta() * deltaMultiplier;
     } else if (Keyboard.getDown()) {
-        modifier.y -= getDelta() * speed;
+        modifier.y -= getDelta() * deltaMultiplier;
     }
+    */
 
-    movePosition(modifier);
+    //movePosition(modifier);
+}
+
+private void addVelocity(Vector3d moreVelocity) {
+    velocity.x += moreVelocity.x;
+    velocity.y += moreVelocity.y;
+    velocity.z += moreVelocity.z;
+
+    if (velocity.length() > speed["walk"]) {
+        velocity.normalize().mul(3);
+    }
 }
