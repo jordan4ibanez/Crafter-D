@@ -124,8 +124,10 @@ void startWorldGeneratorThread(Tid parentThread) {
         if (debugNow) {
             writeln("sending this chunk back to the main thread: ", thisChunk.getPosition());
         }
-
-        send(mainThread, cast(shared(Chunk))thisChunk);
+        
+        synchronized{
+        send(mainThread, cast(immutable)thisChunk);
+        }
     }
 
     // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
