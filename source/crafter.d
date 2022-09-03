@@ -254,8 +254,6 @@ void main(string[] args) {
             receiveChunksFromWorldGenerator();
             receiveMeshesFromChunkMeshGenerator();
 
-            Camera.testCameraHackRemoveThis();
-
             // Automatically plops the FPS and delta time onto the window title
             Window.setTitle((
                 getVersionTitle() ~ " | FPS: " ~ to!string(Window.getFPS()) ~ " | Delta: " ~ to!string(getDelta()))
