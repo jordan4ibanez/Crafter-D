@@ -13,10 +13,10 @@ For single player and client access (your player in game) go to /game/client/pla
 private Player[string] container;
 
 void spawnPlayer(Player player) {
-    this.container[player.getName()] = player;
+    container[player.getName()] = player;
     writeln(player.classinfo.name , " HAS BEEN ADDED TO FACTORY: ", player.getUUID());
 }
 
 void debugFactory() {
-    writeln(this.container);
+    writeln(container);
 }
