@@ -65,9 +65,7 @@ bool collide(Vector3i position) {
 
 struct Chunk {
     private bool thisExists = false;
-    private uint[]  block;
-    private ubyte[] light;
-    private ubyte[] rotation;
+    private uint[] data;
     private Mesh[] chunkMeshStack;
     // Height map needs to be added in
 
@@ -80,9 +78,7 @@ struct Chunk {
         this.chunkPosition = *new Vector2i(position.x, position.y);
         this.positionLock = true;
         this.thisExists = true;
-        this.block = new uint[chunkArrayLength];
-        this.light = new ubyte[chunkArrayLength];
-        this.rotation = new ubyte[chunkArrayLength];
+        this.data = new uint[chunkArrayLength];
         this.chunkMeshStack = new Mesh[8];
     }
 
