@@ -4,9 +4,9 @@ import std.stdio;
 import vector_2i;
 import vector_3i;
 import vector_3d;
-import engine.mesh.mesh;
 
-import std.algorithm.mutation: copy;
+import engine.mesh.mesh;
+import game.chunk.block_data;
 
 /*
 Notes:
@@ -65,7 +65,7 @@ bool collide(Vector3i position) {
 
 struct Chunk {
     private bool thisExists = false;
-    private uint[] data;
+    private BlockData[] data;
     private Mesh[] chunkMeshStack;
     // Height map needs to be added in
 
@@ -78,7 +78,7 @@ struct Chunk {
         this.chunkPosition = *new Vector2i(position.x, position.y);
         this.positionLock = true;
         this.thisExists = true;
-        this.data = new uint[chunkArrayLength];
+        this.data = new BlockData[chunkArrayLength];
         this.chunkMeshStack = new Mesh[8];
     }
 
@@ -133,42 +133,37 @@ struct Chunk {
         );
     }
 
-    uint[] getRawBlocks() {
-        return block;
-    }
-    ubyte[] getRawLights() {
-        return light;
-    }
-    ubyte[] getRawRotations() {
-        return rotation;
+    BlockData[] getRawData() {
+        return data;
     }
 
     // Complex boilerplate with boundary checks
-    uint getBlock(Vector3i position) {
+    ushort getBlock(Vector3i position) {
         if (collide(position)) {
-            return(this.block[positionToIndex(position)]);
+            return(this.data[positionToIndex(position)].id);
         } else {
             // failed for some reason
             writeln("Getblock FAILED!");
             return 0;
         }
     }
-    void setBlock(Vector3i position, uint newBlock) {
+
+    void setBlock(Vector3i position, ushort newBlock) {
         if (collide(position)) {
-            this.block[positionToIndex(position)] = newBlock;
+            this.data[positionToIndex(position)].id = newBlock;
         }
     }
     // Overloads
-    uint getBlock(int index) {
-        return this.block[index];
+    ushort getBlock(int index) {
+        return this.data[index].id;
     }
-    void setBlock(int index, int newBlock){
-        this.block[index] = newBlock;
+    void setBlock(int index, ushort newBlock){
+        this.data[index].id = newBlock;
     }
 
     ubyte getRotation(Vector3i position) {
         if (collide(position)) {
-            return(this.rotation[positionToIndex(position)]);
+            return(this.data[positionToIndex(position)].rotation);
         } else {
             // failed for some reason
             writeln("Getblock FAILED!");
@@ -177,7 +172,7 @@ struct Chunk {
     }
     void setRotation(Vector3i position, ubyte newRotation) {
         if (collide(position)) {
-            this.rotation[positionToIndex(position)] = newRotation;
+            this.data[positionToIndex(position)].rotation = newRotation;
         }
     }
 
