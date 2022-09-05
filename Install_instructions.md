@@ -1,4 +1,4 @@
-## (k,l,x,g,b,m,s)ubuntu 22.04
+## Ubuntu 22.04 - and all it's flavors!
 
 ```
 sudo apt install libglfw3-dev
