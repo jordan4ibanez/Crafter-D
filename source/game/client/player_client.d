@@ -24,7 +24,7 @@ private Vector2d size = *new Vector2d(0.35, 1.8);
 private double height = 1.5;
 private bool inGame = true;
 
-private static const double[string] speed;
+private static immutable double[string] speed;
 shared static this() {
     speed = [
         "run"   : 5.0,
