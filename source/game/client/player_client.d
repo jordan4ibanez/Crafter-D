@@ -56,10 +56,10 @@ private void playerClientIntakeKeyInputs() {
         modifier.z += (delta * walkSpeed) / inertia;
     }
 
-    if(Keyboard.getLeft()){
+    if(Keyboard.getRight()){
         modifier.x += (delta * walkSpeed) / inertia;
     }
-    if (Keyboard.getRight()) {
+    if (Keyboard.getLeft()) {
         modifier.x -= (delta * walkSpeed) / inertia;
     }
 
