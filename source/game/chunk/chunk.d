@@ -126,7 +126,7 @@ struct Chunk {
                 this.chunkPosition.y * chunkSizeZ
             ),
             Vector3d(0,0,0),
-            1,
+            Vector3d(1,1,1),
             true,
             min,
             max
