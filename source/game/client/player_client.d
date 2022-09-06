@@ -84,6 +84,9 @@ private void addVelocity(Vector3d moreVelocity) {
         rotatedVelocity.z = Math.cos(Math.toRadians(rotation.y - 90)) * moreVelocity.x;
     }
 
+    // This is for testing only
+    rotatedVelocity.y = moreVelocity.y;
+
     velocity.x += rotatedVelocity.x;
     velocity.y += rotatedVelocity.y;
     velocity.z += rotatedVelocity.z;
