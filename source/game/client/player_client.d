@@ -49,21 +49,25 @@ private void playerClientIntakeKeyInputs() {
     immutable double walkSpeed = speed["walk"];
 
     if(Keyboard.getForward()){
+        writeln("key is forward");
         modifier.z -= (delta * walkSpeed) / inertia;
-    } else if (Keyboard.getBack()) {
+    }
+    if (Keyboard.getBack()) {
         modifier.z += (delta * walkSpeed) / inertia;
     }
 
     if(Keyboard.getLeft()){
         modifier.x += (delta * walkSpeed) / inertia;
-    } else if (Keyboard.getRight()) {
+    }
+    if (Keyboard.getRight()) {
         modifier.x -= (delta * walkSpeed) / inertia;
     }
 
     // Reserve this for jump and sneak
     if (Keyboard.getUp()){
         modifier.y += (delta * walkSpeed) / inertia;
-    } else if (Keyboard.getDown()) {
+    }
+    if (Keyboard.getDown()) {
         modifier.y -= (delta * walkSpeed) / inertia;
     }
 
