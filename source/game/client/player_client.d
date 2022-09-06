@@ -20,7 +20,7 @@ the_current_player_of_the_client_that_is_playing_the_game_right_now.d
 This is the player that is playing the game.
 */
 
-private Vector3d position = *new Vector3d(0,0,0);
+private Vector3d position = *new Vector3d(0,70,0);
 private Vector3d velocity = *new Vector3d(0,0,0);
 // This rotation is for the player's body
 private Vector3d rotation = *new Vector3d(0,0,0);
