@@ -129,7 +129,7 @@ struct CollisionBoxMesh {
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
         // glDrawElements(GL_LINES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
-        glDrawArrays(GL_LINES, this.indexCount, cast(const(void)*)0);
+        glDrawArrays(GL_LINES, 0, this.indexCount);
         
         GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
