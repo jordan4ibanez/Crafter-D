@@ -13,15 +13,30 @@ import engine.opengl.frustum_culling;
 import Camera = engine.camera.camera;
 
 private immutable bool debugNow = false;
+private CollisionBoxMesh theMesh;
+private bool existenceLock = false;
+void constructCollisionBoxMesh() {
+    // 1 way lock
+    if (!existenceLock) {
+        theMesh = CollisionBoxMesh(Vector2d(1,1));
+        existenceLock = true;
+    }
+}
+void cleanUpCollisionBoxMesh() {
+    theMesh.cleanUp();
+}
+void drawCollisionBoxMesh(Vector3d position, Vector2d size) {
+    theMesh.render(position,size);
+}
 
 // Reuse this for block selection box?
-struct CollisionBoxMesh {
+private struct CollisionBoxMesh {
 
     private bool exists = false;
 
     GLuint vao = 0; // Vertex array object - Main object
     GLuint pbo = 0; // Positions vertex buffer object
-
+    GLuint ibo = 0; // Indices vertex buffer object
     GLuint indexCount = 0;
 
     private float[] constructCollisionBox(Vector2d size) {
@@ -29,32 +44,15 @@ struct CollisionBoxMesh {
         Vector3d max = Vector3d( size.x, size.y,  size.x);
         return [
             // Bottom square
-            min.x, min.y, min.z,
-            min.x, min.y, max.z,
-            min.x, min.y, max.z,
-            max.x, min.y, max.z,
-            max.x, min.y, max.z,
-            max.x, min.y, min.z,
-            max.x, min.y, min.z,
-            min.x, min.y, min.z,
+            min.x, min.y, min.z, // 0
+            min.x, min.y, max.z, // 1
+            max.x, min.y, max.z, // 2
+            max.x, min.y, min.z, // 3
             // Top square
-            min.x, max.y, min.z,
-            min.x, max.y, max.z,
-            min.x, max.y, max.z,
-            max.x, max.y, max.z,
-            max.x, max.y, max.z,
-            max.x, max.y, min.z,
-            max.x, max.y, min.z,
-            min.x, max.y, min.z,
-            // Connection lines (sides)
-            min.x, min.y, min.z,
-            min.x, max.y, min.z,
-            min.x, min.y, max.z,
-            min.x, max.y, max.z,
-            max.x, min.y, min.z,
-            max.x, max.y, min.z,
-            max.x, min.y, max.z,
-            max.x, max.y, max.z
+            min.x, max.y, min.z, // 4
+            min.x, max.y, max.z, // 5
+            max.x, max.y, max.z, // 6
+            max.x, max.y, min.z, // 7
         ];
         // Tada! You have a box! Wow!
     }
@@ -62,6 +60,14 @@ struct CollisionBoxMesh {
     this(Vector2d size) {
 
         float[] vertices = constructCollisionBox(size);
+        GLuint[] indices = [
+            // Bottom Square
+            0,1, 1,2, 2,3, 3,0,
+            // Top square
+            4,5, 5,6, 6,7, 7,4,
+            // Sides
+            0,4, 1,5, 2,6, 3,7
+        ];
 
         // Existence lock
         this.exists = true;
@@ -95,8 +101,20 @@ struct CollisionBoxMesh {
         );
         glEnableVertexAttribArray(0);
 
+        // Indices VBO
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glGenBuffers(1, &this.ibo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this.ibo);
+
+        glBufferData(
+            GL_ELEMENT_ARRAY_BUFFER,     // Target object
+            indices.length * int.sizeof, // size (bytes)
+            indices.ptr,                 // the pointer to the data for the object
+            GL_STATIC_DRAW               // The draw mode OpenGL will use
+        );
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);   
         
         // Unbind vao just in case
         glBindVertexArray(0);
@@ -134,6 +152,10 @@ struct CollisionBoxMesh {
         glDeleteBuffers(1, &this.pbo);
         assert (glIsBuffer(this.pbo) == GL_FALSE);
 
+        // Delete the indices vbo
+        glDeleteBuffers(1, &this.ibo);
+        assert (glIsBuffer(this.ibo) == GL_FALSE);
+
         // Unbind the "object"
         glBindVertexArray(0);
         // Now we can delete it without any issues
@@ -151,7 +173,7 @@ struct CollisionBoxMesh {
         }
     }
 
-    void render(Vector3d offset) {
+    void render(Vector3d offset, Vector2d scale) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -163,12 +185,11 @@ struct CollisionBoxMesh {
 
         getShader("main").setUniformF("light", 1.0);
         
-        Camera.setObjectMatrix(offset, Vector3d(0,0,0), 1.0);
+        Camera.setObjectMatrix(offset, Vector3d(0,0,0), Vector3d(scale.x, scale.y, scale.x));
 
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
-        // glDrawElements(GL_LINES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
-        glDrawArrays(GL_LINES, 0, this.indexCount);
+        glDrawElements(GL_LINES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
         
         GLenum glErrorInfo = getAndClearGLErrors();
         if (glErrorInfo != GL_NO_ERROR) {
