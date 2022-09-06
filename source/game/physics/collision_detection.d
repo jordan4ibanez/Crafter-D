@@ -4,6 +4,8 @@ import vector_2d;
 import vector_3d;
 
 // Basic AABB and magnetic cylinder, nothing fancy
+// If you would like to see how the AABB works with a visualization:
+// https://raw.githubusercontent.com/jordan4ibanez/Crafter/main/github/AABB_explanation.png
 
 // I dunno where to even begin with this so here we go
 
