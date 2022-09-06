@@ -6,6 +6,8 @@ import vector_2d;
 import vector_2i;
 import delta_time;
 
+import game.physics.collision_detection;
+
 import Math = math;
 import Camera = engine.camera.camera;
 import Keyboard = engine.input.keyboard;
@@ -119,6 +121,8 @@ private void applyCameraPosition() {
 void onTick() {
     applyCameraRotation();
     playerClientIntakeKeyInputs();
-    applyVelocity();
+
+    collideWithTerrain(position, velocity, size, 0.1);
+
     applyCameraPosition();
 }
