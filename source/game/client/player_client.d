@@ -99,6 +99,7 @@ private void applyCameraRotation() {
     rotation.y = Camera.getRotation().y;
 }
 
+// Uhh move this to collision detection?? Wtf
 private void applyFriction() {
     Vector3d frictionSpeed = Vector3d(velocity).mul(speed["friction"] * getDelta());
     velocity.sub(frictionSpeed);
