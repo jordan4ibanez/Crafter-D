@@ -195,7 +195,7 @@ struct Mesh {
         }
     }
 
-    void render(Vector3d offset, Vector3d rotation, float scale, float light) {
+    void render(Vector3d offset, Vector3d rotation, Vector3d scale, float light) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -227,7 +227,7 @@ struct Mesh {
         }
     }
 
-    void batchRender(Vector3d offset, Vector3d rotation, float scale, bool culling, Vector3d min, Vector3d max) {
+    void batchRender(Vector3d offset, Vector3d rotation, Vector3d scale, bool culling, Vector3d min, Vector3d max) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
