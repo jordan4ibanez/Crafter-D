@@ -49,7 +49,6 @@ private void playerClientIntakeKeyInputs() {
     immutable double walkSpeed = speed["walk"];
 
     if(Keyboard.getForward()){
-        writeln("key is forward");
         modifier.z -= (delta * walkSpeed) / inertia;
     }
     if (Keyboard.getBack()) {
@@ -71,6 +70,8 @@ private void playerClientIntakeKeyInputs() {
         modifier.y -= (delta * walkSpeed) / inertia;
     }
 
+    writeln("modifier", modifier);
+
     addVelocity(modifier);
 }
 
@@ -80,12 +81,12 @@ private void addVelocity(Vector3d moreVelocity) {
     Vector3d rotatedVelocity = Vector3d();
 
     if ( moreVelocity.z != 0 ) {
-        rotatedVelocity.x = -Math.sin(Math.toRadians(rotation.y)) * moreVelocity.z;
-        rotatedVelocity.z = Math.cos(Math.toRadians(rotation.y)) * moreVelocity.z;
+        rotatedVelocity.x += -Math.sin(Math.toRadians(rotation.y)) * moreVelocity.z;
+        rotatedVelocity.z += Math.cos(Math.toRadians(rotation.y)) * moreVelocity.z;
     }
     if ( moreVelocity.x != 0) {
-        rotatedVelocity.x = -Math.sin(Math.toRadians(rotation.y - 90)) * moreVelocity.x;
-        rotatedVelocity.z = Math.cos(Math.toRadians(rotation.y - 90)) * moreVelocity.x;
+        rotatedVelocity.x += -Math.sin(Math.toRadians(rotation.y - 90)) * moreVelocity.x;
+        rotatedVelocity.z += Math.cos(Math.toRadians(rotation.y - 90)) * moreVelocity.x;
     }
 
     // This is for testing only
@@ -127,8 +128,6 @@ void onTick() {
     playerClientIntakeKeyInputs();
     applyVelocity();
     applyFriction();
-
-    writeln(velocity);
 
     Camera.setPosition(Vector3d(
         position.x,
