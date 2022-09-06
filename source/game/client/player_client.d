@@ -126,3 +126,15 @@ void onTick() {
 
     applyCameraPosition();
 }
+
+Vector3d getPosition() {
+    return position;
+}
+
+Vector3d getRotation() {
+    return rotation;
+}
+
+Vector2d getSize() {
+    return size;
+}
