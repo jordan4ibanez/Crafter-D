@@ -26,11 +26,11 @@ void keyCallback(int key, int scancode, int action, int mods){
     //keyboardInput[key] = action > 0;
     switch(key) {
         case GLFW_KEY_D:{
-            left = quickSwitch(action);
+            right = quickSwitch(action);
             break;
         }
         case GLFW_KEY_A:{
-            right = quickSwitch(action);
+            left = quickSwitch(action);
             break;
         }
         case GLFW_KEY_W:{
