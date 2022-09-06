@@ -296,6 +296,7 @@ void main(string[] args) {
             Camera.updateCameraMatrix();
 
             Vector2d testSize = PlayerClient.getSize();
+            testSize.x -= playerDebug / 2.0;
             testSize.y += playerDebug;
             drawCollisionBoxMesh(PlayerClient.getPosition(), testSize);
 
