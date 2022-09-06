@@ -238,13 +238,10 @@ void main(string[] args) {
         // Click! The game opened right, wow!
         SoundManager.playSound("sounds/button.ogg");
         
-        float[] myMesh = [
-            0,0,0,
-            0,1,0
-        ];
+        
 
 
-        CollisionBoxMesh testMesh = CollisionBoxMesh(myMesh);
+        CollisionBoxMesh testMesh = CollisionBoxMesh(PlayerClient.getSize());
 
         // Client loop
         while(!Window.shouldClose()) {
@@ -284,7 +281,7 @@ void main(string[] args) {
 
             Camera.updateCameraMatrix();
 
-            testMesh.render(Vector3d(0,0,0));
+            testMesh.render(PlayerClient.getPosition());
 
 
             renderWorld();
@@ -302,6 +299,7 @@ void main(string[] args) {
 
         }
         
+        testMesh.cleanUp();
         ThreadLibrary.killAllThreads();
         cleanUpAllTextures();
         deleteShaders();
