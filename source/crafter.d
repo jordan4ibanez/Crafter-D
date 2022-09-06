@@ -6,6 +6,7 @@ import delta_time;
 import vector_2i;
 import std.conv: to;
 import bindbc.opengl;
+import vector_3d;
 
 // External concurrency libraries
 import std.concurrency;
@@ -19,6 +20,7 @@ import engine.texture.texture;
 import engine.opengl.gl_interface;
 import engine.opengl.shaders;
 import engine.openal.al_interface;
+import engine.mesh.debug_collision_box;
 
 // Internal game libraries
 import game.entity.mob.mob;
@@ -236,6 +238,13 @@ void main(string[] args) {
         // Click! The game opened right, wow!
         SoundManager.playSound("sounds/button.ogg");
         
+        float[] myMesh = [
+            0,0,0,
+            0,1,0
+        ];
+
+
+        CollisionBoxMesh testMesh = CollisionBoxMesh(myMesh);
 
         // Client loop
         while(!Window.shouldClose()) {
@@ -274,6 +283,8 @@ void main(string[] args) {
             Camera.clearDepthBuffer();
 
             Camera.updateCameraMatrix();
+
+            testMesh.render(Vector3d(0,0,0));
 
 
             renderWorld();
