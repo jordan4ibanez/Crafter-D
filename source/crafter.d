@@ -241,7 +241,7 @@ void main(string[] args) {
         
 
 
-        CollisionBoxMesh testMesh = CollisionBoxMesh(PlayerClient.getSize());
+        constructCollisionBoxMesh();
 
         // Client loop
         while(!Window.shouldClose()) {
@@ -281,7 +281,7 @@ void main(string[] args) {
 
             Camera.updateCameraMatrix();
 
-            testMesh.render(PlayerClient.getPosition());
+            drawCollisionBoxMesh(PlayerClient.getPosition(), PlayerClient.getSize());
 
 
             renderWorld();
@@ -299,7 +299,7 @@ void main(string[] args) {
 
         }
         
-        testMesh.cleanUp();
+        cleanUpCollisionBoxMesh();
         ThreadLibrary.killAllThreads();
         cleanUpAllTextures();
         deleteShaders();
