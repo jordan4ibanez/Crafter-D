@@ -15,6 +15,8 @@ import Math = math;
 void collideWithTerrain(ref Vector3d position, ref Vector3d velocity, Vector2d size, double inertia){
 
     double delta = getDelta();
+
+    applyFriction(velocity);
         
     // velocity and position are a constant, delta is the frame interpolator
 
@@ -35,7 +37,6 @@ void collideWithTerrain(ref Vector3d position, ref Vector3d velocity, Vector2d s
     position.z += velocity.z * delta;
 
     // check goes here
-
 }
 
 /*
@@ -45,9 +46,22 @@ private void applyVelocity() {
     position.y += velocity.y * delta;
     position.z += velocity.z * delta;
 }
+*/
 
-// Uhh move this to collision detection?? Wtf
-private void applyFriction() {
+private static immutable double[string] speed;
+shared static this() {
+    speed = [
+        "run"      : 9.0,
+        "walk"     : 6.5,
+        "sneak"    : 2.0,
+        // Less inertia, faster things accelerate
+        "inertia"  : 0.1,
+        // More friction, faster things slow down
+        "friction" : 1.0
+    ];
+}
+
+private void applyFriction(ref Vector3d velocity) {
     Vector3d frictionSpeed = Vector3d(velocity).mul(speed["friction"] * getDelta()).div(speed["inertia"]);
     velocity.sub(frictionSpeed);
     // Avoid infinite float calculations
@@ -55,4 +69,3 @@ private void applyFriction() {
         velocity.zero();
     }
 }
-*/
