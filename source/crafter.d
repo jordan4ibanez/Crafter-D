@@ -7,6 +7,7 @@ import vector_2i;
 import std.conv: to;
 import bindbc.opengl;
 import vector_3d;
+import vector_2d;
 
 // External concurrency libraries
 import std.concurrency;
@@ -237,14 +238,28 @@ void main(string[] args) {
 
         // Click! The game opened right, wow!
         SoundManager.playSound("sounds/button.ogg");
-        
-        
-
 
         constructCollisionBoxMesh();
 
+        double playerDebug = 0;
+        bool up = true;
+
         // Client loop
         while(!Window.shouldClose()) {
+            // Delta calculation must come first
+            calculateDelta();
+
+            if (up) {
+                playerDebug += getDelta();
+                if (playerDebug > 0.5) {
+                    up = false;
+                }
+            } else {
+                playerDebug -= getDelta();
+                if (playerDebug < -0.5) {
+                    up = true;
+                }
+            }
 
             // This is a lag test for the physics/weird bugs
             /*
@@ -254,8 +269,7 @@ void main(string[] args) {
             }
             */
 
-            // Delta calculation must come first
-            calculateDelta();
+            
 
             // These two functions literally build the environent
             receiveChunksFromWorldGenerator();
@@ -281,7 +295,9 @@ void main(string[] args) {
 
             Camera.updateCameraMatrix();
 
-            drawCollisionBoxMesh(PlayerClient.getPosition(), PlayerClient.getSize());
+            Vector2d testSize = PlayerClient.getSize();
+            testSize.y += playerDebug;
+            drawCollisionBoxMesh(PlayerClient.getPosition(), testSize);
 
 
             renderWorld();
