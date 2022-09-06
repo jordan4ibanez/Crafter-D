@@ -102,36 +102,23 @@ private void addVelocity(Vector3d moreVelocity) {
     }
 }
 
-private void applyVelocity() {
-    double delta = getDelta();
-    position.x += velocity.x * delta;
-    position.y += velocity.y * delta;
-    position.z += velocity.z * delta;
-}
-
 private void applyCameraRotation() {
     rotation.y = Camera.getRotation().y;
 }
 
-// Uhh move this to collision detection?? Wtf
-private void applyFriction() {
-    Vector3d frictionSpeed = Vector3d(velocity).mul(speed["friction"] * getDelta()).div(speed["inertia"]);
-    velocity.sub(frictionSpeed);
-    // Avoid infinite float calculations
-    if (velocity.length() <= 0.000000001) {
-        velocity.zero();
-    }
+private void applyCameraPosition() {
+    Camera.setPosition(
+        Vector3d(
+            position.x,
+            position.y + eyeHeight,
+            position.z
+        )
+    );
 }
 
 void onTick() {
     applyCameraRotation();
     playerClientIntakeKeyInputs();
     applyVelocity();
-    applyFriction();
-
-    Camera.setPosition(Vector3d(
-        position.x,
-        position.y + eyeHeight,
-        position.z
-    ));
+    applyCameraPosition();
 }
