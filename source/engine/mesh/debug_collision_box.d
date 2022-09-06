@@ -3,6 +3,7 @@ module engine.mesh.debug_collision_box;
 import std.stdio;
 import bindbc.opengl;
 import vector_3d;
+import vector_2d;
 
 
 import engine.opengl.shaders;
@@ -13,6 +14,7 @@ import Camera = engine.camera.camera;
 
 private immutable bool debugNow = false;
 
+// Reuse this for block selection box?
 struct CollisionBoxMesh {
 
     private bool exists = false;
@@ -22,7 +24,44 @@ struct CollisionBoxMesh {
 
     GLuint indexCount = 0;
 
-    this(float[] vertices) {
+    private float[] constructCollisionBox(Vector2d size) {
+        Vector3d min = Vector3d(-size.x, 0,      -size.x);
+        Vector3d max = Vector3d( size.x, size.y,  size.x);
+        return [
+            // Bottom square
+            min.x, min.y, min.z,
+            min.x, min.y, max.z,
+            min.x, min.y, max.z,
+            max.x, min.y, max.z,
+            max.x, min.y, max.z,
+            max.x, min.y, min.z,
+            max.x, min.y, min.z,
+            min.x, min.y, min.z,
+            // Top square
+            min.x, max.y, min.z,
+            min.x, max.y, max.z,
+            min.x, max.y, max.z,
+            max.x, max.y, max.z,
+            max.x, max.y, max.z,
+            max.x, max.y, min.z,
+            max.x, max.y, min.z,
+            min.x, max.y, min.z,
+            // Connection lines (sides)
+            min.x, min.y, min.z,
+            min.x, max.y, min.z,
+            min.x, min.y, max.z,
+            min.x, max.y, max.z,
+            max.x, min.y, min.z,
+            max.x, max.y, min.z,
+            max.x, min.y, max.z,
+            max.x, max.y, max.z
+        ];
+        // Tada! You have a box! Wow!
+    }
+
+    this(Vector2d size) {
+
+        float[] vertices = constructCollisionBox(size);
 
         // Existence lock
         this.exists = true;
