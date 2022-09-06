@@ -53,7 +53,7 @@ it does 3 things:
 
 3. glsl will multiply this matrix by the camera's matrix, giving a usable position
 */
-void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
+void setObjectMatrix(Vector3d offset, Vector3d rotation, Vector3d scale) {
     objectMatrix.identity()
         .translate(-position.x + offset.x, -position.y + offset.y, -position.z + offset.z)
         .rotateX(Math.toRadians(rotation.x))
