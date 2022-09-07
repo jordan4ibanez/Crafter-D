@@ -33,6 +33,7 @@ import game.chunk.chunk;
 import game.chunk.chunk_data_container;
 import game.chunk.world_generator;
 import game.graphics.chunk_mesh_generator;
+import game.graphics.chunk_mesh_data_container;
 
 // Libraries imported as objects
 import Math          = math;
@@ -273,7 +274,7 @@ void main(string[] args) {
 
             // These two functions literally build the environent
             chunkData.receiveChunksFromWorldGenerator();
-            chunkData.receiveMeshesFromChunkMeshGenerator();
+            chunkMeshData.receiveMeshesFromChunkMeshGenerator();
 
             PlayerClient.onTick();
 
@@ -298,7 +299,7 @@ void main(string[] args) {
             drawCollisionBoxMesh(PlayerClient.getPosition(), PlayerClient.getSize());
 
 
-            chunkData.renderWorld();
+            chunkMeshData.renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
             // DrawCube(Vector3(1.5,0.5,1.5),1,1,1,Colors.RED);
 
