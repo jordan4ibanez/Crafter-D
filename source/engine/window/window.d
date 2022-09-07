@@ -29,9 +29,6 @@ private double deltaAccumulator = 0.0;
 private int fpsCounter = 0;
 private int FPS = 0;
 
-// This is a brake for external threads, needs to be changed when players can enter and exit worlds back to main menu!
-shared(bool) otherThreadShouldClose = false;
-
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
     size.x = x;
@@ -56,14 +53,7 @@ static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double 
 // Internally handles interfacing to C
 bool shouldClose() {
     bool newValue = (glfwWindowShouldClose(window) != 0);
-    otherThreadShouldClose = newValue;
     return newValue;
-}
-
-shared(bool) externalShouldClose() nothrow @safe {
-    synchronized {
-    return otherThreadShouldClose;
-    }
 }
 
 void swapBuffers() {
