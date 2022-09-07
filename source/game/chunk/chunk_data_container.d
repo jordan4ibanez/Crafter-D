@@ -36,6 +36,7 @@ properties to treat the entire file as a static class
 This is meant to be handled functionally
 */
 
+// this might need to be divided into 2 separate containers, thread local, and thread shared
 ConcurrentChunkHashMap chunkData;
 
 static this() {
