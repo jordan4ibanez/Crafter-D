@@ -72,7 +72,7 @@ private void playerClientIntakeKeyInputs() {
         modifier.y -= (delta * walkSpeed) / inertia;
     }
 
-    writeln("modifier", modifier);
+    // writeln("modifier", modifier);
 
     addVelocity(modifier);
 }
