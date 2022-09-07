@@ -161,8 +161,6 @@ void main(string[] args) {
             return;
         }
 
-        writeln("test");
-
         createShaderProgram(
             "main",
             "shaders/vertex.vs",
