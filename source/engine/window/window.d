@@ -60,8 +60,10 @@ bool shouldClose() {
     return newValue;
 }
 
-shared(bool) externalShouldClose() {
+shared(bool) externalShouldClose() nothrow {
+    synchronized {
     return otherThreadShouldClose;
+    }
 }
 
 void swapBuffers() {
