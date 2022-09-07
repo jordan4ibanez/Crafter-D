@@ -28,7 +28,7 @@ import engine.helpers.nothrow_writeln;
 import game.chunk.chunk;
 import game.graphics.chunk_mesh_generator;
 import game.chunk.thread_chunk_package;
-import game.graphics.thread_mesh_message;
+import game.graphics.chunk_mesh_data_container;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
 properties to treat the entire file as a static class
@@ -120,9 +120,17 @@ public shared synchronized class ConcurrentChunkHashMap {
 
 
                     Vector2i newPosition = generatedChunk.getPosition();
+                    string clonedBiome = generatedChunk.getBiome();
+
+                    chunkMeshData.insertBlankSlate(
+                        clonedBiome,
+                        newPosition
+                    );
+
                     mewtex.lock_nothrow();
                     container[newPosition] = cast(shared(Chunk))generatedChunk;
                     mewtex.unlock_nothrow();
+
                     // Finally add a new chunk mesh update into the chunk mesh generator
                     Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
 
@@ -137,59 +145,5 @@ public shared synchronized class ConcurrentChunkHashMap {
             );
             } catch(Exception e) {nothrowWriteln(e);}
         }
-    }
-
-    void receiveMeshesFromChunkMeshGenerator() nothrow {
-        bool received = true;
-        while (received){
-            received = false;
-            try{
-            receiveTimeout(
-                Duration(),
-                (shared(ThreadMeshMessage) newMesh) {               
-                    received = true;
-
-                    ThreadMeshMessage thisNewMesh = cast(ThreadMeshMessage) newMesh;
-
-                    Vector3i position = thisNewMesh.position;
-                    mewtex.lock_nothrow();
-                    Chunk mutableChunk = cast(Chunk) getMutableChunk(Vector2i(position.x, position.z));
-
-                    // New mesh is blank! Remove
-                    if (thisNewMesh.vertices.length == 0) {        
-                        mutableChunk.removeMesh(position.y);
-                    } else {
-                        mutableChunk.setMesh(position.y, Mesh(
-                            thisNewMesh.vertices,
-                            thisNewMesh.indices,
-                            thisNewMesh.textureCoordinates,
-                            thisNewMesh.colors,
-                            thisNewMesh.textureName
-                        ));
-                    }
-                    mewtex.unlock_nothrow();
-                }
-            );
-            } catch (Exception e){nothrowWriteln(e);}
-        }
-    }
-
-    void renderWorld() nothrow {
-        try {
-        getShader("main").setUniformI("textureSampler", 0);
-        getShader("main").setUniformF("light", 1);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, getTexture("textures/world_texture_map.png"));
-
-        mewtex.lock_nothrow();
-        foreach (shared(Chunk) thisChunk; container) {
-            Chunk castedChunk = cast(Chunk) thisChunk;
-            for (ubyte i = 0; i < 8; i++) {
-                castedChunk.drawMesh(i);
-            }
-        }
-        mewtex.unlock_nothrow();
-        } catch (Exception e) {nothrowWriteln(e);}
     }
 }
