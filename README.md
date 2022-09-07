@@ -9,3 +9,6 @@ WIP
 For now enjoy this image of the prototype terrain!
 
 ![One day there will be a sun!](https://raw.githubusercontent.com/jordan4ibanez/Crafter/main/github/prototypeWorld.png)
+
+Notes:
+Make mesh intake immutable data
