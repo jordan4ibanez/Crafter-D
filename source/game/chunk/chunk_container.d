@@ -36,7 +36,10 @@ properties to treat the entire file as a static class
 This is meant to be handled functionally
 */
 
-ConcurrentHashMap chunkData = new ConcurrentHashMap();
+ConcurrentHashMap chunkData;
+static this() {
+    chunkData = new ConcurrentHashMap();
+}
 
 // External entry point into adding new chunks to the map
 void generateChunk(Vector2i position) nothrow {
@@ -50,8 +53,15 @@ public shared synchronized class ConcurrentHashMap {
     // Hashmap container for generated chunks
     private Chunk[Vector2i] container;
 
+    private Mutex mewtex;
+
+    this() {
+        this.mewtex = new shared Mutex();
+    }
+
     // Gets a chunk from the container
-    shared(Chunk) getChunk(Vector2i position) pure nothrow @safe {
+    shared(Chunk) getChunk(Vector2i position) nothrow @safe {
+        mewtex.lock_nothrow();
         shared Chunk clone;
         if (position in container) {
             shared Chunk original = container[position];
@@ -59,6 +69,7 @@ public shared synchronized class ConcurrentHashMap {
         }
         // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
         // Return non-existent chunk
+        mewtex.unlock_nothrow();
         return clone;
     }
 
@@ -77,13 +88,16 @@ public shared synchronized class ConcurrentHashMap {
     */
 
     // Gets a mutable chunk from the container
-    ref shared(Chunk) getMutableChunk(Vector2i position) pure nothrow @safe {
+    ref shared(Chunk) getMutableChunk(Vector2i position) nothrow @safe {
+        mewtex.lock_nothrow();
         if (position in container) {
+            mewtex.unlock_nothrow();
             return container[position];
         }
         // This is where serious problems could happen if existence is not checked
         // writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
         // This becomes garbage data
+        mewtex.unlock_nothrow();
         return *new shared Chunk();
     }
 
@@ -105,8 +119,9 @@ public shared synchronized class ConcurrentHashMap {
 
 
                     Vector2i newPosition = generatedChunk.getPosition();
+                    mewtex.lock_nothrow();
                     container[newPosition] = cast(shared(Chunk))generatedChunk;
-
+                    mewtex.unlock_nothrow();
                     // Finally add a new chunk mesh update into the chunk mesh generator
                     Tid cmg = ThreadLibrary.getChunkMeshGeneratorThread();
 
@@ -136,7 +151,7 @@ public shared synchronized class ConcurrentHashMap {
                     ThreadMeshMessage thisNewMesh = cast(ThreadMeshMessage) newMesh;
 
                     Vector3i position = thisNewMesh.position;
-
+                    mewtex.lock_nothrow();
                     Chunk mutableChunk = cast(Chunk) getMutableChunk(Vector2i(position.x, position.z));
 
                     // New mesh is blank! Remove
@@ -151,6 +166,7 @@ public shared synchronized class ConcurrentHashMap {
                             thisNewMesh.textureName
                         ));
                     }
+                    mewtex.unlock_nothrow();
                 }
             );
             } catch (Exception e){nothrowWriteln(e);}
@@ -165,12 +181,14 @@ public shared synchronized class ConcurrentHashMap {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, getTexture("textures/world_texture_map.png"));
 
+        mewtex.lock_nothrow();
         foreach (shared(Chunk) thisChunk; container) {
             Chunk castedChunk = cast(Chunk) thisChunk;
             for (ubyte i = 0; i < 8; i++) {
                 castedChunk.drawMesh(i);
             }
         }
+        mewtex.unlock_nothrow();
         } catch (Exception e) {nothrowWriteln(e);}
     }
 }
