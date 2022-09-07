@@ -272,8 +272,8 @@ void main(string[] args) {
             
 
             // These two functions literally build the environent
-            chunkData.receiveChunksFromWorldGenerator();
-            chunkData.receiveMeshesFromChunkMeshGenerator();
+            receiveChunksFromWorldGenerator();
+            receiveMeshesFromChunkMeshGenerator();
 
             PlayerClient.onTick();
 
@@ -298,7 +298,7 @@ void main(string[] args) {
             drawCollisionBoxMesh(PlayerClient.getPosition(), PlayerClient.getSize());
 
 
-            chunkData.renderWorld();
+            renderWorld();
             // DrawModel(testingModel,Vector3(0,0,1),1,Colors.WHITE);
             // DrawCube(Vector3(1.5,0.5,1.5),1,1,1,Colors.RED);
 
