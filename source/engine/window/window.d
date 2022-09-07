@@ -60,7 +60,7 @@ bool shouldClose() {
     return newValue;
 }
 
-shared(bool) externalShouldClose() nothrow {
+shared(bool) externalShouldClose() nothrow @safe {
     synchronized {
     return otherThreadShouldClose;
     }
