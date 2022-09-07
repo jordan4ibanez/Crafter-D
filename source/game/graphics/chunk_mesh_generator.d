@@ -23,7 +23,7 @@ import Window = engine.window.window;
 import engine.helpers.nothrow_writeln;
 
 // Normal internal game libraries
-import game.chunk.chunk_container;
+import game.chunk.chunk_data_container;
 import game.chunk.chunk;
 import game.chunk.thread_chunk_package;
 import game.graphics.block_graphics_definition;
