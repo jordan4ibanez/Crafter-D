@@ -21,7 +21,7 @@ import Window = engine.window.window;
 import game.chunk.chunk;
 
 // This function is a thread
-void startWorldGeneratorThread(Tid parentThread) {
+void startWorldGeneratorThread(Tid parentThread) nothrow {
 
     immutable bool debugNow = false;
 
@@ -38,7 +38,11 @@ void startWorldGeneratorThread(Tid parentThread) {
     // Example: Biome[] biomes = new Biome[0];
     // Then send the biomes over in an array and decyper
 
-    FNLState noise = fnlCreateState(SEED);
+    FNLState noise;
+    try {
+        fnlCreateState(SEED);
+    } catch(Exception) {}
+
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
     void generateChunk(Vector2i position) {
@@ -125,7 +129,7 @@ void startWorldGeneratorThread(Tid parentThread) {
             writeln("sending this chunk back to the main thread: ", thisChunk.getPosition());
         }
         
-        synchronized{
+        synchronized {
         send(mainThread, cast(immutable)thisChunk);
         }
     }
@@ -133,6 +137,7 @@ void startWorldGeneratorThread(Tid parentThread) {
     // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
     while (!Window.externalShouldClose()) {
 
+        try {
         // Listen for input from main thread
         receive(
             // Duration(),
@@ -147,7 +152,10 @@ void startWorldGeneratorThread(Tid parentThread) {
             // If you send this thread a bool, it continues, then breaks
             (bool kill) {}
         );
+        } catch(Exception) {}
     }
 
+    try {
     writeln("World generator has closed!");
+    } catch(Exception){}
 }
