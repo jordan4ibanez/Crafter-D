@@ -14,3 +14,4 @@ crafter-test-*
 *.obj
 *.lst
 *.pdb
+/.idea
