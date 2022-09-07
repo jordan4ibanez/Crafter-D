@@ -71,10 +71,10 @@ public class ChunkMeshStackHashMap {
                         mutableChunkStack.removeMesh(position.y);
                     } else {
                         mutableChunkStack.setMesh(position.y, Mesh(
-                            cast(float[])thisNewMesh.vertices,
-                            cast(int[])thisNewMesh.indices,
-                            cast(float[])thisNewMesh.textureCoordinates,
-                            cast(float[])thisNewMesh.colors,
+                            thisNewMesh.vertices,
+                            thisNewMesh.indices,
+                            thisNewMesh.textureCoordinates,
+                            thisNewMesh.colors,
                             thisNewMesh.textureName
                         ));
                     }

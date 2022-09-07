@@ -27,7 +27,11 @@ struct Mesh {
     // Holds the texture id
     GLuint textureID = 0;
 
-    this(float[] vertices, int[] indices, float[] textureCoordinates, float[] colors, string textureName) {
+    this(immutable float[] vertices, 
+        immutable int[] indices, 
+        immutable float[] textureCoordinates, 
+        immutable float[] colors, 
+        immutable string textureName ) {
 
         this.textureID = getTexture(textureName);
 
