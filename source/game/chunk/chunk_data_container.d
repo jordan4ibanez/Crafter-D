@@ -1,4 +1,4 @@
-module game.chunk.chunk_container;
+module game.chunk.chunk_data_container;
 
 // External normal libraries
 import std.stdio;
@@ -36,9 +36,10 @@ properties to treat the entire file as a static class
 This is meant to be handled functionally
 */
 
-ConcurrentHashMap chunkData;
+ConcurrentChunkHashMap chunkData;
+
 static this() {
-    chunkData = new ConcurrentHashMap();
+    chunkData = new ConcurrentChunkHashMap();
 }
 
 // External entry point into adding new chunks to the map
@@ -48,7 +49,7 @@ void generateChunk(Vector2i position) nothrow {
     } catch(Exception e) {nothrowWriteln(e);}
 }
 
-public shared synchronized class ConcurrentHashMap {
+public shared synchronized class ConcurrentChunkHashMap {
 
     // Hashmap container for generated chunks
     private Chunk[Vector2i] container;
