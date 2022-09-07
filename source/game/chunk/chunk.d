@@ -66,7 +66,7 @@ bool collide(Vector3i position) {
 struct Chunk {
     private bool thisExists = false;
     private BlockData[] data;
-    private Mesh[] chunkMeshStack;
+
     // Height map needs to be added in
 
     private string biome;
@@ -79,59 +79,13 @@ struct Chunk {
         this.positionLock = true;
         this.thisExists = true;
         this.data = new BlockData[chunkArrayLength];
-        this.chunkMeshStack = new Mesh[8];
+        
     }
 
     bool exists() {
         return this.thisExists;
     }
-
-    // Mesh manipulation
-    void setMesh(int yStack, Mesh newMesh) {
-        // This will check if the mesh was ever initialized automatically
-        this.chunkMeshStack[yStack].cleanUp();
-        this.chunkMeshStack[yStack] = newMesh;
-    }
     
-    void removeMesh(int yStack) {
-        // It's nothing, clean it up
-        this.chunkMeshStack[yStack].cleanUp();
-        // Remove it's old values!
-        this.chunkMeshStack[yStack] = Mesh();
-    }
-    /*
-     // This is disabled because it should just be called not manipulated
-    Model getModel(int yStack) {
-        return this.chunkMeshStack[yStack];
-    }
-    */
-    // DO NOT USE THIS - needs to sort by distance
-    void drawMesh(int yStack) {
-
-        immutable Vector3d min = Vector3d(
-            0,
-            0,
-            0
-        );
-        immutable Vector3d max = Vector3d(
-            cast(float)chunkSizeX,
-            cast(float)chunkStackSizeY,
-            cast(float)chunkSizeZ
-        );
-
-        this.chunkMeshStack[yStack].batchRender(
-            Vector3d(
-                this.chunkPosition.x * chunkSizeX,
-                cast(float)yStack * chunkStackSizeY,
-                this.chunkPosition.y * chunkSizeZ
-            ),
-            Vector3d(0,0,0),
-            Vector3d(1,1,1),
-            true,
-            min,
-            max
-        );
-    }
 
     BlockData[] getRawData() {
         return data;
