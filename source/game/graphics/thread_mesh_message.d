@@ -2,7 +2,7 @@ module game.graphics.thread_mesh_message;
 
 import vector_3i;
 
-struct ThreadMeshMessage {
+immutable struct ThreadMeshMessage {
     float[] vertices;
     int[] indices;
     float[] textureCoordinates;
@@ -10,12 +10,12 @@ struct ThreadMeshMessage {
     string textureName;
     Vector3i position;
     this(
-        float[] vertices,
-        int[] indices,
-        float[] textureCoordinates,
-        float[] colors,
+        immutable float[] vertices,
+        immutable int[] indices,
+        immutable float[] textureCoordinates,
+        immutable float[] colors,
         string textureName,
-        Vector3i position) {
+        immutable Vector3i position) {
         this.vertices = vertices;
         this.indices = indices;
         this.textureCoordinates = textureCoordinates;
