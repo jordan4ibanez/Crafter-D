@@ -20,6 +20,7 @@ import asdf;
 
 // Normal internal engine libraries
 import Window = engine.window.window;
+import engine.helpers.nothrow_writeln;
 
 // Normal internal game libraries
 import game.chunk.chunk_container;
@@ -178,7 +179,7 @@ void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blo
             blockTextures
         );
     send(ThreadLibrary.getChunkMeshGeneratorThread(), cast(shared(BlockGraphicDefinition))newDefinition);
-    } catch(Exception){}
+    } catch(Exception e){nothrowWriteln(e);}
 }
 
 

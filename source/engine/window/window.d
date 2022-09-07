@@ -9,8 +9,8 @@ import vector_4d;
 import vector_3d;
 import delta_time;
 
-
 import engine.helpers.log;
+import engine.helpers.nothrow_writeln;
 
 import loader   = bindbc.loader.sharedlib;
 import Keyboard = engine.input.keyboard;
@@ -43,14 +43,14 @@ static extern(C) void externalKeyCallBack(GLFWwindow* window, int key, int scanc
     // This is the best hack ever, or the worst
     try {
     Keyboard.keyCallback(key,scancode,action,mods);
-    } catch(Exception){}
+    } catch(Exception e){nothrowWriteln(e);}
 }
 
 nothrow
 static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double xpos, double ypos) {
     try {
         Mouse.mouseCallback(Vector2d(xpos, ypos));
-    } catch(Exception){}
+    } catch(Exception e){nothrowWriteln(e);}
 }
 
 // Internally handles interfacing to C

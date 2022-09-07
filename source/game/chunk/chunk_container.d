@@ -22,6 +22,7 @@ import ThreadLibrary = engine.thread.thread_library;
 import engine.mesh.mesh;
 import engine.opengl.shaders;
 import engine.texture.texture;
+import engine.helpers.nothrow_writeln;
 
 // Internal game libraries
 import game.chunk.chunk;
@@ -41,7 +42,7 @@ ConcurrentHashMap chunkData = new ConcurrentHashMap();
 void generateChunk(Vector2i position) nothrow {
     try {
     send(ThreadLibrary.getWorldGeneratorThread(), position);
-    } catch(Exception) {}
+    } catch(Exception e) {nothrowWriteln(e);}
 }
 
 public shared synchronized class ConcurrentHashMap {
@@ -118,7 +119,7 @@ public shared synchronized class ConcurrentHashMap {
                     }
                 },
             );
-            } catch(Exception) {/*whoops*/}
+            } catch(Exception e) {nothrowWriteln(e);}
         }
     }
 
@@ -152,7 +153,7 @@ public shared synchronized class ConcurrentHashMap {
                     }
                 }
             );
-            } catch (Exception){}
+            } catch (Exception e){nothrowWriteln(e);}
         }
     }
 
@@ -170,6 +171,6 @@ public shared synchronized class ConcurrentHashMap {
                 castedChunk.drawMesh(i);
             }
         }
-        } catch (Exception) {}
+        } catch (Exception e) {nothrowWriteln(e);}
     }
 }

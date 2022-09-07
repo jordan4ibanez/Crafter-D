@@ -16,6 +16,7 @@ import asdf;
 
 // Internal engine libraries
 import Window = engine.window.window;
+import engine.helpers.nothrow_writeln;
 
 // Internal game libraries
 import game.chunk.chunk;
@@ -41,7 +42,7 @@ void startWorldGeneratorThread(Tid parentThread) nothrow {
     FNLState noise;
     try {
         fnlCreateState(SEED);
-    } catch(Exception) {}
+    } catch(Exception e) {nothrowWriteln(e);}
 
     noise.noise_type = FNLNoiseType.FNL_NOISE_OPENSIMPLEX2S;
 
@@ -152,10 +153,10 @@ void startWorldGeneratorThread(Tid parentThread) nothrow {
             // If you send this thread a bool, it continues, then breaks
             (bool kill) {}
         );
-        } catch(Exception) {}
+        } catch(Exception e) {nothrowWriteln(e);}
     }
 
     try {
     writeln("World generator has closed!");
-    } catch(Exception){}
+    } catch(Exception e){nothrowWriteln(e);}
 }
