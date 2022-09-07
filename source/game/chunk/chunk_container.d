@@ -4,6 +4,7 @@ module game.chunk.chunk_container;
 import std.stdio;
 import std.range : popFront, popBack;
 import std.algorithm : canFind;
+import std.array: assocArray;
 import vector_2i;
 import vector_3i;
 import bindbc.opengl;
@@ -36,18 +37,20 @@ This is meant to be handled functionally
 
 ConcurrentHashMap chunkData = new ConcurrentHashMap();
 
+// External entry point into adding new chunks to the map
+void generateChunk(Vector2i position) nothrow {
+    try {
+    send(ThreadLibrary.getWorldGeneratorThread(), position);
+    } catch(Exception) {}
+}
+
 public shared synchronized class ConcurrentHashMap {
 
     // Hashmap container for generated chunks
     private Chunk[Vector2i] container;
 
-    // External entry point into adding new chunks to the map
-    void generateChunk(Vector2i position) {
-        send(ThreadLibrary.getWorldGeneratorThread(), position);
-    }
-
     // Gets a chunk from the container
-    immutable(Chunk) getChunk(Vector2i position) nothrow {
+    shared(Chunk) getChunk(Vector2i position) pure nothrow @safe {
         shared Chunk clone;
         if (position in container) {
             shared Chunk original = container[position];
@@ -55,7 +58,7 @@ public shared synchronized class ConcurrentHashMap {
         }
         // writeln("WARNING, A GARBAGE CHUNK HAS BEEN DISPATCHED");
         // Return non-existent chunk
-        return cast (immutable)clone;
+        return clone;
     }
 
     // Gets a shared chunk from the container
@@ -73,23 +76,24 @@ public shared synchronized class ConcurrentHashMap {
     */
 
     // Gets a mutable chunk from the container
-    ref Chunk getMutableChunk(Vector2i position) {
+    ref shared(Chunk) getMutableChunk(Vector2i position) pure nothrow @safe {
         if (position in container) {
-            return cast(Chunk)container[position];
+            return container[position];
         }
         // This is where serious problems could happen if existence is not checked
-        writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
+        // writeln("WARNING, A MUTABLE GARBAGE CHUNK HAS BEEN DISPATCHED");
         // This becomes garbage data
-        return *new Chunk();
+        return *new shared Chunk();
     }
 
     // Internal chunk generation dispatch
     // This will be reused to receive chunks from the world generator
 
-    void receiveChunksFromWorldGenerator() {
+    void receiveChunksFromWorldGenerator() nothrow shared {
         bool received = true;
         while(received) {
             received = false;
+            try {
             receiveTimeout(
                 Duration(),
                 (immutable Chunk immutableGeneratedChunk) {
@@ -114,13 +118,15 @@ public shared synchronized class ConcurrentHashMap {
                     }
                 },
             );
+            } catch(Exception) {/*whoops*/}
         }
     }
 
-    void receiveMeshesFromChunkMeshGenerator() {
+    void receiveMeshesFromChunkMeshGenerator() nothrow {
         bool received = true;
         while (received){
             received = false;
+            try{
             receiveTimeout(
                 Duration(),
                 (shared(ThreadMeshMessage) newMesh) {               
@@ -130,7 +136,7 @@ public shared synchronized class ConcurrentHashMap {
 
                     Vector3i position = thisNewMesh.position;
 
-                    Chunk mutableChunk = getMutableChunk(Vector2i(position.x, position.z));
+                    Chunk mutableChunk = cast(Chunk) getMutableChunk(Vector2i(position.x, position.z));
 
                     // New mesh is blank! Remove
                     if (thisNewMesh.vertices.length == 0) {        
@@ -146,10 +152,12 @@ public shared synchronized class ConcurrentHashMap {
                     }
                 }
             );
+            } catch (Exception){}
         }
     }
 
-    void renderWorld() {
+    void renderWorld() nothrow {
+        try {
         getShader("main").setUniformI("textureSampler", 0);
         getShader("main").setUniformF("light", 1);
 
@@ -162,5 +170,6 @@ public shared synchronized class ConcurrentHashMap {
                 castedChunk.drawMesh(i);
             }
         }
+        } catch (Exception) {}
     }
 }
