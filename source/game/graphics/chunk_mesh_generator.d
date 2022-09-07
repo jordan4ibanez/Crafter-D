@@ -197,6 +197,8 @@ void startMeshGeneratorThread(Tid parentThread) {
 |_______||__| |______/  | _| `._____/__/     \__\ | _| `._____|   |__|     
 */
 
+bool alive = true;
+
 // Gotta tell the main thread what has been created
 Tid mainThread = parentThread;
 
@@ -903,7 +905,7 @@ void receiveChunkTransfer(MeshUpdate packageData) {
 }
 
 bool didGenLastLoop = false;
-while(!Window.externalShouldClose()) {
+while(alive) {
 
     // A cpu saver routine
     if (!didGenLastLoop) {
@@ -919,7 +921,9 @@ while(!Window.externalShouldClose()) {
                 didGenLastLoop = true;
             },
             // If you send this thread a bool, it continues, then breaks
-            (bool kill) {}
+            (bool kill) {
+                alive = false;
+            }
         );
     } else {
         didGenLastLoop = false;
@@ -929,7 +933,9 @@ while(!Window.externalShouldClose()) {
                 receiveChunkTransfer(newUpdate);
             },
             // If you send this thread a bool, it continues, then breaks
-            (bool kill) {}
+            (bool kill) {
+                alive = false;
+            }
         );
     }
 
