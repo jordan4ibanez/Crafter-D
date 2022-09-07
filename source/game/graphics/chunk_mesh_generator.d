@@ -741,11 +741,11 @@ void generateChunkMesh(
     // If there's a crash in the future, this horrific mess is why
     Vector2i chunkPosition = chunk.getPosition();
     synchronized {
-    send(mainThread, cast(shared(ThreadMeshMessage))ThreadMeshMessage(
-        cast(float[])cast(shared(float[]))vertices[],
-        cast(int[])cast(shared(int[]))indices[],
-        cast(float[])cast(shared(float[]))textureCoordinates[],
-        cast(float[])cast(shared(float[]))lights[],
+    send(mainThread, ThreadMeshMessage(
+        cast(immutable)vertices[],
+        cast(immutable)indices[],
+        cast(immutable)textureCoordinates[],
+        cast(immutable)lights[],
         "textures/world_texture_map.png",
         Vector3i(
             chunkPosition.x,
