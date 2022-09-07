@@ -168,15 +168,17 @@ immutable struct MeshUpdate{
 
 
 // Allow main thread to register new blocks into this one
-void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blockTextures){
+void registerBlockGraphicsDefinition(uint id, float[][] blockBox, Vector2i[] blockTextures) nothrow {
     // This may look like we're talking right below, but that thread could be anywhere
     // Avoid an access violation
+    try {
     BlockGraphicDefinition newDefinition = BlockGraphicDefinition(
             id,
             blockBox,
             blockTextures
         );
     send(ThreadLibrary.getChunkMeshGeneratorThread(), cast(shared(BlockGraphicDefinition))newDefinition);
+    } catch(Exception){}
 }
 
 
@@ -784,14 +786,14 @@ void internalGenerateChunkMesh(MeshUpdate thePackage) {
         thePackage.position.z
     );
 
-    Chunk thisChunk = cast(Chunk)getChunk(Vector2i(position.x, position.z));
+    Chunk thisChunk = cast(Chunk)chunkData.getChunk(Vector2i(position.x, position.z));
     
     // Get chunk neighbors
     // These do not exist by default
-    Chunk neighborNegativeX = cast(Chunk)getChunk(Vector2i(position.x - 1, position.z));
-    Chunk neighborPositiveX = cast(Chunk)getChunk(Vector2i(position.x + 1, position.z));
-    Chunk neighborNegativeZ = cast(Chunk)getChunk(Vector2i(position.x, position.z - 1));
-    Chunk neighborPositiveZ = cast(Chunk)getChunk(Vector2i(position.x, position.z + 1));
+    Chunk neighborNegativeX = cast(Chunk)chunkData.getChunk(Vector2i(position.x - 1, position.z));
+    Chunk neighborPositiveX = cast(Chunk)chunkData.getChunk(Vector2i(position.x + 1, position.z));
+    Chunk neighborNegativeZ = cast(Chunk)chunkData.getChunk(Vector2i(position.x, position.z - 1));
+    Chunk neighborPositiveZ = cast(Chunk)chunkData.getChunk(Vector2i(position.x, position.z + 1));
 
     generateChunkMesh(
         thisChunk,
