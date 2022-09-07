@@ -24,6 +24,8 @@ import game.chunk.chunk;
 // This function is a thread
 void startWorldGeneratorThread(Tid parentThread) nothrow {
 
+    bool alive = true;
+
     immutable bool debugNow = false;
 
     if (debugNow) {
@@ -136,7 +138,7 @@ void startWorldGeneratorThread(Tid parentThread) nothrow {
     }
 
     // This runs at an extremely high framerate, find some way to slow it down when not in use...maybe?
-    while (!Window.externalShouldClose()) {
+    while (alive) {
 
         try {
         // Listen for input from main thread
@@ -151,7 +153,9 @@ void startWorldGeneratorThread(Tid parentThread) nothrow {
                 generateChunk(newPosition);
             },
             // If you send this thread a bool, it continues, then breaks
-            (bool kill) {}
+            (bool kill) {
+                alive = false;
+            }
         );
         } catch(Exception e) {nothrowWriteln(e);}
     }
