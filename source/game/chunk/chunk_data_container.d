@@ -27,7 +27,6 @@ import engine.helpers.nothrow_writeln;
 // Internal game libraries
 import game.chunk.chunk;
 import game.graphics.chunk_mesh_generator;
-import game.chunk.thread_chunk_package;
 import game.graphics.chunk_mesh_data_container;
 /*
 This handles the chunks in the world. A static factory/container for Chunks using D's special
@@ -117,8 +116,8 @@ public shared synchronized class ConcurrentChunkHashMap {
                     
                     received = true;
 
-                    Chunk generatedChunk = cast(Chunk)immutableGeneratedChunk;
-
+                    Chunk original = cast(Chunk)immutableGeneratedChunk;
+                    Chunk generatedChunk = original;
 
                     Vector2i newPosition = generatedChunk.getPosition();
                     string clonedBiome = generatedChunk.getBiome();
