@@ -11,6 +11,7 @@
 		"delta_time": "1.0.5",
 		"doml": "0.0.5",
 		"fast_noise": "1.0.5",
+		"fast_pack": "1.0.0",
 		"fluent-asserts": "0.13.3",
 		"gl3n": "1.4.1",
 		"libdparse": "0.14.0",
