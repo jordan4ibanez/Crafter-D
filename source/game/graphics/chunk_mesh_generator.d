@@ -907,7 +907,7 @@ while(alive) {
                 didGenLastLoop = true;
             },
             // If you send this thread a bool, it continues, then breaks
-            (bool kill) {
+            (bool) {
                 alive = false;
             }
         );
