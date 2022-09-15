@@ -503,40 +503,27 @@ void buildBlock(
 
                 // Assign texture coordinates// Assign texture coordinates               
 
-                final switch (isBlockBox) {
-                    case false: {
-                        // Normal drawtype
-                        textureCoordinates.put(((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                        textureCoordinates.put(((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                        break;
-                    }
-                    case true: {
-                        // Blockbox drawtype
-                        Vector2i textureCull = TEXTURE_CULL[i][f];
+                if (isBlockBox) {
+                    // Blockbox drawtype
+                    Vector2i textureCull = TEXTURE_CULL[i][f];
 
-                        // This can be written as a ternary, but easier to understand like this
-                        final switch (textureCull.x > 5) {
-                            case true: {
-                                textureCoordinates.put(((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                                break;
-                            }
-                            case false: {
-                                textureCoordinates.put(((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                                break;
-                            }
-                        }
-                        final switch (textureCull.y > 5) {
-                            case true: {
-                                textureCoordinates.put(((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                                break;
-                            }
-                            case false: {
-                                textureCoordinates.put(((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
-                                break;
-                            }
-                        }
-                        break;
+                    // This can be written as a ternary, but easier to understand like this
+                    if (textureCull.x > 5) {
+                        textureCoordinates.put(((abs(textureCullArray[textureCull.x - 6] - 1) + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
+                    } else {
+                        textureCoordinates.put(((textureCullArray[textureCull.x] + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                     }
+
+                    if (textureCull.y > 5) {
+                        
+                        textureCoordinates.put(((abs(textureCullArray[textureCull.y - 6] - 1) + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
+                    } else {
+                        textureCoordinates.put(((textureCullArray[textureCull.y] + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
+                    }
+                } else {
+                    // Normal drawtype
+                    textureCoordinates.put(((TEXTURE_POSITION[f].x + currentTexture.x) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
+                    textureCoordinates.put(((TEXTURE_POSITION[f].y + currentTexture.y) * TEXTURE_TILE_SIZE) / TEXTURE_MAP_SIZE);
                 }
             }
             // Tick up tri count
