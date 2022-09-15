@@ -12,7 +12,7 @@
 		"delta_time": "~>1.0.3",
 		"doml": "~>0.0.3",
 		"fast_noise": "~>1.0.3",
-		"fast_pack": "~>1.0.0",
+		"fast_pack": "~>3.0.0",
 		"stb_vorbis": "~>1.0.0"
 	},
 	"description": "A voxel thing written in D",
