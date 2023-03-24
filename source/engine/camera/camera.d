@@ -1,11 +1,12 @@
-module camera.camera;
+module engine.camera.camera;
 
 import bindbc.opengl;
-import Window = window.window;
 import doml.vector_2d;
 import doml.vector_3d;
 import doml.matrix_4d;
+
 import Math = doml.math;
+import Window = engine.window.window;
 
 
 

@@ -1,4 +1,4 @@
-module tools.gl_loader_logger;
+module engine.tools.gl_loader_logger;
 
 
 import std.stdio;

@@ -1,6 +1,6 @@
 import std.stdio;
 
-import Window = window.window;
+import Window = engine.window.window;
 
 public void main() {
 

@@ -1,4 +1,4 @@
-module tools.glfw_error_logger;
+module engine.tools.glfw_error_logger;
 
 import std.stdio;
 import std.conv: to;

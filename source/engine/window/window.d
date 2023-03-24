@@ -1,4 +1,4 @@
-module window.window;
+module engine.window.window;
 
 import std.stdio;
 import std.conv;
@@ -15,10 +15,10 @@ import delta_time;
 import loader = bindbc.loader.sharedlib;
 
 // This is an import that allows us to print debug info.
-import tools.glfw_error_logger;
-import tools.gl_loader_logger;
+import engine.tools.glfw_error_logger;
+import engine.tools.gl_loader_logger;
 
-import OpenGlLogger = tools.opengl_error_logger;
+import OpenGlLogger = engine.tools.opengl_error_logger;
 
 // OpenGL fields
 private string glVersion;

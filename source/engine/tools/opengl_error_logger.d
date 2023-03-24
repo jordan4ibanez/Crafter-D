@@ -1,4 +1,4 @@
-module tools.opengl_error_logger;
+module engine.tools.opengl_error_logger;
 
 import std.stdio;
 import std.conv: to;

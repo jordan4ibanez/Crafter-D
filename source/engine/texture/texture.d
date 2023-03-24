@@ -1,11 +1,11 @@
-module texture.texture;
+module engine.texture.texture;
 
 import std.stdio;
 import bindbc.opengl;
 import color;
 import png;
 
-import OpenGlLogger = tools.opengl_error_logger;
+import OpenGlLogger = engine.tools.opengl_error_logger;
 
 /**
     Texture works as a singleton container.

@@ -1,14 +1,14 @@
-module mesh.mesh;
+module engine.mesh.mesh;
 
 import std.stdio;
 import bindbc.opengl;
-import Shader = shader.shader;
 import doml.vector_2d;
 import doml.vector_3d;
 import doml.vector_4d;
 import doml.vector_4i;
 
-import OpenGlLogger = tools.opengl_error_logger;
+import Shader = engine.shader.shader;
+import OpenGlLogger = engine.tools.opengl_error_logger;
 
 /// An OpenGL mesh. Utilizes builder pattern.
 class Mesh {

@@ -1,4 +1,4 @@
-module gui.gui;
+module engine.gui.gui;
 
 import std.stdio;
 import bindbc.opengl;
@@ -6,12 +6,12 @@ import doml.vector_2d;
 import doml.vector_4d;
 
 import Font = razor_font;
-import Texture = texture.texture;
-import Window = window.window;
-import Shader = shader.shader;
-import Camera = camera.camera;
+import Texture = engine.texture.texture;
+import Window = engine.window.window;
+import Shader = engine.shader.shader;
+import Camera = engine.camera.camera;
 
-import mesh.mesh;
+import engine.mesh.mesh;
 
 
 // Allows elements to be bolted to a part of the window

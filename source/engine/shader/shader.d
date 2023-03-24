@@ -1,4 +1,4 @@
-module shader.shader;
+module engine.shader.shader;
 
 import std.stdio;
 import std.file;
@@ -7,7 +7,7 @@ import std.conv;
 
 import bindbc.opengl;
 
-import OpenGlLogger = tools.opengl_error_logger;
+import OpenGlLogger = engine.tools.opengl_error_logger;
 
 /// These work as a synced list
 private GLuint[string] vertexShaders;
