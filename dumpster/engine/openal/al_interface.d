@@ -179,7 +179,7 @@ struct SoundBuffer {
         return this.exists;
     }
 
-    void cleanUp() {
+    void destroy() {
         if (this.exists) {
             alDeleteBuffers(1, &this.id);
             if (debugNow) {
@@ -210,7 +210,7 @@ struct SoundSource {
         return this.exists;
     }
 
-    void cleanUp() {
+    void destroy() {
         if (this.exists){
             alDeleteSources(1, &this.id);
             this.exists = false;
@@ -331,9 +331,9 @@ void debugOpenAL() {
     }
 }
 
-void cleanUpOpenAL() {
+void destroyOpenAL() {
 
-    cleanUpSoundManager();
+    destroySoundManager();
 
     alcMakeContextCurrent(null);
     alcDestroyContext(context);
