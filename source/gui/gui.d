@@ -260,7 +260,7 @@ class GUI {
 
     void destroy() {
         foreach (Button button; buttonObjects) {
-            button.mesh.cleanUp();            
+            button.mesh.destroy();            
         }
     }
 
