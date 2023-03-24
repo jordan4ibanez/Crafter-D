@@ -75,7 +75,7 @@ GLuint getTexture(string fileLocation) {
     return storage[fileLocation];
 }
 
-void cleanUp() {
+void destroy() {
     foreach (string key, GLuint value; storage) {
         glDeleteTextures(1, &value);
 
