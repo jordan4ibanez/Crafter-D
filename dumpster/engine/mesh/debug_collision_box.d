@@ -22,8 +22,8 @@ void constructCollisionBoxMesh() {
         existenceLock = true;
     }
 }
-void cleanUpCollisionBoxMesh() {
-    theMesh.cleanUp();
+void destroyCollisionBoxMesh() {
+    theMesh.destroy();
 }
 void drawCollisionBoxMesh(Vector3d position, Vector2d size) {
     theMesh.render(position,size);
@@ -130,7 +130,7 @@ private struct CollisionBoxMesh {
         }
     }
 
-    void cleanUp() {
+    void destroy() {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
