@@ -66,8 +66,8 @@ bool freeBuffers() {
             // Free the buffer & sound source
             // THIS NEEDS TO GO IN THIS ORDER!
             // IF IT ISN'T THE BUFFERS WILL KEEP GOING UP!     
-            soundSources[i].cleanUp();
-            buffers[thisSoundSource.getBuffer()].cleanUp();
+            soundSources[i].destroy();
+            buffers[thisSoundSource.getBuffer()].destroy();
             
 
             // Now they're both freed
@@ -127,14 +127,14 @@ void initializeListener() {
     }
 }
 
-void cleanUpSoundManager() {
+void destroySoundManager() {
     cleanSoundBuffers();
     cleanSoundSources();
 }
 
 private void cleanSoundBuffers() {
     for (int i = 0; i < MAX_SOUNDS; i++) {
-        buffers[i].cleanUp();
+        buffers[i].destroy();
     }
     if (debugNow) {
         writeln("Sound buffers are cleaned");
@@ -143,7 +143,7 @@ private void cleanSoundBuffers() {
 
 private void cleanSoundSources() {
     for (int i = 0; i < MAX_SOUNDS; i++) {
-        soundSources[i].cleanUp();
+        soundSources[i].destroy();
     }
     if (debugNow) {
         writeln("Sound sources are cleaned");
