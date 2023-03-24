@@ -8,10 +8,8 @@ public void main() {
 
     Window.setTitle("Crafter v0.0.0 Prototype");
 
-
-    // Window.setTitle();
-
     while (!Window.shouldClose()) {
+        
         Window.pollEvents();
 
         Window.clear(0.25);
