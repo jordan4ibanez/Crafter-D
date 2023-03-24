@@ -144,7 +144,7 @@ struct Mesh {
         }
     }
 
-    void cleanUp() {
+    void destroy() {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
