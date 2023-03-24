@@ -22,5 +22,8 @@
 	"versions": [
 		"GLFW_33",
 		"GL_41"
+	],
+    "libs-posix": [
+		"z"
 	]
 }
