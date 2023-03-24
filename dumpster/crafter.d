@@ -316,11 +316,11 @@ void main(string[] args) {
 
         }
         
-        cleanUpCollisionBoxMesh();
+        destroyCollisionBoxMesh();
         ThreadLibrary.killAllThreads();
-        cleanUpAllTextures();
+        destroyAllTextures();
         deleteShaders();
-        cleanUpOpenAL();
+        destroyOpenAL();
         Window.destroy();
     // }
 }
