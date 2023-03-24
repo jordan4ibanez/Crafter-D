@@ -159,7 +159,7 @@ private void initializeGLFW(int windowSizeX = -1, int windowSizeY = -1) {
 
     glfwSetFramebufferSizeCallback(window, &myframeBufferSizeCallback);
 
-    // glfwSetKeyCallback(window, &externalKeyCallBack);
+    glfwSetKeyCallback(window, &keyCallBack);
 
     // glfwSetCursorPosCallback(window, &externalcursorPositionCallback);
 
@@ -229,6 +229,15 @@ Vector2d getMousePosition() {
     return currentPos;
 }
 
+private static nothrow extern(C)
+void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    try {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+            close();
+        }
+    } catch (Exception e) {}
+
+}
 
 Vector2d centerMouse() {
     double x = windowSize.x / 2.0;
