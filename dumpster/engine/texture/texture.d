@@ -11,9 +11,9 @@ private immutable bool debugNow = false;
 // Automatically deletes when the program ends
 private Texture[string] container;
 
-void cleanUpAllTextures() {
+void destroyAllTextures() {
     foreach (Texture thisTexture; container) {
-        thisTexture.cleanUp();
+        thisTexture.destroy();
     }
 }
 
@@ -64,7 +64,7 @@ struct Texture {
         }
     }
 
-    void cleanUp() {
+    void destroy() {
         glDeleteTextures(1, &this.id);
         if (debugNow) {
             writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
