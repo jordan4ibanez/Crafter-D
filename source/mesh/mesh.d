@@ -283,7 +283,7 @@ class Mesh {
         Do not delete the texture if it is shared, this will
         cause unexpected behavior.
     */
-    void cleanUp() {
+    void destroy() {
 
         if (!finalized) {
             throw new Exception("You MUST call finalize() for a mesh!");
@@ -342,7 +342,7 @@ class Mesh {
         assert(glIsVertexArray(this.vao) == GL_FALSE);
 
 
-        OpenGlLogger.execute("This error comes from the cleanup() method of Mesh.\n" ~ "ERROR DESTROYING MESH!");
+        OpenGlLogger.execute("This error comes from the destroy() method of Mesh.\n" ~ "ERROR DESTROYING MESH!");
 
         if (debugEnabled) {
             writeln("Mesh ", this.vao, " has been successfully deleted from gpu memory");
