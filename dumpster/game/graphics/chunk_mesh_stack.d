@@ -24,13 +24,13 @@ struct ChunkMeshStack {
     // Mesh manipulation
     void setMesh(int yStack, Mesh newMesh) {
         // This will check if the mesh was ever initialized automatically
-        this.chunkMeshStack[yStack].cleanUp();
+        this.chunkMeshStack[yStack].destroy();
         this.chunkMeshStack[yStack] = newMesh;
     }
 
     void removeMesh(int yStack) {
         // It's nothing, clean it up
-        this.chunkMeshStack[yStack].cleanUp();
+        this.chunkMeshStack[yStack].destroy();
         // Remove it's old values!
         this.chunkMeshStack[yStack] = Mesh();
     }
